@@ -84,7 +84,6 @@
                     </div>
                     <!-- Fin Modal -->
                 </div>
-
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -213,7 +212,12 @@
 <script>
 export default {
     data() {
-
+        return  {
+            sucursal_id: 0,
+            nombre: "",
+            descripcion: "",
+            arraySucursal: []
+        }
     },
     methods: {
         listarSucursal() {
@@ -234,7 +238,7 @@ export default {
         }
     },
     mounted() {
-        console.log("Component mounted.");
+        listarSucursal();
     },
 };
 </script>

@@ -1924,9 +1924,219 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {},
+  methods: {
+    listarSucursal: function listarSucursal() {
+      // Make a request for a user with a given ID
+      axios.get('/sucursal').then(function (response) {
+        // handle success
+        responde.data;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      }).then(function () {// always executed
+      });
+    }
+  },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    console.log("Component mounted.");
   }
 });
 
@@ -37529,18 +37739,429 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
+    return _c("div", [
+      _c("div", { staticClass: "content-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("div", { staticClass: "row mb-2" }, [
+            _c("div", { staticClass: "col-sm-6" }, [
+              _c("h1", { staticClass: "m-0" }, [_vm._v("Gestión de sucursal")])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
+            _c("div", { staticClass: "col-sm-6" }, [
+              _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
+                _c("li", { staticClass: "breadcrumb-item" }, [
+                  _c("a", { attrs: { href: "/" } }, [_vm._v("Home")])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "breadcrumb-item active" }, [
+                  _vm._v("Gestión de sucursal")
+                ])
+              ])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "content" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-4" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#exampleModal"
+                  }
+                },
+                [
+                  _vm._v(
+                    "\r\n                        Registrar\r\n                    "
+                  )
+                ]
               )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-5" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "modal fade",
+                  attrs: {
+                    id: "exampleModal",
+                    tabindex: "-1",
+                    "aria-labelledby": "exampleModalLabel",
+                    "aria-hidden": "true"
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-dialog" }, [
+                    _c("div", { staticClass: "modal-content" }, [
+                      _c("div", { staticClass: "modal-header" }, [
+                        _c(
+                          "h5",
+                          {
+                            staticClass: "modal-title",
+                            attrs: { id: "tituloModalBodega" }
+                          },
+                          [
+                            _vm._v(
+                              "\r\n                                        Registrar sucursal\r\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("button", {
+                          staticClass: "close",
+                          attrs: {
+                            type: "button",
+                            "data-dismiss": "modal",
+                            "aria-label": "Close"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-body" }, [
+                        _c("form", { attrs: { role: "form" } }, [
+                          _c("div", { staticClass: "card-body" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                { attrs: { for: "exampleInputPassword1" } },
+                                [_vm._v("Nombre sucursal (*)")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  id: "exampleInputPassword1",
+                                  placeholder: ""
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "" } }, [
+                                _vm._v("Descripción")
+                              ]),
+                              _vm._v(" "),
+                              _c("textarea", {
+                                staticClass: "form-control",
+                                staticStyle: {
+                                  "margin-top": "0px",
+                                  "margin-bottom": "0px",
+                                  height: "163px"
+                                },
+                                attrs: {
+                                  rows: "12",
+                                  placeholder: "Descripción de la sucursal ..."
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                { attrs: { for: "exampleInputPassword1" } },
+                                [_vm._v("Dirección")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  id: "exampleInputPassword1",
+                                  placeholder: ""
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                { attrs: { for: "exampleInputPassword1" } },
+                                [_vm._v("Teléfono")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  id: "exampleInputPassword1",
+                                  placeholder: ""
+                                }
+                              })
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button", "data-dismiss": "modal" }
+                          },
+                          [
+                            _vm._v(
+                              "\r\n                                        Cerrar\r\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" }
+                          },
+                          [
+                            _vm._v(
+                              "\r\n                                        Registrar\r\n                                    "
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("table", { staticClass: "table table-bordered" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", { staticStyle: { width: "40px" } }, [
+                    _vm._v("Opciones")
+                  ]),
+                  _vm._v(" "),
+                  _c("th", { staticStyle: { width: "20px" } }, [_vm._v("id")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Nombre")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Descripción")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Dirección")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Teléfono")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\r\n                                    Editar\r\n                                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Sucursal minorista")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\r\n                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.\r\n                                Autem impedit reiciendis voluptate quia nisi sint! Eligendi,\r\n                                totam illum, illo ratione, odit nihil recusandae mollitia\r\n                                voluptatum a unde repellendus! Aspernatur, aliquam.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Carrera 56 # 89 - 54")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5674398")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\r\n                                    Editar\r\n                                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("2")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Sucursal colombia con la 80")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\r\n                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.\r\n                                Autem impedit reiciendis voluptate quia nisi sint! Eligendi,\r\n                                totam illum, illo ratione, odit nihil recusandae mollitia\r\n                                voluptatum a unde repellendus! Aspernatur, aliquam.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Carrera 56 # 89 - 54")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5674398")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\r\n                                    Editar\r\n                                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Sucursal prado centro")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\r\n                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.\r\n                                Autem impedit reiciendis voluptate quia nisi sint! Eligendi,\r\n                                totam illum, illo ratione, odit nihil recusandae mollitia\r\n                                voluptatum a unde repellendus! Aspernatur, aliquam.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Carrera 56 # 89 - 54")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5674398")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\r\n                                    Editar\r\n                                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("4")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Sucursal suramericana")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\r\n                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.\r\n                                Autem impedit reiciendis voluptate quia nisi sint! Eligendi,\r\n                                totam illum, illo ratione, odit nihil recusandae mollitia\r\n                                voluptatum a unde repellendus! Aspernatur, aliquam.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Carrera 56 # 89 - 54")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5674398")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\r\n                                    Editar\r\n                                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Sucursal robledo")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\r\n                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.\r\n                                Autem impedit reiciendis voluptate quia nisi sint! Eligendi,\r\n                                totam illum, illo ratione, odit nihil recusandae mollitia\r\n                                voluptatum a unde repellendus! Aspernatur, aliquam.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Carrera 56 # 89 - 54")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5674398")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\r\n                                    Editar\r\n                                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("6")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Sucursal bello")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\r\n                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.\r\n                                Autem impedit reiciendis voluptate quia nisi sint! Eligendi,\r\n                                totam illum, illo ratione, odit nihil recusandae mollitia\r\n                                voluptatum a unde repellendus! Aspernatur, aliquam.\r\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("Carrera 98 DA # 56 - 54")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("5896114")])
+                ])
+              ])
             ])
           ])
         ])
@@ -49750,7 +50371,9 @@ Vue.component('sucursal', __webpack_require__(/*! ./components/Sucursal.vue */ "
 
 var app = new Vue({
   el: '#app',
-  menu: 0
+  data: {
+    menu: 0
+  }
 });
 
 /***/ }),
@@ -49887,8 +50510,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\martes13\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\martes13\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Hackathon\Hackathon\CarpetaProyecto\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Hackathon\Hackathon\CarpetaProyecto\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

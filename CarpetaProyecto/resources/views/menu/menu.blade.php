@@ -11,7 +11,7 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item" @click="menu = 1">
-                    <a href="/bodega" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Bodega</p>
                     </a>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="nav-item" @click="menu = 3">
-                    <a href="/producto" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Productos</p>
                     </a>

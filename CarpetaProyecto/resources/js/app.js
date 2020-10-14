@@ -29,5 +29,7 @@ Vue.component('sucursal', require('./components/Sucursal.vue').default);
 
 const app = new Vue({
     el: '#app',
-    menu: 0
+    data:{
+        menu: 0
+    }
 });
