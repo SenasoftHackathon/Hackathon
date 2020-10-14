@@ -10,25 +10,25 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item" @click="menu = 1">
                     <a href="/bodega" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Bodega</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="/sucursal" class="nav-link">
+                <li class="nav-item" @click="menu = 2">
+                    <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Sucursales</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" @click="menu = 3">
                     <a href="/producto" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Productos</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" @click="menu = 4">
                     <a href="/proveedor" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Proveedores</p>
@@ -44,23 +44,19 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item" @click="menu = 5">
                     <a href="/usuario" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Usuarios</p>
                     </a>
                 </li>
-            </ul>
-            <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/rol" class="nav-link">
+                    <a href="/rol" class="nav-link" @click="menu = 6">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Roles</p>
                     </a>
                 </li>
-            </ul>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item" @click="menu = 7">
                     <a href="/permiso" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Permisos</p>
@@ -68,21 +64,19 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item ">
+        <li class="nav-item " @click="menu = 8">
             <a href="" class="nav-link">
                 <p>
                     Facturación
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/facturacion" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Facturas</p>
-                    </a>
-                </li>
-            </ul>
+        <li class="nav-item"  @click="menu = 9">
+            <a href="/facturacion" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Facturas</p>
+            </a>
+        </li>
         </li>
         <li class="nav-item ">
             <a href="#" class="nav-link">
@@ -92,7 +86,7 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item"  @click="menu = 10">
                     <a href="/iva" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>IVA</p>

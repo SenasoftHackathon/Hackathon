@@ -45,3 +45,6 @@ Route::get('/usuario', function () {
 Route::get('/permiso', function () {
     return view('usuarios.permiso');
 });
+Route::get('/vue', function () {
+    return view('contenido.contenido');
+});
