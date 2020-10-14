@@ -2080,6 +2080,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2126,16 +2136,36 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
+    actualizarSucursal: function actualizarSucursal() {
+      if (this.validarSucursal()) {
+        return;
+      }
+
+      var me = this; // Make a request for a user with a given ID
+
+      axios.put("/sucursal/actualizar", {
+        nombre: this.nombre,
+        direccion: this.direccion,
+        id: this.sucursal_id
+      }).then(function (response) {
+        // handle success
+        me.cerrarModal();
+        me.listarSucursal();
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
     validarSucursal: function validarSucursal() {
       this.errorSucursal = 0;
       this.errorMsjSucursal = [];
 
       if (!this.nombre) {
-        this.errorMsjSucursal.push('El nombre no puede estar vacio.');
+        this.errorMsjSucursal.push("El nombre no puede estar vacio.");
       }
 
       if (!this.direccion) {
-        this.errorMsjSucursal.push('La dirección no puede estar vacia.');
+        this.errorMsjSucursal.push("La dirección no puede estar vacia.");
       }
 
       if (this.errorMsjSucursal.length) {
@@ -2163,6 +2193,12 @@ __webpack_require__.r(__webpack_exports__);
 
               case "actualizar":
                 {
+                  this.modal = 1;
+                  this.tituloModal = "Actualizar sucursal";
+                  this.tipoAccion = 2;
+                  this.nombre = data["nombre"];
+                  this.direccion = data["direccion"];
+                  this.sucursal_id = data["id"];
                   break;
                 }
             }
@@ -38424,220 +38460,235 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "content" }, [
       _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-4" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    return _vm.abrirModal("sucursal", "registrar")
-                  }
+        _c("div", { staticClass: "col-md-4" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.abrirModal("sucursal", "registrar")
                 }
-              },
-              [
-                _vm._v(
-                  "\n                        Registrar\n                    "
-                )
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-5" }, [
-            _c(
-              "div",
-              {
-                staticClass: "modal",
-                class: { mostrar: _vm.modal },
-                attrs: {
-                  tabindex: "-1",
-                  "aria-labelledby": "exampleModalLabel",
-                  "aria-hidden": "true",
-                  role: "dialog"
-                }
-              },
-              [
-                _c("div", { staticClass: "modal-dialog" }, [
-                  _c("div", { staticClass: "modal-content" }, [
-                    _c("div", { staticClass: "modal-header" }, [
-                      _c("h5", {
-                        staticClass: "modal-title",
-                        domProps: { textContent: _vm._s(_vm.tituloModal) }
-                      }),
-                      _vm._v(" "),
-                      _c("button", {
-                        staticClass: "close",
-                        attrs: { type: "button", "aria-label": "Close" },
+              }
+            },
+            [
+              _c("i", { staticClass: "fa fa-plus" }),
+              _vm._v(" Registrar\n                ")
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-5" }, [
+          _c(
+            "div",
+            {
+              staticClass: "modal",
+              class: { mostrar: _vm.modal },
+              attrs: {
+                tabindex: "-1",
+                "aria-labelledby": "exampleModalLabel",
+                "aria-hidden": "true",
+                role: "dialog"
+              }
+            },
+            [
+              _c("div", { staticClass: "modal-dialog" }, [
+                _c("div", { staticClass: "modal-content" }, [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c("h5", {
+                      staticClass: "modal-title",
+                      domProps: { textContent: _vm._s(_vm.tituloModal) }
+                    }),
+                    _vm._v(" "),
+                    _c("button", {
+                      staticClass: "close",
+                      attrs: { type: "button", "aria-label": "Close" },
+                      on: {
+                        click: function($event) {
+                          return _vm.cerrarModal()
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("form", { attrs: { role: "form" } }, [
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Nombre sucursal (*)")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.nombre,
+                                expression: "nombre"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "" },
+                            domProps: { value: _vm.nombre },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.nombre = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Dirección (*)")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.direccion,
+                                expression: "direccion"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "" },
+                            domProps: { value: _vm.direccion },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.direccion = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.errorSucursal,
+                                expression: "errorSucursal"
+                              }
+                            ],
+                            staticClass: "form-group row errores"
+                          },
+                          _vm._l(_vm.errorMsjSucursal, function(error) {
+                            return _c("div", {
+                              key: error,
+                              staticClass: "text-center",
+                              domProps: { textContent: _vm._s(error) }
+                            })
+                          }),
+                          0
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
                         on: {
                           click: function($event) {
                             return _vm.cerrarModal()
                           }
                         }
-                      })
-                    ]),
+                      },
+                      [
+                        _vm._v(
+                          "\n                                    Cerrar\n                                "
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "modal-body" }, [
-                      _c("form", { attrs: { role: "form" } }, [
-                        _c("div", { staticClass: "card-body" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", { attrs: { for: "" } }, [
-                              _vm._v(
-                                "Nombre sucursal\n                                                    (*)"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.nombre,
-                                  expression: "nombre"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: { type: "text", placeholder: "" },
-                              domProps: { value: _vm.nombre },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.nombre = $event.target.value
-                                }
+                    _vm.tipoAccion == 1
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.registrarSucursal()
                               }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", { attrs: { for: "" } }, [
-                              _vm._v("Dirección (*)")
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.direccion,
-                                  expression: "direccion"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: { type: "text", placeholder: "" },
-                              domProps: { value: _vm.direccion },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.direccion = $event.target.value
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value: _vm.errorSucursal,
-                                  expression: "errorSucursal"
-                                }
-                              ],
-                              staticClass: "form-group row errores"
-                            },
-                            _vm._l(_vm.errorMsjSucursal, function(error) {
-                              return _c("div", {
-                                key: error,
-                                staticClass: "text-center",
-                                domProps: { textContent: _vm._s(error) }
-                              })
-                            }),
-                            0
-                          )
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "modal-footer" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-secondary",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.cerrarModal()
                             }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                        Cerrar\n                                    "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm.tipoAccion == 1
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.registrarSucursal()
-                                }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Registrar\n                                "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.tipoAccion == 2
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.actualizarSucursal()
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                        Registrar\n                                    "
-                              )
-                            ]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.tipoAccion == 2
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.actualizarSucursal()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                        Actualizar\n                                    "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ])
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Actualizar\n                                "
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ])
                 ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "table table-bordered" }, [
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-md-center" }, [
+          _c("table", { staticClass: "table table-bordered col-md-8" }, [
             _vm._m(1),
             _vm._v(" "),
             _c(
               "tbody",
               _vm._l(_vm.arraySucursal, function(sucursal) {
                 return _c("tr", { key: sucursal.id }, [
-                  _vm._m(2, true),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn-primary btn-sm",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.abrirModal(
+                              "sucursal",
+                              "actualizar",
+                              sucursal
+                            )
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-pen" })]
+                    )
+                  ]),
                   _vm._v(" "),
                   _c("td", { domProps: { textContent: _vm._s(sucursal.id) } }),
                   _vm._v(" "),
@@ -38701,29 +38752,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Dirección")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        {
-          staticClass: "btn-primary btn-sm",
-          attrs: {
-            type: "button",
-            "data-toggle": "modal",
-            "data-target": "#exampleModal"
-          }
-        },
-        [
-          _vm._v(
-            "\n                                    Editar\n                                "
-          )
-        ]
-      )
     ])
   }
 ]

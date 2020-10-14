@@ -29,109 +29,114 @@
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-4">
-                        <!-- Button trigger modal -->
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="abrirModal('sucursal', 'registrar')"
-                        >
-                            Registrar
-                        </button>
-                    </div>
-                    <div class="col-md-5">
-                        <!-- Modal -->
-                        <div
-                            class="modal"
-                            tabindex="-1"
-                            aria-labelledby="exampleModalLabel"
-                            aria-hidden="true"
-                            role="dialog"
-                            :class="{ mostrar: modal }"
-                        >
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5
-                                            class="modal-title"
-                                            v-text="tituloModal"
-                                        ></h5>
-                                        <button
-                                            type="button"
-                                            class="close"
-                                            aria-label="Close"
-                                            @click="cerrarModal()"
-                                        ></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form role="form">
-                                            <div class="card-body">
-                                                <!-- Formulario bodega -->
-                                                <div class="form-group">
-                                                    <label for=""
-                                                        >Nombre sucursal
-                                                        (*)</label
-                                                    >
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        placeholder=""
-                                                        v-model="nombre"
-                                                    />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""
-                                                        >Dirección (*)</label
-                                                    >
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        placeholder=""
-                                                        v-model="direccion"
-                                                    />
-                                                </div>
-                                                <div v-show="errorSucursal" class="form-group row errores">
-                                                    <div class="text-center"
-                                                    v-for="error in errorMsjSucursal" :key="error" v-text="error"
-                                                    >
-                                                    </div>
-                                                </div>
-                                                <!-- Fin formulario bodega -->
+                <div class="col-md-4">
+                    <!-- Button trigger modal -->
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="abrirModal('sucursal', 'registrar')"
+                    >
+                        <i class="fa fa-plus"></i> Registrar
+                    </button>
+                </div>
+                <div class="col-md-5">
+                    <!-- Modal -->
+                    <div
+                        class="modal"
+                        tabindex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                        role="dialog"
+                        :class="{ mostrar: modal }"
+                    >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5
+                                        class="modal-title"
+                                        v-text="tituloModal"
+                                    ></h5>
+                                    <button
+                                        type="button"
+                                        class="close"
+                                        aria-label="Close"
+                                        @click="cerrarModal()"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form">
+                                        <div class="card-body">
+                                            <!-- Formulario bodega -->
+                                            <div class="form-group">
+                                                <label for=""
+                                                    >Nombre sucursal (*)</label
+                                                >
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    placeholder=""
+                                                    v-model="nombre"
+                                                />
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button
-                                            type="button"
-                                            class="btn btn-secondary"
-                                            @click="cerrarModal()"
-                                        >
-                                            Cerrar
-                                        </button>
-                                        <button
-                                            type="button"
-                                            class="btn btn-primary"
-                                            v-if="tipoAccion == 1"
-                                            @click="registrarSucursal()"
-                                        >
-                                            Registrar
-                                        </button>
-                                        <button
-                                            type="button"
-                                            class="btn btn-primary"
-                                            v-if="tipoAccion == 2"
-                                            @click="actualizarSucursal()"
-                                        >
-                                            Actualizar
-                                        </button>
-                                    </div>
+                                            <div class="form-group">
+                                                <label for=""
+                                                    >Dirección (*)</label
+                                                >
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    placeholder=""
+                                                    v-model="direccion"
+                                                />
+                                            </div>
+                                            <div
+                                                v-show="errorSucursal"
+                                                class="form-group row errores"
+                                            >
+                                                <div
+                                                    class="text-center"
+                                                    v-for="error in errorMsjSucursal"
+                                                    :key="error"
+                                                    v-text="error"
+                                                ></div>
+                                            </div>
+                                            <!-- Fin formulario bodega -->
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        @click="cerrarModal()"
+                                    >
+                                        Cerrar
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        v-if="tipoAccion == 1"
+                                        @click="registrarSucursal()"
+                                    >
+                                        Registrar
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        v-if="tipoAccion == 2"
+                                        @click="actualizarSucursal()"
+                                    >
+                                        Actualizar
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Fin Modal -->
                     </div>
-                    <table class="table table-bordered">
+                    <!-- Fin Modal -->
+                </div>
+
+                <div class="row justify-content-md-center">
+                    <table class="table table-bordered col-md-8">
                         <thead>
                             <tr>
                                 <th style="width: 40px">Opciones</th>
@@ -149,10 +154,15 @@
                                     <button
                                         type="button"
                                         class="btn-primary btn-sm"
-                                        data-toggle="modal"
-                                        data-target="#exampleModal"
+                                        @click="
+                                            abrirModal(
+                                                'sucursal',
+                                                'actualizar',
+                                                sucursal
+                                            )
+                                        "
                                     >
-                                        Editar
+                                        <i class="fa fa-pen"></i>
                                     </button>
                                 </td>
                                 <td v-text="sucursal.id"></td>
@@ -162,8 +172,8 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- /.row -->
             </div>
+            <!-- /.row -->
             <!-- /.container-fluid -->
         </div>
     </div>
@@ -202,7 +212,7 @@ export default {
                 });
         },
         registrarSucursal() {
-            if(this.validarSucursal()){
+            if (this.validarSucursal()) {
                 return;
             }
             let me = this;
@@ -222,14 +232,38 @@ export default {
                     console.log(error);
                 });
         },
-        validarSucursal(){
+        actualizarSucursal() {
+            if (this.validarSucursal()) {
+                return;
+            }
+            let me = this;
+            // Make a request for a user with a given ID
+            axios
+                .put("/sucursal/actualizar", {
+                    nombre: this.nombre,
+                    direccion: this.direccion,
+                    id: this.sucursal_id
+                })
+                .then(function(response) {
+                    // handle success
+                    me.cerrarModal();
+                    me.listarSucursal();
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });
+        },
+        validarSucursal() {
             this.errorSucursal = 0;
             this.errorMsjSucursal = [];
             if (!this.nombre) {
-                this.errorMsjSucursal.push('El nombre no puede estar vacio.');
+                this.errorMsjSucursal.push("El nombre no puede estar vacio.");
             }
             if (!this.direccion) {
-                this.errorMsjSucursal.push('La dirección no puede estar vacia.');
+                this.errorMsjSucursal.push(
+                    "La dirección no puede estar vacia."
+                );
             }
             if (this.errorMsjSucursal.length) {
                 this.errorSucursal = 1;
@@ -249,6 +283,12 @@ export default {
                             break;
                         }
                         case "actualizar": {
+                            this.modal = 1;
+                            this.tituloModal = "Actualizar sucursal";
+                            this.tipoAccion = 2;
+                            this.nombre = data["nombre"];
+                            this.direccion = data["direccion"];
+                            this.sucursal_id = data["id"];
                             break;
                         }
                     }
