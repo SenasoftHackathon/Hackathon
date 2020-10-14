@@ -47,3 +47,6 @@ Route::get('/vue', function () {
 });
 
 Route::get('/sucursal', 'SucursalController@index');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
