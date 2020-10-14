@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Gestión de proveedores</h1>
+                        <h1 class="m-0">Gestión de Productos</h1>
                     </div>
                     <!-- /.col -->
                     <div class="col-sm-6">
@@ -14,7 +14,7 @@
                                 <a href="/">Home</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Gestión de proveedores
+                                Gestión de Productos
                             </li>
                         </ol>
                     </div>
@@ -34,7 +34,7 @@
                     <button
                         type="button"
                         class="btn btn-primary"
-                        @click="abrirModal('proveedor', 'registrar')"
+                        @click="abrirModal('producto', 'registrar')"
                     >
                         <i class="fa fa-plus"></i> Registrar
                     </button>
@@ -67,10 +67,22 @@
                                 <div class="modal-body">
                                     <form role="form">
                                         <div class="card-body">
-                                            <!-- Formulario bodega -->
+                                            <!-- Formulario  -->
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Nombre proveedor (*)</label
+                                                    >Proveedor (*)</label
+                                                >
+                                                <select
+                                                    class="form-control"
+                                                    placeholder=""
+                                                    v-model="proveedor"
+                                                >
+                                                <option value="0">Seleccione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for=""
+                                                    >Nombre producto (*)</label
                                                 >
                                                 <input
                                                     type="text"
@@ -81,22 +93,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Dirección (*)</label
+                                                    >Precio (*)</label
                                                 >
                                                 <input
                                                     type="text"
                                                     class="form-control"
                                                     placeholder=""
-                                                    v-model="direccion"
-                                                />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="">Email (*)</label>
-                                                <input
-                                                    type="email"
-                                                    class="form-control"
-                                                    placeholder=""
-                                                    v-model="correo"
+                                                    v-model="precio"
                                                 />
                                             </div>
                                             <div
@@ -320,9 +323,8 @@ export default {
         return {
             proveedor_id: 0,
             nombre: "",
-            direccion: "",
-            correo: "",
-            celular: 0,
+            precio: "",
+            proveedor: "",
             arrayProveedor: [],
             tituloModal: "",
             tipoAccion: 0,
@@ -593,8 +595,6 @@ export default {
         this.listarProveedor(1, "", "id");
     }
 };
-
-
 </script>
 <style>
 .modal-content {

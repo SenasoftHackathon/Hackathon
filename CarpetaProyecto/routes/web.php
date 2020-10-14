@@ -47,6 +47,16 @@ Route::put('/sucursal/actualizar', 'SucursalController@update');
 Route::get('/proveedor', 'ProveedorController@index');
 Route::post('/proveedor/registrar', 'ProveedorController@store');
 Route::put('/proveedor/actualizar', 'ProveedorController@update');
+Route::put('/proveedor/activar', 'ProveedorController@activarProveedor');
+Route::put('/proveedor/desactivar', 'ProveedorController@desactivarProveedor');
+
+
+Route::get('/producto', 'ProductoController@index');
+Route::get('/producto/selectProveedor', 'ProductoController@selectProveedores');
+Route::post('/producto/registrar', 'ProductoController@store');
+Route::put('/producto/actualizar', 'ProductoController@update');
+Route::put('/producto/activar', 'ProductoController@activarProducto');
+Route::put('/producto/desactivar', 'ProductoController@desactivarProducto');
 
 Route::get('/iva', 'IvaController@index');
 Route::post('/iva/registrar', 'IvaController@store');

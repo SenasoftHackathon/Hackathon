@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Producto;
+use App\Proveedor;
+use App\Iva;
 
 class ProductoController extends Controller
 {
@@ -12,11 +15,39 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $productos = Producto::all();
-        return $productos;
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        if ($buscar == "") {
+            $productos = Producto::join('proveedores', 'productos.id' , '=', 'proveedores.id')
+            ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as nombre_p', 'ivas.procentaje')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        }else{
+            $productos = Producto::join('proveedores', 'productos.id' , '=', 'proveedores.id')
+            ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as nombre_p', 'ivas.procentaje')
+            ->where($criterio, 'like', '%'.$buscar.'%')->orderBy('id', 'desc')
+            ->paginate(10);
+        }
+        return [
+            'pagination' => [
+                'total'        => $productos->total(),
+                'current_page' => $productos->currentPage(),
+                'per_page'     => $productos->perPage(),
+                'last_page'    => $productos->lastPage(),
+                'from'         => $productos->firstItem(),
+                'to'           => $productos->lastItem(),
+            ],
+            'productos' => $productos
+        ];
+    }
+
+    public function selectProveedores(){
+        $proveedores = Proveedor::where('estado', '=', '1')
+        ->select('id', 'nombre')->orderBy('nombre','asc')->get();
+        return ['proveedores' => $proveedores];
     }
 
     /**
@@ -47,23 +78,23 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
         //
+        $iva = DB::table('ivas')->select('procentaje')->order_by('id', 'desc')->first();
         $producto = Producto::findOrFail($request->id);
         $producto->idProveedor = $request->idProveedor;
-        $producto->idIva = $request->idIva;
+        $producto->idIva = $iva;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
-        $producto->estado = $request->estado;
         $producto->save();
     }
 
-    public function desactivar(Request $request)
+    public function desactivarProducto(Request $request)
     {
         $producto = Producto::findOrFail($request->id);
         $producto->estado = '0';
         $producto->save();
     }
 
-    public function activar(Request $request)
+    public function activarProducto(Request $request)
     {
         $producto = Producto::findOrFail($request->id);
         $producto->estado = '1';

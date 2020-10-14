@@ -10,7 +10,7 @@
         <sucursal></sucursal>
 </template>
 <template v-if="menu==3">
-        <h2>Contenido #3</h2>
+        <producto></producto>
 </template>
 <template v-if="menu==4">
         <proveedor></proveedor>
