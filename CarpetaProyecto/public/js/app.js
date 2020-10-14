@@ -2119,9 +2119,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {},
+  data: function data() {
+    return {
+      sucursal_id: 0,
+      nombre: "",
+      descripcion: "",
+      arraySucursal: []
+    };
+  },
   methods: {
     listarSucursal: function listarSucursal() {
       // Make a request for a user with a given ID
@@ -2136,7 +2142,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    console.log("Component mounted.");
+    listarSucursal();
   }
 });
 
