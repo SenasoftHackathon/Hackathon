@@ -14,21 +14,15 @@
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', function () {
-    return view('admin.admin');
-});
+// Route::get('/', function () {
+//     return view('admin.admin');
+// });
 
 Route::get('/bodega', function () {
     return view('sucursales.bodega');
 });
 Route::get('/producto', function () {
     return view('sucursales.producto');
-});
-Route::get('/proveedor', function () {
-    return view('sucursales.proveedor');
-});
-Route::get('/iva', function () {
-    return view('configuracion.iva');
 });
 Route::get('/facturacion', function () {
     return view('facturacion');
@@ -42,7 +36,7 @@ Route::get('/usuario', function () {
 Route::get('/permiso', function () {
     return view('usuarios.permiso');
 });
-Route::get('/vue', function () {
+Route::get('/', function () {
     return view('contenido.contenido');
 });
 
@@ -50,6 +44,9 @@ Route::get('/sucursal', 'SucursalController@index');
 Route::post('/sucursal/registrar', 'SucursalController@store');
 Route::put('/sucursal/actualizar', 'SucursalController@update');
 
+Route::get('/proveedor', 'ProveedorController@index');
+Route::post('/proveedor/registrar', 'ProveedorController@store');
+Route::put('/proveedor/actualizar', 'ProveedorController@update');
 
 Route::get('/iva', 'IvaController@index');
 Route::post('/iva/registrar', 'IvaController@store');

@@ -12,11 +12,27 @@ class ProveedorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $proveedores = Proveedor::all();
-        return $proveedores;
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        if ($buscar == "") {
+            $proveedores = Proveedor::orderBy('id', 'desc')->paginate(10);
+        }else{
+            $proveedores = Proveedor::where($criterio, 'like', '%'.$buscar.'%')->orderBy('id', 'desc')->paginate(10);
+        }
+        return [
+            'pagination' => [
+                'total'        => $proveedores->total(),
+                'current_page' => $proveedores->currentPage(),
+                'per_page'     => $proveedores->perPage(),
+                'last_page'    => $proveedores->lastPage(),
+                'from'         => $proveedores->firstItem(),
+                'to'           => $proveedores->lastItem(),
+            ],
+            'proveedores' => $proveedores
+        ];
     }
 
     /**
@@ -32,7 +48,7 @@ class ProveedorController extends Controller
         $proveedor->nombre = $request->nombre;
         $proveedor->direccion = $request->direccion;
         $proveedor->correo = $request->correo;
-        $proveedor->estado = $request->estado;
+        $proveedor->estado = '1';
         $proveedor->save();
     }
 
@@ -50,18 +66,18 @@ class ProveedorController extends Controller
         $proveedor->nombre = $request->nombre;
         $proveedor->direccion = $request->direccion;
         $proveedor->correo = $request->correo;
-        $proveedor->estado = $request->estado;
+        $proveedor->estado = '1';
         $proveedor->save();
     }
 
-    public function desactivar(Request $request)
+    public function desactivarProveedor(Request $request)
     {
         $proveedor = Proveedor::findOrFail($request->id);
         $proveedor->estado = '0';
         $proveedor->save();
     }
 
-    public function activar(Request $request)
+    public function activarProveedor(Request $request)
     {
         $proveedor = Proveedor::findOrFail($request->id);
         $proveedor->estado = '1';

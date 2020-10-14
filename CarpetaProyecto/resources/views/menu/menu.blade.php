@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item" @click="menu = 4">
-                    <a href="/proveedor" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Proveedores</p>
                     </a>

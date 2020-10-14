@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 Vue.component('sucursal', require('./components/Sucursal.vue').default);
 Vue.component('iva', require('./components/Iva.vue').default);
+Vue.component('proveedor', require('./components/Proveedor.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
