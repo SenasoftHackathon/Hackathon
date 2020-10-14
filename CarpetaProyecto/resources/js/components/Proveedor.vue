@@ -93,7 +93,7 @@
                                             <div class="form-group">
                                                 <label for="">Email (*)</label>
                                                 <input
-                                                    type="Email"
+                                                    type="email"
                                                     class="form-control"
                                                     placeholder=""
                                                     v-model="correo"
@@ -156,10 +156,9 @@
                             >
                                 <option value="id">Código</option>
                                 <option value="nombre">Nombre</option>
-                                <option value="email"
+                                <option value="correo"
                                     >Correo electronico</option
                                 >
-                                <option value="celular">Celular</option>
                             </select>
                             <input
                                 type="text"

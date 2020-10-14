@@ -2588,7 +2588,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -40152,7 +40151,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
-                            attrs: { type: "Email", placeholder: "" },
+                            attrs: { type: "email", placeholder: "" },
                             domProps: { value: _vm.correo },
                             on: {
                               input: function($event) {
@@ -40300,12 +40299,8 @@ var render = function() {
                       _vm._v("Nombre")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "email" } }, [
+                    _c("option", { attrs: { value: "correo" } }, [
                       _vm._v("Correo electronico")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "celular" } }, [
-                      _vm._v("Celular")
                     ])
                   ]
                 ),
