@@ -14,7 +14,7 @@ class CreateIvasTable extends Migration
     public function up()
     {
         Schema::create('ivas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->double('porcentaje');
             $table->dateTime('fechaCreacion');
         });

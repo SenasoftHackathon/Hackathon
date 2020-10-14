@@ -16,7 +16,7 @@ class CreatePermisosTable extends Migration
         Schema::create('permisos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombrePermiso', 20);
-            $table->string('descripcion', 255);
+            $table->string('descripcion', 255)->nullable();
         });
     }
 

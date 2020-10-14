@@ -15,13 +15,13 @@ class CreateExistenciasTable extends Migration
     {
         Schema::create('existencias', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('idSucursal')->unsigned();
-            $table->integer('idProducto')->unsigned();
+            $table->bigInteger('idSucursal')->unsigned();
+            $table->bigInteger('idProducto')->unsigned();
             $table->integer('stockBodega');
             $table->integer('stockScursal');
 
-            $table->foreign('idSucursal')->reference('id')->on('sucursales');
-            $table->foreign('idProducto')->reference('id')->on('productos');
+            $table->foreign('idSucursal')->references('id')->on('sucursales');
+            $table->foreign('idProducto')->references('id')->on('productos');
         });
     }
 

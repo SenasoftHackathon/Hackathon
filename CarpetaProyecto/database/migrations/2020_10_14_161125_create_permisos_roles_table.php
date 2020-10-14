@@ -13,13 +13,13 @@ class CreatePermisosRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('permiso_rol', function (Blueprint $table) {
+        Schema::create('permiso_roles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('idPermiso')->unsigned();
-            $table->integer('idRol')->unsigned();
+            $table->bigInteger('idPermiso')->unsigned();
+            $table->bigInteger('idRol')->unsigned();
 
-            $table->foreign('idPermiso')->reference('id')->on('permisos');
-            $table->foreign('idRol')->reference('id')->on('roles');
+            $table->foreign('idPermiso')->references('id')->on('permisos');
+            $table->foreign('idRol')->references('id')->on('roles');
         });
     }
 
@@ -30,6 +30,6 @@ class CreatePermisosRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permiso_rol');
+        Schema::dropIfExists('permiso_roles');
     }
 }
