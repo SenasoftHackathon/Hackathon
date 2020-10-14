@@ -37,6 +37,38 @@
             </ul>
         </li>
         <li class="nav-item ">
+            <a href="#" class="nav-link">
+                <p>
+                    Gestión de usuarios
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/usuario" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Usuarios</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/rol" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Roles</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/permiso" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Permisos</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item ">
             <a href="" class="nav-link">
                 <p>
                     Facturación
