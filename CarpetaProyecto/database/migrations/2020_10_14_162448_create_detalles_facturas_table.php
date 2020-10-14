@@ -13,15 +13,15 @@ class CreateDetallesFacturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('detalles_facturas', function (Blueprint $table) {
+        Schema::create('detalle_facturas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('idFactura')->unsigned();
             $table->bigInteger('idProducto')->unsigned();
             $table->integer('cantidad');
             $table->double('valorUnitario', 11, 2);
 
-            $table->foreign('idFactura')->reference('id')->on('facturas');
-            $table->foreign('idProducto')->reference('id')->on('productos');
+            $table->foreign('idFactura')->references('id')->on('facturas');
+            $table->foreign('idProducto')->references('id')->on('productos');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateDetallesFacturasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detalles_facturas');
+        Schema::dropIfExists('detalle_facturas');
     }
 }

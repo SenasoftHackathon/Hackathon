@@ -13,13 +13,13 @@ class CreateFacturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('factura', function (Blueprint $table) {
+        Schema::create('facturas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('idUsuario')->unsigned();
             $table->dateTime('fechaCreacion');
             $table->boolean('estado')->default(1);
             
-            $table->foreign('idUsuario')->reference('id')->on('usuarios');
+            $table->foreign('idUsuario')->references('id')->on('usuarios');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateFacturasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('factura');
+        Schema::dropIfExists('facturas');
     }
 }

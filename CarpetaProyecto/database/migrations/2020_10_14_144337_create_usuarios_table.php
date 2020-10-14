@@ -13,7 +13,7 @@ class CreateUsuariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('usuario', function (Blueprint $table) {
+        Schema::create('usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('idSucursal')->unsigned();
             $table->bigInteger('idRol')->unsigned();
@@ -21,8 +21,8 @@ class CreateUsuariosTable extends Migration
             $table->string('claveUsuario', 45);
             $table->boolean('estado')->default(1);
         
-            $table->foreign('idSucursal')->reference('id')->on('sucursales');
-            $table->foreign('idRol')->reference('id')->on('roles');
+            $table->foreign('idSucursal')->references('id')->on('sucursales');
+            $table->foreign('idRol')->references('id')->on('roles');
         });
     }
 
@@ -33,6 +33,6 @@ class CreateUsuariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuario');
+        Schema::dropIfExists('usuarios');
     }
 }

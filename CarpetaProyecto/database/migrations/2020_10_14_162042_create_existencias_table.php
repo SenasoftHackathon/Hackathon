@@ -20,8 +20,8 @@ class CreateExistenciasTable extends Migration
             $table->integer('stockBodega');
             $table->integer('stockScursal');
 
-            $table->foreign('idSucursal')->reference('id')->on('sucursales');
-            $table->foreign('idProducto')->reference('id')->on('productos');
+            $table->foreign('idSucursal')->references('id')->on('sucursales');
+            $table->foreign('idProducto')->references('id')->on('productos');
         });
     }
 
