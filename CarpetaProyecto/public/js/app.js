@@ -2587,6 +2587,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2657,12 +2659,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     listarProveedor: function listarProveedor(page, buscar, criterio) {
       var me = this;
-      var url = "/sucursal?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio; // Make a request for a user with a given ID
+      var url = "/proveedor?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio; // Make a request for a user with a given ID
 
       axios.get(url).then(function (response) {
         // handle success
         var respuesta = response.data;
-        me.arraySucursal = respuesta.sucursales.data;
+        me.arrayProveedor = respuesta.proveedores.data;
         me.pagination = respuesta.pagination;
       })["catch"](function (error) {
         // handle error
@@ -2670,7 +2672,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     registrarProveedor: function registrarProveedor() {
-      if (this.validarSucursal()) {
+      if (this.validarProveedor()) {
         return;
       }
 
@@ -2678,7 +2680,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("/proveedor/registrar", {
         nombre: this.nombre,
-        direccion: this.direccion
+        direccion: this.direccion,
+        correo: this.correo
       }).then(function (response) {
         // handle success
         me.cerrarModal();
@@ -2689,7 +2692,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     actualizarProveedor: function actualizarProveedor() {
-      if (this.validarSucursal()) {
+      if (this.validarProveedor()) {
         return;
       }
 
@@ -2698,7 +2701,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.put("/proveedor/actualizar", {
         nombre: this.nombre,
         direccion: this.direccion,
-        id: this.sucursal_id
+        correo: this.correo,
+        id: this.proveedor_id
       }).then(function (response) {
         // handle success
         me.cerrarModal();
@@ -2708,27 +2712,27 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    validarSucursal: function validarSucursal() {
-      this.errorSucursal = 0;
-      this.errorMsjSucursal = [];
+    validarProveedor: function validarProveedor() {
+      this.errorProveedor = 0;
+      this.errorMsjProveedor = [];
 
       if (!this.nombre) {
-        this.errorMsjSucursal.push("El nombre no puede estar vacio.");
+        this.errorMsjProveedor.push("* El nombre no puede estar vacio.");
       }
 
       if (!this.direccion) {
-        this.errorMsjSucursal.push("La dirección no puede estar vacia.");
+        this.errorMsjProveedor.push("* La dirección no puede estar vacia.");
       }
 
       if (!this.correo) {
-        this.errorMsjSucursal.push("El correo no puede estar vacio");
+        this.errorMsjProveedor.push("* El correo no puede estar vacio");
       }
 
-      if (this.errorMsjSucursal.length) {
-        this.errorSucursal = 1;
+      if (this.errorMsjProveedor.length) {
+        this.errorProveedor = 1;
       }
 
-      return this.errorSucursal;
+      return this.errorProveedor;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -2758,9 +2762,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.direccion = data["direccion"];
                   this.proveedor_id = data["id"];
                   this.correo = data["correo"];
-                  ;
                   this.celular = data["celular"];
-                  ;
                   break;
                 }
             }
@@ -7694,7 +7696,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\n.errores{\r\n    color: red;\n}\r\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\n.errores {\r\n    color: red;\n}\r\n", ""]);
 
 // exports
 
@@ -40145,19 +40147,19 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.direccion,
-                                expression: "direccion"
+                                value: _vm.correo,
+                                expression: "correo"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "Email", placeholder: "" },
-                            domProps: { value: _vm.direccion },
+                            domProps: { value: _vm.correo },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.direccion = $event.target.value
+                                _vm.correo = $event.target.value
                               }
                             }
                           })
@@ -40177,7 +40179,7 @@ var render = function() {
                             staticClass: "form-group row errores"
                           },
                           _vm._l(_vm.errorMsjProveedor, function(error) {
-                            return _c("div", {
+                            return _c("label", {
                               key: error,
                               staticClass: "text-center",
                               domProps: { textContent: _vm._s(error) }
@@ -40370,8 +40372,8 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arraySucursal, function(sucursal) {
-                  return _c("tr", { key: sucursal.id }, [
+                _vm._l(_vm.arrayProveedor, function(proveedor) {
+                  return _c("tr", { key: proveedor.id }, [
                     _c("td", [
                       _c(
                         "button",
@@ -40383,7 +40385,7 @@ var render = function() {
                               return _vm.abrirModal(
                                 "proveedor",
                                 "actualizar",
-                                sucursal
+                                proveedor
                               )
                             }
                           }
@@ -40393,15 +40395,19 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(sucursal.id) }
+                      domProps: { textContent: _vm._s(proveedor.id) }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(sucursal.nombre) }
+                      domProps: { textContent: _vm._s(proveedor.nombre) }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(sucursal.direccion) }
+                      domProps: { textContent: _vm._s(proveedor.direccion) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(proveedor.correo) }
                     })
                   ])
                 }),
@@ -40538,7 +40544,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Nombre")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Dirección")])
+        _c("th", [_vm._v("Dirección")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Correo electronico")])
       ])
     ])
   }

@@ -96,19 +96,19 @@
                                                     type="Email"
                                                     class="form-control"
                                                     placeholder=""
-                                                    v-model="direccion"
+                                                    v-model="correo"
                                                 />
                                             </div>
                                             <div
                                                 v-show="errorProveedor"
                                                 class="form-group row errores"
                                             >
-                                                <div
+                                                <label
                                                     class="text-center"
                                                     v-for="error in errorMsjProveedor"
                                                     :key="error"
                                                     v-text="error"
-                                                ></div>
+                                                ></label>
                                             </div>
                                             <!-- Fin formulario bodega -->
                                         </div>
@@ -191,12 +191,13 @@
                                 <th style="width: 20px">id</th>
                                 <th>Nombre</th>
                                 <th>Dirección</th>
+                                <th>Correo electronico</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
-                                v-for="sucursal in arraySucursal"
-                                :key="sucursal.id"
+                                v-for="proveedor in arrayProveedor"
+                                :key="proveedor.id"
                             >
                                 <td>
                                     <button
@@ -206,16 +207,17 @@
                                             abrirModal(
                                                 'proveedor',
                                                 'actualizar',
-                                                sucursal
+                                                proveedor
                                             )
                                         "
                                     >
                                         <i class="fa fa-pen"></i>
                                     </button>
                                 </td>
-                                <td v-text="sucursal.id"></td>
-                                <td v-text="sucursal.nombre"></td>
-                                <td v-text="sucursal.direccion"></td>
+                                <td v-text="proveedor.id"></td>
+                                <td v-text="proveedor.nombre"></td>
+                                <td v-text="proveedor.direccion"></td>
+                                <td v-text="proveedor.correo"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -352,7 +354,7 @@ export default {
         listarProveedor(page, buscar, criterio) {
             let me = this;
             var url =
-                "/sucursal?page=" +
+                "/proveedor?page=" +
                 page +
                 "&buscar=" +
                 buscar +
@@ -364,7 +366,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     var respuesta = response.data;
-                    me.arraySucursal = respuesta.sucursales.data;
+                    me.arrayProveedor = respuesta.proveedores.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function(error) {
@@ -373,7 +375,7 @@ export default {
                 });
         },
         registrarProveedor() {
-            if (this.validarSucursal()) {
+            if (this.validarProveedor()) {
                 return;
             }
             let me = this;
@@ -381,7 +383,8 @@ export default {
             axios
                 .post("/proveedor/registrar", {
                     nombre: this.nombre,
-                    direccion: this.direccion
+                    direccion: this.direccion,
+                    correo: this.correo
                 })
                 .then(function(response) {
                     // handle success
@@ -394,7 +397,7 @@ export default {
                 });
         },
         actualizarProveedor() {
-            if (this.validarSucursal()) {
+            if (this.validarProveedor()) {
                 return;
             }
             let me = this;
@@ -403,7 +406,8 @@ export default {
                 .put("/proveedor/actualizar", {
                     nombre: this.nombre,
                     direccion: this.direccion,
-                    id: this.sucursal_id
+                    correo: this.correo,
+                    id: this.proveedor_id
                 })
                 .then(function(response) {
                     // handle success
@@ -415,26 +419,28 @@ export default {
                     console.log(error);
                 });
         },
-        validarSucursal() {
-            this.errorSucursal = 0;
-            this.errorMsjSucursal = [];
+        validarProveedor() {
+            this.errorProveedor = 0;
+            this.errorMsjProveedor = [];
             if (!this.nombre) {
-                this.errorMsjSucursal.push("El nombre no puede estar vacio.");
+                this.errorMsjProveedor.push(
+                    "* El nombre no puede estar vacio."
+                    );
             }
             if (!this.direccion) {
-                this.errorMsjSucursal.push(
-                    "La dirección no puede estar vacia."
+                this.errorMsjProveedor.push(
+                    "* La dirección no puede estar vacia."
                 );
             }
             if (!this.correo) {
-                this.errorMsjSucursal.push(
-                    "El correo no puede estar vacio"
-                );
+                this.errorMsjProveedor.push(
+                    "* El correo no puede estar vacio"
+                    );
             }
-            if (this.errorMsjSucursal.length) {
-                this.errorSucursal = 1;
+            if (this.errorMsjProveedor.length) {
+                this.errorProveedor = 1;
             }
-            return this.errorSucursal;
+            return this.errorProveedor;
         },
         abrirModal(modelo, accion, data = []) {
             switch (modelo) {
@@ -457,8 +463,8 @@ export default {
                             this.nombre = data["nombre"];
                             this.direccion = data["direccion"];
                             this.proveedor_id = data["id"];
-                            this.correo = data["correo"];;
-                            this.celular = data["celular"];;
+                            this.correo = data["correo"];
+                            this.celular = data["celular"];
                             break;
                         }
                     }
@@ -487,7 +493,7 @@ export default {
     opacity: 1 !important;
     background-color: rgba(0, 0, 0, 0.233);
 }
-.errores{
+.errores {
     color: red;
 }
 </style>
