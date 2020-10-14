@@ -47,3 +47,4 @@ Route::get('/vue', function () {
 });
 
 Route::get('/sucursal', 'SucursalController@index');
+Route::post('/sucursal/registrar', 'SucursalController@store');

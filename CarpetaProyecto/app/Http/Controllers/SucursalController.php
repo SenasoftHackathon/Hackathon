@@ -28,6 +28,10 @@ class SucursalController extends Controller
     public function store(Request $request)
     {
         //
+        $sucursal = new Sucursal();
+        $sucursal->nombre = $request->nombre;
+        $sucursal->direccion = $request->direccion;
+        $sucursal->save();
     }
 
     /**
@@ -37,8 +41,12 @@ class SucursalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $sucursal = Sucursal::findOrFail($request->id);
+        $sucursal->nombre = $request->nombre;
+        $sucursal->direccion = $request->direccion;
+        $sucursal->save();
     }
 }

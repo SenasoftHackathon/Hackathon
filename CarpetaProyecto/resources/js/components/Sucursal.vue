@@ -35,8 +35,7 @@
                         <button
                             type="button"
                             class="btn btn-primary"
-                            data-toggle="modal"
-                            data-target="#exampleModal"
+                            @click="abrirModal('sucursal', 'registrar')"
                         >
                             Registrar
                         </button>
@@ -44,26 +43,25 @@
                     <div class="col-md-5">
                         <!-- Modal -->
                         <div
-                            class="modal fade"
-                            id="exampleModal"
+                            class="modal"
                             tabindex="-1"
                             aria-labelledby="exampleModalLabel"
                             aria-hidden="true"
+                            role="dialog"
+                            :class="{ mostrar: modal }"
                         >
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5
                                             class="modal-title"
-                                            id="tituloModalBodega"
-                                        >
-                                            Registrar sucursal
-                                        </h5>
+                                            v-text="tituloModal"
+                                        ></h5>
                                         <button
                                             type="button"
                                             class="close"
-                                            data-dismiss="modal"
                                             aria-label="Close"
+                                            @click="cerrarModal()"
                                         ></button>
                                     </div>
                                     <div class="modal-body">
@@ -71,56 +69,33 @@
                                             <div class="card-body">
                                                 <!-- Formulario bodega -->
                                                 <div class="form-group">
-                                                    <label
-                                                        for="exampleInputPassword1"
+                                                    <label for=""
                                                         >Nombre sucursal
                                                         (*)</label
                                                     >
                                                     <input
                                                         type="text"
                                                         class="form-control"
-                                                        id="exampleInputPassword1"
                                                         placeholder=""
+                                                        v-model="nombre"
                                                     />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for=""
-                                                        >Descripción</label
-                                                    >
-                                                    <textarea
-                                                        class="form-control"
-                                                        rows="12"
-                                                        placeholder="Descripción de la sucursal ..."
-                                                        style="
-                              margin-top: 0px;
-                              margin-bottom: 0px;
-                              height: 163px;
-                            "
-                                                    ></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label
-                                                        for="exampleInputPassword1"
-                                                        >Dirección</label
+                                                        >Dirección (*)</label
                                                     >
                                                     <input
                                                         type="text"
                                                         class="form-control"
-                                                        id="exampleInputPassword1"
                                                         placeholder=""
+                                                        v-model="direccion"
                                                     />
                                                 </div>
-                                                <div class="form-group">
-                                                    <label
-                                                        for="exampleInputPassword1"
-                                                        >Teléfono</label
+                                                <div v-show="errorSucursal" class="form-group row errores">
+                                                    <div class="text-center"
+                                                    v-for="error in errorMsjSucursal" :key="error" v-text="error"
                                                     >
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="exampleInputPassword1"
-                                                        placeholder=""
-                                                    />
+                                                    </div>
                                                 </div>
                                                 <!-- Fin formulario bodega -->
                                             </div>
@@ -130,15 +105,25 @@
                                         <button
                                             type="button"
                                             class="btn btn-secondary"
-                                            data-dismiss="modal"
+                                            @click="cerrarModal()"
                                         >
                                             Cerrar
                                         </button>
                                         <button
                                             type="button"
                                             class="btn btn-primary"
+                                            v-if="tipoAccion == 1"
+                                            @click="registrarSucursal()"
                                         >
                                             Registrar
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary"
+                                            v-if="tipoAccion == 2"
+                                            @click="actualizarSucursal()"
+                                        >
+                                            Actualizar
                                         </button>
                                     </div>
                                 </div>
@@ -192,7 +177,12 @@ export default {
             sucursal_id: 0,
             nombre: "",
             direccion: "",
-            arraySucursal: []
+            arraySucursal: [],
+            tituloModal: "",
+            tipoAccion: 0,
+            modal: 0,
+            errorSucursal: 0,
+            errorMsjSucursal: []
         };
     },
     methods: {
@@ -210,6 +200,67 @@ export default {
                     // handle error
                     console.log(error);
                 });
+        },
+        registrarSucursal() {
+            if(this.validarSucursal()){
+                return;
+            }
+            let me = this;
+            // Make a request for a user with a given ID
+            axios
+                .post("/sucursal/registrar", {
+                    nombre: this.nombre,
+                    direccion: this.direccion
+                })
+                .then(function(response) {
+                    // handle success
+                    me.cerrarModal();
+                    me.listarSucursal();
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });
+        },
+        validarSucursal(){
+            this.errorSucursal = 0;
+            this.errorMsjSucursal = [];
+            if (!this.nombre) {
+                this.errorMsjSucursal.push('El nombre no puede estar vacio.');
+            }
+            if (!this.direccion) {
+                this.errorMsjSucursal.push('La dirección no puede estar vacia.');
+            }
+            if (this.errorMsjSucursal.length) {
+                this.errorSucursal = 1;
+            }
+            return this.errorSucursal;
+        },
+        abrirModal(modelo, accion, data = []) {
+            switch (modelo) {
+                case "sucursal": {
+                    switch (accion) {
+                        case "registrar": {
+                            this.modal = 1;
+                            this.tituloModal = "Registrar sucursal";
+                            this.tipoAccion = 1;
+                            this.nombre = "";
+                            this.direccion = "";
+                            break;
+                        }
+                        case "actualizar": {
+                            break;
+                        }
+                    }
+                }
+            }
+        },
+        cerrarModal() {
+            this.modal = 0;
+            this.tituloModal = "";
+            this.tipoAccion = 0;
+            this.nombre = "";
+            this.direccion = "";
         }
     },
     mounted() {
@@ -217,3 +268,13 @@ export default {
     }
 };
 </script>
+<style>
+.modal-content {
+    width: 100%;
+}
+.mostrar {
+    display: list-item !important;
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.233);
+}
+</style>
