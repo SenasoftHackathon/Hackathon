@@ -47,10 +47,9 @@ Route::get('/vue', function () {
 });
 
 Route::get('/sucursal', 'SucursalController@index');
-<<<<<<< HEAD
+
 Route::post('/sucursal/registrar', 'SucursalController@store');
-=======
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
->>>>>>> 5c86d1baadd9c0378968dd7ec3f2bbc0e2d78415
