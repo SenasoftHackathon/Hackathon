@@ -36,3 +36,12 @@ Route::get('/iva', function () {
 Route::get('/facturacion', function () {
     return view('facturacion');
 });
+Route::get('/rol', function () {
+    return view('usuarios.rol');
+});
+Route::get('/usuario', function () {
+    return view('usuarios.usuario');
+});
+Route::get('/permiso', function () {
+    return view('usuarios.permiso');
+});
