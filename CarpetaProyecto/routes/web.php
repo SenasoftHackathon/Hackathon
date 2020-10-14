@@ -50,6 +50,10 @@ Route::get('/sucursal', 'SucursalController@index');
 Route::post('/sucursal/registrar', 'SucursalController@store');
 Route::put('/sucursal/actualizar', 'SucursalController@update');
 
+
+Route::get('/iva', 'IvaController@index');
+Route::post('/iva/registrar', 'IvaController@store');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

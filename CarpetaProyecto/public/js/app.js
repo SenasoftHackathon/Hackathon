@@ -2154,7 +2154,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       iva_id: 0,
-      porcentaje: "",
+      porcentaje: 0,
       arrayIva: [],
       tituloModal: "",
       tipoAccion: 0,
@@ -2222,7 +2222,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(url).then(function (response) {
         // handle success
         var respuesta = response.data;
-        me.arraySucursal = respuesta.sucursales.data;
+        me.arrayIva = respuesta.ivas.data;
         me.pagination = respuesta.pagination;
       })["catch"](function (error) {
         // handle error
@@ -2237,8 +2237,7 @@ __webpack_require__.r(__webpack_exports__);
       var me = this; // Make a request for a user with a given ID
 
       axios.post("/iva/registrar", {
-        nombre: this.nombre,
-        direccion: this.direccion
+        porcentaje: this.porcentaje
       }).then(function (response) {
         // handle success
         me.cerrarModal();
@@ -2263,16 +2262,14 @@ __webpack_require__.r(__webpack_exports__);
       return this.errorIva;
     },
     abrirModal: function abrirModal(modelo, accion) {
-      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
       switch (modelo) {
-        case "sucursal":
+        case "iva":
           {
             switch (accion) {
               case "registrar":
                 {
                   this.modal = 1;
-                  this.tituloModal = "Registrar sucursal";
+                  this.tituloModal = "Registrar IVA";
                   this.tipoAccion = 1;
                   this.porcentaje = "";
                   break;
@@ -39112,7 +39109,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control text-right",
-                              attrs: { type: "text" },
+                              attrs: { type: "number", step: "0.1" },
                               domProps: { value: _vm.porcentaje },
                               on: {
                                 input: function($event) {
@@ -39305,18 +39302,14 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayIva, function(iva) {
                   return _c("tr", { key: iva.id }, [
+                    _c("td", { domProps: { textContent: _vm._s(iva.id) } }),
+                    _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(_vm.sucursal.id) }
+                      domProps: { textContent: _vm._s(iva.porcentaje) }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(_vm.sucursal.porcentaje) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: {
-                        textContent: _vm._s(_vm.sucursal.fechaCreacion)
-                      }
+                      domProps: { textContent: _vm._s(iva.fechaCreacion) }
                     })
                   ])
                 }),
@@ -39455,13 +39448,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { staticStyle: { width: "40px" } }, [_vm._v("Opciones")]),
+        _c("th", { staticStyle: { width: "20px" } }, [_vm._v("Id")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "20px" } }, [_vm._v("id")]),
+        _c("th", [_vm._v("IVA")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Nombre")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Dirección")])
+        _c("th", [_vm._v("Fecha de creación")])
       ])
     ])
   }

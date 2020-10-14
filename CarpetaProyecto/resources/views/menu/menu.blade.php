@@ -87,7 +87,7 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item"  @click="menu = 10">
-                    <a href="/iva" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>IVA</p>
                     </a>

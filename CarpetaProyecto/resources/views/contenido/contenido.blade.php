@@ -31,7 +31,7 @@
         <h2>Contenido #9</h2>
 </template>
 <template v-if="menu==10">
-        <h2>Contenido #10</h2>
+        <iva></iva>
 </template>
 <template v-if="menu==11">
         <h2>Contenido #11</h2>

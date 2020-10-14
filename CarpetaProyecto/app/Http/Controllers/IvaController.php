@@ -14,11 +14,27 @@ class IvaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $ivas = Iva::all();
-        return $ivas;
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        if ($buscar == "") {
+            $ivas = Iva::orderBy('id', 'desc')->paginate(5);
+        }else{
+            $ivas = Iva::where($criterio, 'like', '%'.$buscar.'%')->orderBy('id', 'desc')->paginate(10);
+        }
+        return [
+            'pagination' => [
+                'total'        => $ivas->total(),
+                'current_page' => $ivas->currentPage(),
+                'per_page'     => $ivas->perPage(),
+                'last_page'    => $ivas->lastPage(),
+                'from'         => $ivas->firstItem(),
+                'to'           => $ivas->lastItem(),
+            ],
+            'ivas' => $ivas
+        ];
     }
 
     /**

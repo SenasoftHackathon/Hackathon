@@ -75,9 +75,10 @@
                                                 >
                                                 <div class="input-group">
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         class="form-control text-right"
                                                         v-model="porcentaje"
+                                                        step="0.1"
                                                     />
                                                     <div
                                                         class="input-group-append"
@@ -161,17 +162,16 @@
                     <table class="table table-bordered table-striped col-md-10">
                         <thead>
                             <tr>
-                                <th style="width: 40px">Opciones</th>
-                                <th style="width: 20px">id</th>
-                                <th>Nombre</th>
-                                <th>Dirección</th>
+                                <th style="width: 20px">Id</th>
+                                <th>IVA</th>
+                                <th>Fecha de creación</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="iva in arrayIva" :key="iva.id">
-                                <td v-text="sucursal.id"></td>
-                                <td v-text="sucursal.porcentaje"></td>
-                                <td v-text="sucursal.fechaCreacion"></td>
+                                <td v-text="iva.id"></td>
+                                <td v-text="iva.porcentaje"></td>
+                                <td v-text="iva.fechaCreacion"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -245,7 +245,7 @@ export default {
     data() {
         return {
             iva_id: 0,
-            porcentaje: "",
+            porcentaje: 0,
             arrayIva: [],
             tituloModal: "",
             tipoAccion: 0,
@@ -317,7 +317,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     var respuesta = response.data;
-                    me.arraySucursal = respuesta.sucursales.data;
+                    me.arrayIva = respuesta.ivas.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function(error) {
@@ -333,8 +333,7 @@ export default {
             // Make a request for a user with a given ID
             axios
                 .post("/iva/registrar", {
-                    nombre: this.nombre,
-                    direccion: this.direccion
+                    porcentaje: this.porcentaje,
                 })
                 .then(function(response) {
                     // handle success
@@ -357,13 +356,13 @@ export default {
             }
             return this.errorIva;
         },
-        abrirModal(modelo, accion, data = []) {
+        abrirModal(modelo, accion) {
             switch (modelo) {
-                case "sucursal": {
+                case "iva": {
                     switch (accion) {
                         case "registrar": {
                             this.modal = 1;
-                            this.tituloModal = "Registrar sucursal";
+                            this.tituloModal = "Registrar IVA";
                             this.tipoAccion = 1;
                             this.porcentaje = "";
                             break;
