@@ -91,9 +91,7 @@
                                                 />
                                             </div>
                                             <div class="form-group">
-                                                <label for=""
-                                                    >Email (*)</label
-                                                >
+                                                <label for="">Email (*)</label>
                                                 <input
                                                     type="Email"
                                                     class="form-control"
@@ -149,14 +147,18 @@
 
                 <div class="row justify-content-md-center">
                     <div class="card-tools col-md-10">
-                        <div
-                            class="input-group"
-                            style="width: 500px;"
-                        >
-                            <select name="" id="" class="form-control" v-model="criterio">
+                        <div class="input-group" style="width: 500px;">
+                            <select
+                                name=""
+                                id=""
+                                class="form-control"
+                                v-model="criterio"
+                            >
                                 <option value="id">Código</option>
                                 <option value="nombre">Nombre</option>
-                                <option value="email">Correo electronico</option>
+                                <option value="email"
+                                    >Correo electronico</option
+                                >
                                 <option value="celular">Celular</option>
                             </select>
                             <input
@@ -164,14 +166,18 @@
                                 class="form-control float-right"
                                 v-model="buscar"
                                 placeholder="Buscar"
-                                @keyup.enter="listarProveedor('1', buscar, criterio)"
+                                @keyup.enter="
+                                    listarProveedor('1', buscar, criterio)
+                                "
                             />
 
                             <div class="input-group-append">
-                                <button 
-                                type="submit" 
-                                class="btn btn-default"
-                                @click="listarProveedor('1', buscar, criterio)"
+                                <button
+                                    type="submit"
+                                    class="btn btn-default"
+                                    @click="
+                                        listarProveedor('1', buscar, criterio)
+                                    "
                                 >
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -224,7 +230,9 @@
                                     href="#"
                                     @click.prevent="
                                         cambiarPagina(
-                                            pagination.current_page - 1, buscar, criterio
+                                            pagination.current_page - 1,
+                                            buscar,
+                                            criterio
                                         )
                                     "
                                     >Ant</a
@@ -239,7 +247,9 @@
                                 <a
                                     class="page-link"
                                     href="#"
-                                    @click.prevent="cambiarPagina(page, buscar, criterio)"
+                                    @click.prevent="
+                                        cambiarPagina(page, buscar, criterio)
+                                    "
                                     v-text="page"
                                 ></a>
                             </li>
@@ -255,7 +265,9 @@
                                     href="#"
                                     @click.prevent="
                                         cambiarPagina(
-                                            pagination.current_page + 1, buscar, criterio
+                                            pagination.current_page + 1,
+                                            buscar,
+                                            criterio
                                         )
                                     "
                                     >Sig</a
@@ -339,7 +351,13 @@ export default {
         },
         listarProveedor(page, buscar, criterio) {
             let me = this;
-            var url = "/sucursal?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+            var url =
+                "/sucursal?page=" +
+                page +
+                "&buscar=" +
+                buscar +
+                "&criterio=" +
+                criterio;
             // Make a request for a user with a given ID
             axios
                 .get(url)
@@ -361,14 +379,14 @@ export default {
             let me = this;
             // Make a request for a user with a given ID
             axios
-                .post("/sucursal/registrar", {
+                .post("/proveedor/registrar", {
                     nombre: this.nombre,
                     direccion: this.direccion
                 })
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarProveedor(1, '', 'id');
+                    me.listarProveedor(1, "", "id");
                 })
                 .catch(function(error) {
                     // handle error
@@ -382,7 +400,7 @@ export default {
             let me = this;
             // Make a request for a user with a given ID
             axios
-                .put("/sucursal/actualizar", {
+                .put("/proveedor/actualizar", {
                     nombre: this.nombre,
                     direccion: this.direccion,
                     id: this.sucursal_id
@@ -390,7 +408,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarProveedor(1, '', 'id');
+                    me.listarProveedor(1, "", "id");
                 })
                 .catch(function(error) {
                     // handle error
@@ -408,6 +426,11 @@ export default {
                     "La dirección no puede estar vacia."
                 );
             }
+            if (!this.correo) {
+                this.errorMsjSucursal.push(
+                    "El correo no puede estar vacio"
+                );
+            }
             if (this.errorMsjSucursal.length) {
                 this.errorSucursal = 1;
             }
@@ -415,7 +438,7 @@ export default {
         },
         abrirModal(modelo, accion, data = []) {
             switch (modelo) {
-                case "sucursal": {
+                case "proveedor": {
                     switch (accion) {
                         case "registrar": {
                             this.modal = 1;
@@ -423,6 +446,8 @@ export default {
                             this.tipoAccion = 1;
                             this.nombre = "";
                             this.direccion = "";
+                            this.correo = "";
+                            this.celular = 0;
                             break;
                         }
                         case "actualizar": {
@@ -431,7 +456,9 @@ export default {
                             this.tipoAccion = 2;
                             this.nombre = data["nombre"];
                             this.direccion = data["direccion"];
-                            this.sucursal_id = data["id"];
+                            this.proveedor_id = data["id"];
+                            this.correo = data["correo"];;
+                            this.celular = data["celular"];;
                             break;
                         }
                     }
@@ -447,7 +474,7 @@ export default {
         }
     },
     mounted() {
-        this.listarProveedor(1, '', 'id');
+        this.listarProveedor(1, "", "id");
     }
 };
 </script>
@@ -459,5 +486,8 @@ export default {
     display: list-item !important;
     opacity: 1 !important;
     background-color: rgba(0, 0, 0, 0.233);
+}
+.errores{
+    color: red;
 }
 </style>

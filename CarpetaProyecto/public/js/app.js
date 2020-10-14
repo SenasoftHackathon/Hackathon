@@ -2575,6 +2575,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2664,13 +2676,13 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this; // Make a request for a user with a given ID
 
-      axios.post("/sucursal/registrar", {
+      axios.post("/proveedor/registrar", {
         nombre: this.nombre,
         direccion: this.direccion
       }).then(function (response) {
         // handle success
         me.cerrarModal();
-        me.listarProveedor(1, '', 'id');
+        me.listarProveedor(1, "", "id");
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -2683,14 +2695,14 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this; // Make a request for a user with a given ID
 
-      axios.put("/sucursal/actualizar", {
+      axios.put("/proveedor/actualizar", {
         nombre: this.nombre,
         direccion: this.direccion,
         id: this.sucursal_id
       }).then(function (response) {
         // handle success
         me.cerrarModal();
-        me.listarProveedor(1, '', 'id');
+        me.listarProveedor(1, "", "id");
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -2708,6 +2720,10 @@ __webpack_require__.r(__webpack_exports__);
         this.errorMsjSucursal.push("La dirección no puede estar vacia.");
       }
 
+      if (!this.correo) {
+        this.errorMsjSucursal.push("El correo no puede estar vacio");
+      }
+
       if (this.errorMsjSucursal.length) {
         this.errorSucursal = 1;
       }
@@ -2718,7 +2734,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
       switch (modelo) {
-        case "sucursal":
+        case "proveedor":
           {
             switch (accion) {
               case "registrar":
@@ -2728,6 +2744,8 @@ __webpack_require__.r(__webpack_exports__);
                   this.tipoAccion = 1;
                   this.nombre = "";
                   this.direccion = "";
+                  this.correo = "";
+                  this.celular = 0;
                   break;
                 }
 
@@ -2738,7 +2756,11 @@ __webpack_require__.r(__webpack_exports__);
                   this.tipoAccion = 2;
                   this.nombre = data["nombre"];
                   this.direccion = data["direccion"];
-                  this.sucursal_id = data["id"];
+                  this.proveedor_id = data["id"];
+                  this.correo = data["correo"];
+                  ;
+                  this.celular = data["celular"];
+                  ;
                   break;
                 }
             }
@@ -2754,7 +2776,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.listarProveedor(1, '', 'id');
+    this.listarProveedor(1, "", "id");
   }
 });
 
@@ -7653,7 +7675,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\r\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\n.errores{\r\n    color: red;\n}\r\n", ""]);
 
 // exports
 
@@ -7672,7 +7694,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\r\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\n.errores{\r\n    color: red;\n}\r\n", ""]);
 
 // exports
 
@@ -7691,7 +7713,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\r\n", ""]);
+exports.push([module.i, "\n.modal-content {\r\n    width: 100%;\n}\n.mostrar {\r\n    display: list-item !important;\r\n    opacity: 1 !important;\r\n    background-color: rgba(0, 0, 0, 0.233);\n}\n.errores{\r\n    color: red;\n}\r\n", ""]);
 
 // exports
 
@@ -40674,7 +40696,7 @@ var render = function() {
                             staticClass: "form-group row errores"
                           },
                           _vm._l(_vm.errorMsjSucursal, function(error) {
-                            return _c("div", {
+                            return _c("label", {
                               key: error,
                               staticClass: "text-center",
                               domProps: { textContent: _vm._s(error) }

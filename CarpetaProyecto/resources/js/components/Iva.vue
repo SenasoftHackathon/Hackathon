@@ -392,4 +392,7 @@ export default {
     opacity: 1 !important;
     background-color: rgba(0, 0, 0, 0.233);
 }
+.errores{
+    color: red;
+}
 </style>

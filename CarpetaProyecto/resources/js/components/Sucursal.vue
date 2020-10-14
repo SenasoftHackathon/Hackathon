@@ -94,12 +94,12 @@
                                                 v-show="errorSucursal"
                                                 class="form-group row errores"
                                             >
-                                                <div
+                                                <label
                                                     class="text-center"
                                                     v-for="error in errorMsjSucursal"
                                                     :key="error"
                                                     v-text="error"
-                                                ></div>
+                                                ></label>
                                             </div>
                                             <!-- Fin formulario bodega -->
                                         </div>
@@ -444,5 +444,8 @@ export default {
     display: list-item !important;
     opacity: 1 !important;
     background-color: rgba(0, 0, 0, 0.233);
+}
+.errores{
+    color: red;
 }
 </style>
