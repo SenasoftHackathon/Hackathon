@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIvaTable extends Migration
+class CreateIvasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateIvaTable extends Migration
      */
     public function up()
     {
-        Schema::create('iva', function (Blueprint $table) {
+        Schema::create('ivas', function (Blueprint $table) {
             $table->increments('id');
             $table->double('porcentaje');
             $table->dateTime('fechaCreacion');
@@ -27,6 +27,6 @@ class CreateIvaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('iva');
+        Schema::dropIfExists('ivas');
     }
 }
