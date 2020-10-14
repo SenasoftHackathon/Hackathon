@@ -21,9 +21,6 @@ Route::get('/', function () {
 Route::get('/bodega', function () {
     return view('sucursales.bodega');
 });
-Route::get('/sucursal', function () {
-    return view('sucursales.sucursal');
-});
 Route::get('/producto', function () {
     return view('sucursales.producto');
 });
@@ -48,3 +45,5 @@ Route::get('/permiso', function () {
 Route::get('/vue', function () {
     return view('contenido.contenido');
 });
+
+Route::get('/sucursal', 'SucursalController@index');
