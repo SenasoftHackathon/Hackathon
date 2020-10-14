@@ -24,9 +24,7 @@ Route::get('/bodega', function () {
 Route::get('/producto', function () {
     return view('sucursales.producto');
 });
-Route::get('/facturacion', function () {
-    return view('facturacion');
-});
+
 Route::get('/rol', function () {
     return view('usuarios.rol');
 });
@@ -60,6 +58,13 @@ Route::put('/producto/desactivar', 'ProductoController@desactivarProducto');
 
 Route::get('/iva', 'IvaController@index');
 Route::post('/iva/registrar', 'IvaController@store');
+
+Route::get('/factura', 'FacturaController@index');
+Route::get('/factura/selectProducto', 'FacturaController@selectProductos');
+Route::post('/factura/registrar', 'FacturaController@store');
+Route::put('/factura/actualizar', 'FacturaController@update');
+Route::put('/factura/activar', 'FacturaController@activarProducto');
+Route::put('/factura/desactivar', 'FacturaController@desactivarProducto');
 
 Auth::routes();
 
