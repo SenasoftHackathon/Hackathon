@@ -15,8 +15,8 @@ class CreateExistenciasTable extends Migration
     {
         Schema::create('existencias', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('idSucursal')->unsigned();
-            $table->integer('idProducto')->unsigned();
+            $table->bigInteger('idSucursal')->unsigned();
+            $table->bigInteger('idProducto')->unsigned();
             $table->integer('stockBodega');
             $table->integer('stockScursal');
 

@@ -15,7 +15,7 @@ class CreateFacturasTable extends Migration
     {
         Schema::create('factura', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('idUsuario')->unsigned();
+            $table->bigInteger('idUsuario')->unsigned();
             $table->dateTime('fechaCreacion');
             $table->boolean('estado')->default(1);
             

@@ -15,8 +15,8 @@ class CreateUsuariosTable extends Migration
     {
         Schema::create('usuario', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('idSucursal')->unsigned();
-            $table->integer('idRol')->unsigned();
+            $table->bigInteger('idSucursal')->unsigned();
+            $table->bigInteger('idRol')->unsigned();
             $table->string('usuario', 45);
             $table->string('claveUsuario', 45);
             $table->boolean('estado')->default(1);
