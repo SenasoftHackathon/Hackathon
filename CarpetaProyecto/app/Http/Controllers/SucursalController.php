@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Sucursal;
 
 class SucursalController extends Controller
@@ -12,11 +13,27 @@ class SucursalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $sucursales = Sucursal::all();
-        return $sucursales;
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        if ($buscar == "") {
+            $sucursales = Sucursal::orderBy('id', 'desc')->paginate(10);
+        }else{
+            $sucursales = Sucursal::where($criterio, 'like', '%'.$buscar.'%')->orderBy('id', 'desc')->paginate(10);
+        }
+        return [
+            'pagination' => [
+                'total'        => $sucursales->total(),
+                'current_page' => $sucursales->currentPage(),
+                'per_page'     => $sucursales->perPage(),
+                'last_page'    => $sucursales->lastPage(),
+                'from'         => $sucursales->firstItem(),
+                'to'           => $sucursales->lastItem(),
+            ],
+            'sucursales' => $sucursales
+        ];
     }
 
     /**

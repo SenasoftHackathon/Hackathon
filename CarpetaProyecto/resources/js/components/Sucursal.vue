@@ -38,6 +38,7 @@
                     >
                         <i class="fa fa-plus"></i> Registrar
                     </button>
+                    <hr />
                 </div>
                 <div class="col-md-5">
                     <!-- Modal -->
@@ -136,7 +137,35 @@
                 </div>
 
                 <div class="row justify-content-md-center">
-                    <table class="table table-bordered col-md-8">
+                    <div class="card-tools col-md-10">
+                        <div
+                            class="input-group"
+                            style="width: 500px;"
+                        >
+                            <select name="" id="" class="form-control" v-model="criterio">
+                                <option value="id">Código</option>
+                                <option value="nombre">Nombre</option>
+                            </select>
+                            <input
+                                type="text"
+                                class="form-control float-right"
+                                v-model="buscar"
+                                placeholder="Buscar"
+                                @keyup.enter="listarSucursal('1', buscar, criterio)"
+                            />
+
+                            <div class="input-group-append">
+                                <button 
+                                type="submit" 
+                                class="btn btn-default"
+                                @click="listarSucursal('1', buscar, criterio)"
+                                >
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped col-md-10">
                         <thead>
                             <tr>
                                 <th style="width: 40px">Opciones</th>
@@ -171,6 +200,56 @@
                             </tr>
                         </tbody>
                     </table>
+                    <nav class="col-md-10">
+                        <ul class="pagination">
+                            <li
+                                class="page-item"
+                                v-if="pagination.current_page > 1"
+                            >
+                                <a
+                                    class="page-link"
+                                    href="#"
+                                    @click.prevent="
+                                        cambiarPagina(
+                                            pagination.current_page - 1, buscar, criterio
+                                        )
+                                    "
+                                    >Ant</a
+                                >
+                            </li>
+                            <li
+                                class="page-item"
+                                v-for="page in pagesNumber"
+                                :key="page"
+                                :class="[page == isActived ? 'active' : '']"
+                            >
+                                <a
+                                    class="page-link"
+                                    href="#"
+                                    @click.prevent="cambiarPagina(page, buscar, criterio)"
+                                    v-text="page"
+                                ></a>
+                            </li>
+                            <li
+                                class="page-item"
+                                v-if="
+                                    pagination.current_page <
+                                        pagination.last_page
+                                "
+                            >
+                                <a
+                                    class="page-link"
+                                    href="#"
+                                    @click.prevent="
+                                        cambiarPagina(
+                                            pagination.current_page + 1, buscar, criterio
+                                        )
+                                    "
+                                    >Sig</a
+                                >
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
             <!-- /.row -->
@@ -192,19 +271,68 @@ export default {
             tipoAccion: 0,
             modal: 0,
             errorSucursal: 0,
-            errorMsjSucursal: []
+            errorMsjSucursal: [],
+            pagination: {
+                total: 0,
+                current_page: 0,
+                per_page: 0,
+                last_page: 0,
+                from: 0,
+                to: 0
+            },
+            offset: 3,
+            criterio: "id",
+            buscar: ""
         };
     },
+    computed: {
+        isActived: function() {
+            return this.pagination.current_page; //Retornar la página activa
+        },
+        //Calcular los elementos de la paginación
+        pagesNumber: function() {
+            if (!this.pagination.to) {
+                return [];
+            }
+
+            var from = this.pagination.current_page - this.offset;
+            if (from < 1) {
+                from = 1;
+            }
+
+            var to = from + this.offset * 2;
+            if (to >= this.pagination.last_page) {
+                to = this.pagination.last_page;
+            }
+
+            var pagesArray = [];
+            while (from <= to) {
+                pagesArray.push(from);
+                from++;
+            }
+            return pagesArray;
+        }
+    },
     methods: {
-        listarSucursal() {
+        cambiarPagina(page, buscar, criterio) {
+            //Método para cambiar de página en la paginación
             let me = this;
+            //Actualiza la página actual
+            me.pagination.current_page = page;
+            //Envia la petición para visualizar la data de esa página
+            me.listarSucursal(page, buscar, criterio);
+        },
+        listarSucursal(page, buscar, criterio) {
+            let me = this;
+            var url = "/sucursal?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
             // Make a request for a user with a given ID
             axios
-                .get("/sucursal")
+                .get(url)
                 .then(function(response) {
                     // handle success
-                    me.arraySucursal = response.data;
-                    return me.arraySucursal;
+                    var respuesta = response.data;
+                    me.arraySucursal = respuesta.sucursales.data;
+                    me.pagination = respuesta.pagination;
                 })
                 .catch(function(error) {
                     // handle error
@@ -225,7 +353,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarSucursal();
+                    me.listarSucursal(1, '', 'id');
                 })
                 .catch(function(error) {
                     // handle error
@@ -247,7 +375,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarSucursal();
+                    me.listarSucursal(1, '', 'id');
                 })
                 .catch(function(error) {
                     // handle error
@@ -304,7 +432,7 @@ export default {
         }
     },
     mounted() {
-        this.listarSucursal();
+        this.listarSucursal(1, '', 'id');
     }
 };
 </script>

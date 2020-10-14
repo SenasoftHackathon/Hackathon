@@ -2090,6 +2090,85 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2101,17 +2180,70 @@ __webpack_require__.r(__webpack_exports__);
       tipoAccion: 0,
       modal: 0,
       errorSucursal: 0,
-      errorMsjSucursal: []
+      errorMsjSucursal: [],
+      pagination: {
+        total: 0,
+        current_page: 0,
+        per_page: 0,
+        last_page: 0,
+        from: 0,
+        to: 0
+      },
+      offset: 3,
+      criterio: "id",
+      buscar: ""
     };
   },
-  methods: {
-    listarSucursal: function listarSucursal() {
-      var me = this; // Make a request for a user with a given ID
+  computed: {
+    isActived: function isActived() {
+      return this.pagination.current_page; //Retornar la página activa
+    },
+    //Calcular los elementos de la paginación
+    pagesNumber: function pagesNumber() {
+      if (!this.pagination.to) {
+        return [];
+      }
 
-      axios.get("/sucursal").then(function (response) {
+      var from = this.pagination.current_page - this.offset;
+
+      if (from < 1) {
+        from = 1;
+      }
+
+      var to = from + this.offset * 2;
+
+      if (to >= this.pagination.last_page) {
+        to = this.pagination.last_page;
+      }
+
+      var pagesArray = [];
+
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+
+      return pagesArray;
+    }
+  },
+  methods: {
+    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
+      //Método para cambiar de página en la paginación
+      var me = this; //Actualiza la página actual
+
+      me.pagination.current_page = page; //Envia la petición para visualizar la data de esa página
+
+      me.listarSucursal(page, buscar, criterio);
+    },
+    listarSucursal: function listarSucursal(page, buscar, criterio) {
+      var me = this;
+      var url = "/sucursal?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio; // Make a request for a user with a given ID
+
+      axios.get(url).then(function (response) {
         // handle success
-        me.arraySucursal = response.data;
-        return me.arraySucursal;
+        var respuesta = response.data;
+        me.arraySucursal = respuesta.sucursales.data;
+        me.pagination = respuesta.pagination;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -2130,7 +2262,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         // handle success
         me.cerrarModal();
-        me.listarSucursal();
+        me.listarSucursal(1, '', 'id');
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -2150,7 +2282,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         // handle success
         me.cerrarModal();
-        me.listarSucursal();
+        me.listarSucursal(1, '', 'id');
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -2214,7 +2346,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.listarSucursal();
+    this.listarSucursal(1, '', 'id');
   }
 });
 
@@ -38476,7 +38608,9 @@ var render = function() {
               _c("i", { staticClass: "fa fa-plus" }),
               _vm._v(" Registrar\n                ")
             ]
-          )
+          ),
+          _vm._v(" "),
+          _c("hr")
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-5" }, [
@@ -38663,45 +38797,233 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "row justify-content-md-center" }, [
-          _c("table", { staticClass: "table table-bordered col-md-8" }, [
-            _vm._m(1),
-            _vm._v(" "),
+          _c("div", { staticClass: "card-tools col-md-10" }, [
             _c(
-              "tbody",
-              _vm._l(_vm.arraySucursal, function(sucursal) {
-                return _c("tr", { key: sucursal.id }, [
-                  _c("td", [
-                    _c(
-                      "button",
+              "div",
+              { staticClass: "input-group", staticStyle: { width: "500px" } },
+              [
+                _c(
+                  "select",
+                  {
+                    directives: [
                       {
-                        staticClass: "btn-primary btn-sm",
-                        attrs: { type: "button" },
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.criterio,
+                        expression: "criterio"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "", id: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.criterio = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "id" } }, [
+                      _vm._v("Código")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "nombre" } }, [
+                      _vm._v("Nombre")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.buscar,
+                      expression: "buscar"
+                    }
+                  ],
+                  staticClass: "form-control float-right",
+                  attrs: { type: "text", placeholder: "Buscar" },
+                  domProps: { value: _vm.buscar },
+                  on: {
+                    keyup: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.listarSucursal("1", _vm.buscar, _vm.criterio)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.buscar = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group-append" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          return _vm.listarSucursal(
+                            "1",
+                            _vm.buscar,
+                            _vm.criterio
+                          )
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-search" })]
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "table",
+            { staticClass: "table table-bordered table-striped col-md-10" },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.arraySucursal, function(sucursal) {
+                  return _c("tr", { key: sucursal.id }, [
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn-primary btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.abrirModal(
+                                "sucursal",
+                                "actualizar",
+                                sucursal
+                              )
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-pen" })]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(sucursal.id) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(sucursal.nombre) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(sucursal.direccion) }
+                    })
+                  ])
+                }),
+                0
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("nav", { staticClass: "col-md-10" }, [
+            _c(
+              "ul",
+              { staticClass: "pagination" },
+              [
+                _vm.pagination.current_page > 1
+                  ? _c("li", { staticClass: "page-item" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "page-link",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.cambiarPagina(
+                                _vm.pagination.current_page - 1,
+                                _vm.buscar,
+                                _vm.criterio
+                              )
+                            }
+                          }
+                        },
+                        [_vm._v("Ant")]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.pagesNumber, function(page) {
+                  return _c(
+                    "li",
+                    {
+                      key: page,
+                      staticClass: "page-item",
+                      class: [page == _vm.isActived ? "active" : ""]
+                    },
+                    [
+                      _c("a", {
+                        staticClass: "page-link",
+                        attrs: { href: "#" },
+                        domProps: { textContent: _vm._s(page) },
                         on: {
                           click: function($event) {
-                            return _vm.abrirModal(
-                              "sucursal",
-                              "actualizar",
-                              sucursal
+                            $event.preventDefault()
+                            return _vm.cambiarPagina(
+                              page,
+                              _vm.buscar,
+                              _vm.criterio
                             )
                           }
                         }
-                      },
-                      [_c("i", { staticClass: "fa fa-pen" })]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { domProps: { textContent: _vm._s(sucursal.id) } }),
-                  _vm._v(" "),
-                  _c("td", {
-                    domProps: { textContent: _vm._s(sucursal.nombre) }
-                  }),
-                  _vm._v(" "),
-                  _c("td", {
-                    domProps: { textContent: _vm._s(sucursal.direccion) }
-                  })
-                ])
-              }),
-              0
+                      })
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _vm.pagination.current_page < _vm.pagination.last_page
+                  ? _c("li", { staticClass: "page-item" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "page-link",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.cambiarPagina(
+                                _vm.pagination.current_page + 1,
+                                _vm.buscar,
+                                _vm.criterio
+                              )
+                            }
+                          }
+                        },
+                        [_vm._v("Sig")]
+                      )
+                    ])
+                  : _vm._e()
+              ],
+              2
             )
           ])
         ])
