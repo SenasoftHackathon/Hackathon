@@ -19,7 +19,7 @@ class CreateFacturasTable extends Migration
             $table->dateTime('fechaCreacion');
             $table->boolean('estado')->default(1);
             
-            $table->foreign('idUsuario')->references('id')->on('usuarios');
+            $table->foreign('idUsuario')->references('id')->on('users');
         });
     }
 
