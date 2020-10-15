@@ -2634,7 +2634,7 @@ __webpack_require__.r(__webpack_exports__);
       producto_id: 0,
       nombre: "",
       precio: "",
-      proveedor: "",
+      proveedor: 0,
       arrayProducto: [],
       tituloModal: "",
       tipoAccion: 0,
@@ -2882,6 +2882,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.nombre = data["nombre"];
                   this.precio = data["precio"];
                   this.proveedor = data["idProveedor"];
+                  this.producto_id = data['id'];
                   break;
                 }
             }
@@ -57206,8 +57207,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\RetoSenasoft\Proyecto\Hackathon\carpetaproyecto\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\RetoSenasoft\Proyecto\Hackathon\carpetaproyecto\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Hackathon\Hackathon\CarpetaProyecto\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Hackathon\Hackathon\CarpetaProyecto\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -597,6 +597,7 @@ export default {
                             this.nombre = data["nombre"];
                             this.precio = data["precio"];
                             this.proveedor = data["idProveedor"];
+                            this.producto_id = data['id'];
                             break;
                         }
                     }
