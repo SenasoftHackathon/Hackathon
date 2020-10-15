@@ -21,7 +21,7 @@
         <h2>Contenido #5</h2>
 </template>
 <template v-if="menu==6">
-        <h2>Contenido #6</h2>
+        <rol></rol>
 </template>
 <template v-if="menu==7">
         <h2>Contenido #7</h2>

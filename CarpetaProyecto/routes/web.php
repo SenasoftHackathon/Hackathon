@@ -73,8 +73,8 @@ Route::post('/facturacion/registrar', 'FacturaController@store');
 Route::put('/facturacion/actualizar', 'FacturaController@update');
 Route::put('/facturacion/activar', 'FacturaController@activarProducto');
 Route::put('/facturacion/desactivar', 'FacturaController@desactivarProducto');
-Route::put('/facturacion/obtenerEncabezado', 'FacturaController@obtenerEncabezado');
-Route::put('/facturacion/obtenerDetalles', 'FacturaController@obtenerDetalles');
+Route::get('/facturacion/obtenerEncabezado', 'FacturaController@obtenerEncabezado');
+Route::get('/facturacion/obtenerDetalles', 'FacturaController@obtenerDetalles');
 
 Route::get('/existencia', 'ExistenciaController@index');
 Route::get('/existencia/selectSucursal', 'ExistenciaController@selectSucursal');
@@ -83,8 +83,9 @@ Route::get('/existencia/selectProducto', 'ExistenciaController@selectProducto');
 Route::put('/existencia/actualizar', 'ExistenciaController@update');
 //Route::post('/iva/registrar', 'IvaController@store');
 
- Auth::routes();
-//Route::get('/','Auth\LoginController@showLoginForm');
+Route::get('/rol', 'RolController@index');
+
+Auth::routes();
 
  Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/inicio', 'HomeController@index')->name('home');
