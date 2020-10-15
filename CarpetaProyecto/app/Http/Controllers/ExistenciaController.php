@@ -23,15 +23,15 @@ class ExistenciaController extends Controller
         if ($buscar==''){
             $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
             ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockSucursal')
-            ->orderBy('existencias.id', 'desc')->paginate(3);
+            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto', 'existencias.stockSucursal')
+            ->orderBy('existencias.id', 'desc')->paginate(10);
         }
         else{
             $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
             ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockSucursal')
-            ->where('existencias.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('existencias.id', 'desc')->paginate(3);
+            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto', 'existencias.stockSucursal')
+            ->where($criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('existencias.id', 'desc')->paginate(10);
         }
         
 
@@ -65,6 +65,7 @@ class ExistenciaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    /*
     public function store(Request $request)
     {
         //
@@ -75,6 +76,7 @@ class ExistenciaController extends Controller
         $existencia->stockSucursal = $request->stockSucursal;
         $existencia->save();
     }
+    */
 
     /**
      * Update the specified resource in storage.
@@ -86,12 +88,8 @@ class ExistenciaController extends Controller
     public function update(Request $request)
     {
         //
-        $producto = Producto::findOrFail($request->id);
-        $producto->idProveedor = $request->idProveedor;
-        $producto->idIva = $request->idIva;
-        $producto->nombre = $request->nombre;
-        $producto->precio = $request->precio;
-        $producto->estado = $request->estado;
-        $producto->save();
+        $existencia = Existencia::findOrFail($request->id);
+        $existencia->stockSucursal = $existencia->stockSucursal + $request->stockSucursal;
+        $existencia->save();
     }
 }
