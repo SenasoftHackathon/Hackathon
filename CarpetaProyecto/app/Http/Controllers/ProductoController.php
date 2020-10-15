@@ -111,7 +111,7 @@ class ProductoController extends Controller
         $filtro = $request->filtro;
 
         $productos = Producto::join('existencias', 'existencias.idProducto', '=', 'productos.id')
-        ->select('productos.id', 'productos.nombre', 'existencias.stockSucursal','productos.precio')
+        ->select('productos.id', 'productos.nombre', 'existencias.stockScursal','productos.precio')
         ->where('productos.nombre','=',$filtro)
         ->orderBy('productos.nombre', 'asc')->take(1)->get();
 

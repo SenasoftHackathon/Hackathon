@@ -34,12 +34,15 @@ Route::get('/usuario', function () {
 Route::get('/permiso', function () {
     return view('usuarios.permiso');
 });
-// Route::get('/', function () {
-//     return view('contenido.contenido');
-// });
+Route::get('/inicio', function () {
+    return view('contenido.contenido');
+});
 Route::get('/', function () {
     return view('welcome2');
 });
+// Route::get('/app2', function () {
+//     return view('layouts.app2');
+// });
 
 Route::get('/sucursal', 'SucursalController@index');
 Route::post('/sucursal/registrar', 'SucursalController@store');
@@ -81,4 +84,5 @@ Route::put('/existencia/actualizar', 'ExistenciaController@update');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+ Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/inicio', 'HomeController@index')->name('home');

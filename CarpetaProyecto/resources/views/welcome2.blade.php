@@ -19,21 +19,21 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
+<body style="background:#2E4670">
+    <div class="container" style="background-image: url('img/imagenPrincipal.jpg');">
         <div class="row justify-content-center align-items-center vh-100">
-            <div class="row">
-            <h1>Bienvenido a Hackathon</h1> 
-            </div>
-
-            <div>
-                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-            </div>
-            <div>
-                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+            <div class="col-6" style="background:#2E4670;border-radius: 20px;">
+            <h1 class="text-center"><strong>Bienvenido</br>a</br> Facturación Manager</strong></h1>
+                <div class="row" >
+                    <div class="col-6">
+                        <a class="btn btn-info float-right" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-info float-left" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    </div>
+                </div>
             </div>
         </div>
-        
     </div>
 </body>
 </html>
