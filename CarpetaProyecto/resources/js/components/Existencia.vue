@@ -29,17 +29,6 @@
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <div class="col-md-4">
-                    <!-- Button trigger modal -->
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="abrirModal('existencia', 'registrar')"
-                    >
-                        <i class="fa fa-plus"></i> Registrar
-                    </button>
-                    <hr />
-                </div>
                 <div class="col-md-5">
                     <!-- Modal -->
                     <div
@@ -70,21 +59,20 @@
                                             <!-- Formulario bodega -->
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Sucursal (*)</label
+                                                    >Sucursal</label
                                                 >
                                                 <select
                                                     class="form-control"
                                                     placeholder=""
                                                     v-model="idSucursal"
+                                                    disabled
                                                 >
                                                     <option value="0"
                                                         >Seleccione
                                                     </option>
                                                     <option
                                                         v-for="selectSucursal in arraySucursal"
-                                                        :key="
-                                                            selectSucursal.id
-                                                        "
+                                                        :key="selectSucursal.id"
                                                         :value="
                                                             selectSucursal.id
                                                         "
@@ -96,21 +84,20 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Producto (*)</label
+                                                    >Producto</label
                                                 >
                                                 <select
                                                     class="form-control"
                                                     placeholder=""
                                                     v-model="idProducto"
+                                                    disabled
                                                 >
                                                     <option value="0"
                                                         >Seleccione
                                                     </option>
                                                     <option
                                                         v-for="selectProducto in arrayProducto"
-                                                        :key="
-                                                            selectProducto.id
-                                                        "
+                                                        :key="selectProducto.id"
                                                         :value="
                                                             selectProducto.id
                                                         "
@@ -121,16 +108,9 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="">Stock Bodega (*)</label>
-                                                <input
-                                                    type="email"
-                                                    class="form-control"
-                                                    placeholder=""
-                                                    v-model="stockBodega"
-                                                />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="">Stock Sucursal (*)</label>
+                                                <label for=""
+                                                    >Stock Sucursal (*)</label
+                                                >
                                                 <input
                                                     type="number"
                                                     class="form-control"
@@ -165,9 +145,9 @@
                                         type="button"
                                         class="btn btn-primary"
                                         v-if="tipoAccion == 1"
-                                        @click="registrarExistencia()"
+                                        @click="actualizarExistencia()"
                                     >
-                                        Registrar
+                                        Actualizar stock
                                     </button>
                                 </div>
                             </div>
@@ -185,8 +165,10 @@
                                 class="form-control"
                                 v-model="criterio"
                             >
-                                <option value="id">Código</option>
-                                <option value="nombre">Producto</option>
+                                <option value="existencias.id">Código</option>
+                                <option value="existencias.idSucursal">Id Sucursal</option>
+                                <option value="productos.nombre">Producto</option>
+                                <option value="sucursales.nombre">Sucursal</option>
                             </select>
                             <input
                                 type="text"
@@ -214,11 +196,11 @@
                     <table class="table table-bordered table-striped col-md-10">
                         <thead>
                             <tr>
-                                
+                                <th style="width: 120px">Editar stock</th>
                                 <th style="width: 20px">id</th>
+                                <th>Id Sucursal</th>
                                 <th>Sucursal</th>
                                 <th>Producto</th>
-                                <th>Stock en Bodega</th>
                                 <th>Stock en Sucursal</th>
                             </tr>
                         </thead>
@@ -227,11 +209,25 @@
                                 v-for="existencia in arrayExistencia"
                                 :key="existencia.id"
                             >
-                                
+                                <td class="text-center">
+                                    <button
+                                        type="button"
+                                        class="btn-primary btn-sm"
+                                        @click="
+                                            abrirModal(
+                                                'existencia',
+                                                'actualizar',
+                                                existencia
+                                            )
+                                        "
+                                    >
+                                    <i class="fa fa-pen"></i>
+                                    </button>
+                                </td>
                                 <td v-text="existencia.id"></td>
+                                <td v-text="existencia.idSucursal"></td>
                                 <td v-text="existencia.nombre_sucursal"></td>
                                 <td v-text="existencia.nombre_producto"></td>
-                                <td v-text="existencia.stockBodega"></td>
                                 <td v-text="existencia.stockSucursal"></td>
                             </tr>
                         </tbody>
@@ -308,7 +304,6 @@ export default {
             existencia_id: 0,
             idSucursal: "",
             idProducto: "",
-            stockBodega: 0,
             stockSucursal: 0,
             arrayExistencia: [],
             tituloModal: "",
@@ -325,7 +320,7 @@ export default {
                 to: 0
             },
             offset: 3,
-            criterio: "id",
+            criterio: "existencias.id",
             buscar: "",
             arrayProducto: [],
             arraySucursal: []
@@ -393,8 +388,7 @@ export default {
         },
         selectSucursal() {
             let me = this;
-            var url =
-                "/existencia/selectSucursal";
+            var url = "/existencia/selectSucursal";
             // Make a request for a user with a given ID
             axios
                 .get(url)
@@ -410,8 +404,7 @@ export default {
         },
         selectProducto() {
             let me = this;
-            var url =
-                "/existencia/selectProducto";
+            var url = "/existencia/selectProducto";
             // Make a request for a user with a given ID
             axios
                 .get(url)
@@ -425,18 +418,16 @@ export default {
                     console.log(error);
                 });
         },
-        registrarExistencia() {
+        actualizarExistencia() {
             if (this.validarExistencia()) {
                 return;
             }
             let me = this;
             // Make a request for a user with a given ID
             axios
-                .post("/existencia/registrar", {
-                    idSucursal: this.idSucursal,
-                    idProducto: this.idProducto,
-                    stockBodega: this.stockBodega,
-                    stockSucursal: this.stockSucursal
+                .put("/existencia/actualizar", {
+                    stockSucursal: this.stockSucursal,
+                    id: this.existencia_id
                 })
                 .then(function(response) {
                     // handle success
@@ -454,22 +445,17 @@ export default {
             if (this.idSucursal == "0") {
                 this.errorMsjExistencia.push(
                     "* La sucursal no puede estar vacia."
-                    );
+                );
             }
-            if (this.idProducto == '0') {
+            if (this.idProducto == "0") {
                 this.errorMsjExistencia.push(
                     "* El producto no puede estar vacio."
                 );
             }
-            if (!this.stockBodega) {
-                this.errorMsjExistencia.push(
-                    "* El stock bodega no puede estar vacio"
-                    );
-            }
             if (!this.stockSucursal) {
                 this.errorMsjExistencia.push(
                     "* El stock sucursal no puede estar vacio"
-                    );
+                );
             }
             if (this.errorMsjExistencia.length) {
                 this.errorExistencia = 1;
@@ -482,14 +468,14 @@ export default {
             switch (modelo) {
                 case "existencia": {
                     switch (accion) {
-                        case "registrar": {
+                        case "actualizar": {
                             this.modal = 1;
                             this.tituloModal = "Registrar existencia";
                             this.tipoAccion = 1;
-                            this.idSucursal = "0";
-                            this.idProducto = "0";
-                            this.stockBodega = 0;
-                            this.stockSucursal = 0;
+                            this.idSucursal = data['idSucursal'];
+                            this.idProducto = data['idProducto'];
+                            this.stockSucursal = data['stockSucursal'];
+                            this.existencia_id = data['id'];
                             break;
                         }
                     }
@@ -502,12 +488,11 @@ export default {
             this.tipoAccion = 0;
             this.idSucursal = "";
             this.idProducto = "";
-            this.stockBodega = "";
             this.stockSucursal = "";
         }
     },
     mounted() {
-        this.listarExistencia(1, "", "id");
+        this.listarExistencia(1, "", "existencias.id");
     }
 };
 </script>
