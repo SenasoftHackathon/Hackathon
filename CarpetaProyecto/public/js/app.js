@@ -4423,7 +4423,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.tipoAccion = 1;
                   this.idSucursal = data['idSucursal'];
                   this.idProducto = data['idProducto'];
-                  this.stockSucursal = data['stockSucursal'];
+                  this.stockSucursal = 0;
                   this.existencia_id = data['id'];
                   break;
                 }

@@ -459,7 +459,7 @@ export default {
                             this.tipoAccion = 1;
                             this.idSucursal = data['idSucursal'];
                             this.idProducto = data['idProducto'];
-                            this.stockSucursal = data['stockSucursal'];
+                            this.stockSucursal = 0;
                             this.existencia_id = data['id'];
                             break;
                         }

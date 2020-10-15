@@ -89,7 +89,7 @@ class ExistenciaController extends Controller
     {
         //
         $existencia = Existencia::findOrFail($request->id);
-        $existencia->stockSucursal = $request->stockSucursal;
+        $existencia->stockSucursal = $existencia->stockSucursal + $request->stockSucursal;
         $existencia->save();
     }
 }
