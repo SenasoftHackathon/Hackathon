@@ -56,6 +56,7 @@ Route::put('/producto/actualizar', 'ProductoController@update');
 Route::put('/producto/activar', 'ProductoController@activarProducto');
 Route::put('/producto/desactivar', 'ProductoController@desactivarProducto');
 Route::get('/producto/buscarProductoFactura', 'ProductoController@buscarProductoFactura');
+Route::get('/producto/listarProductoFactura', 'ProductoController@listarProductoFactura');
 
 Route::get('/iva', 'IvaController@index');
 Route::post('/iva/registrar', 'IvaController@store');

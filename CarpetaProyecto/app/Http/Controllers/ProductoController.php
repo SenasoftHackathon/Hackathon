@@ -117,4 +117,29 @@ class ProductoController extends Controller
 
         return ['productos' => $productos];
     }
+
+    public function listarProductoFactura(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        
+        if ($buscar==''){
+            $productos = Productos::join('ivas', 'productos.idIva','=','ivas.id')
+            ->select('productos.id','productos.nombre','productos.precio','ivas.porcentaje','productos.estado')
+            //->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
+        }
+        else{
+            $productos = Productos::join('ivas', 'productos.idIva','=','ivas.id')
+            ->select('productos.id','productos.nombre','productos.precio','ivas.porcentaje','productos.estado')
+            ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
+            //->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
+        }
+        
+
+        return ['productos' => $productos];
+    }
 }
