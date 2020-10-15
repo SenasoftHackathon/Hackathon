@@ -34,8 +34,11 @@ Route::get('/usuario', function () {
 Route::get('/permiso', function () {
     return view('usuarios.permiso');
 });
+// Route::get('/', function () {
+//     return view('contenido.contenido');
+// });
 Route::get('/', function () {
-    return view('contenido.contenido');
+    return view('welcome2');
 });
 
 Route::get('/sucursal', 'SucursalController@index');
