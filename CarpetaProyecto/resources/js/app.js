@@ -24,6 +24,7 @@ Vue.component('iva', require('./components/Iva.vue').default);
 Vue.component('proveedor', require('./components/Proveedor.vue').default);
 Vue.component('producto', require('./components/Producto.vue').default);
 Vue.component('facturacion', require('./components/facturacion.vue').default);
+Vue.component('existencia', require('./components/existencia.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

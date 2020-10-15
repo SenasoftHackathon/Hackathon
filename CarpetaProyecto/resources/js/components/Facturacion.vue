@@ -121,7 +121,8 @@
 
                             <div class="input-group-append">
                                 <button
-                                        type="submit"                                        class="btn btn-default"
+                                        type="submit"                                        
+                                        class="btn btn-default"
                                     @click="listarFactura('1', buscar, criterio)"
                                 >
                                     <i class="fas fa-search"></i>

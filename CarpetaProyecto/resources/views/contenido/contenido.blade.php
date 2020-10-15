@@ -4,7 +4,7 @@
         <h1>Este es el contenido principal de la página</h1>
 </template>
 <template v-if="menu==1">
-        <h2>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed nam eius architecto veritatis iste? Fugit obcaecati laborum tempore culpa facilis, sequi, sapiente, eos necessitatibus nisi laboriosam architecto? Hic, a labore.</h2>
+        <existencia></existencia>
 </template>
 <template v-if="menu==2">
         <sucursal></sucursal>
