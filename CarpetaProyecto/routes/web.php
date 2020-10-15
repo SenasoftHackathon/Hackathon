@@ -55,6 +55,7 @@ Route::post('/producto/registrar', 'ProductoController@store');
 Route::put('/producto/actualizar', 'ProductoController@update');
 Route::put('/producto/activar', 'ProductoController@activarProducto');
 Route::put('/producto/desactivar', 'ProductoController@desactivarProducto');
+Route::get('/producto/buscarProductoFactura', 'ProductoController@buscarProductoFactura');
 
 Route::get('/iva', 'IvaController@index');
 Route::post('/iva/registrar', 'IvaController@store');
@@ -65,6 +66,8 @@ Route::post('/facturacion/registrar', 'FacturaController@store');
 Route::put('/facturacion/actualizar', 'FacturaController@update');
 Route::put('/facturacion/activar', 'FacturaController@activarProducto');
 Route::put('/facturacion/desactivar', 'FacturaController@desactivarProducto');
+Route::put('/facturacion/obtenerEncabezado', 'FacturaController@obtenerEncabezado');
+Route::put('/facturacion/obtenerDetalles', 'FacturaController@obtenerDetalles');
 
 Route::get('/existencia', 'ExistenciaController@index');
 Route::get('/existencia/selectSucursal', 'ExistenciaController@selectSucursal');

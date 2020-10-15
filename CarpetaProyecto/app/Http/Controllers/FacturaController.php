@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Factura;
 use App\User;
+use App\DetalleFactura;
+use Carbon\Carbon;
 
 class FacturaController extends Controller
 {
@@ -52,4 +54,52 @@ class FacturaController extends Controller
             'facturas' => $facturas
         ];
     }
+
+    public function store(Request $request)
+    {
+        $factura = new Factura();
+        $factura->idUsuario = $request->idUsuario;
+        //$factura->idusuario = \Auth::user()->id;
+        $factura->fechaCreacion = Carbon::now('America/Lima');
+        $factura->estado = 1;
+        $factura->save();
+        $detalles = $request->data;//Array de detalles
+        //Recorro los elementos del array
+        
+        foreach($detalles as $ep=>$det)
+        {
+            $detalle = new DetalleFactura();
+            $detalle->idFactura = $factura->id;
+            $detalle->idProducto = $det['idProducto'];
+            $detalle->cantidad = $det['cantidad'];
+            $detalle->valorUnitario = $det['valorUnitario'];      
+            $detalle->save();
+        }  
+        return response()->json($factura->id);
+    }
+
+    public function obtenerDetalles(Request $request){
+ 
+        $id = $request->id;
+        $detalles = DetalleFactura::join('productos','detalle_facturas.idProducto','=','productos.id')
+        ->select('detalle_facturas.cantidad','detalle_facturas.precio',
+        'productos.nombre as producto')
+        ->where('detalle_facturas.idFactura','=',$id)
+        ->orderBy('detalle_facturas.id', 'desc')->get();
+        
+        return ['detalles' => $detalles];
+    }
+
+    public function obtenerEncabezado(Request $request){
+ 
+        $id = $request->id;
+        $factura = Factura::join('users','facturas.idUsuario','=','users.id')
+        ->select('facturas.id','facturas.fechaCreacion','facturas.total',
+        'facturas.estado','users.usuario')
+        ->where('facturas.id','=',$id)
+        ->orderBy('facturas.id', 'desc')->take(1)->get();
+        
+        return ['factura' => $factura];
+    }
+
 }
