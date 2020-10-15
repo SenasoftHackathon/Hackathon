@@ -161,8 +161,10 @@
                                 class="form-control"
                                 v-model="criterio"
                             >
-                                <option value="id">Código</option>
-                                <option value="nombre">Producto</option>
+                                <option value="existencias.id">Código</option>
+                                <option value="existencias.idSucursal">id Sucursal</option>
+                                <option value="sucursales.nombre">Sucursal</option>
+                                <option value="productos.nombre">Producto</option>
                             </select>
                             <input
                                 type="text"

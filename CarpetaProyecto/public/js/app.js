@@ -4264,6 +4264,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -43936,11 +43938,21 @@ var render = function() {
                     }
                   },
                   [
-                    _c("option", { attrs: { value: "id" } }, [
+                    _c("option", { attrs: { value: "existencias.id" } }, [
                       _vm._v("Código")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "nombre" } }, [
+                    _c(
+                      "option",
+                      { attrs: { value: "existencias.idSucursal" } },
+                      [_vm._v("id Sucursal")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "sucursales.nombre" } }, [
+                      _vm._v("Sucursal")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "productos.nombre" } }, [
                       _vm._v("Producto")
                     ])
                   ]
