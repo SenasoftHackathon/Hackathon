@@ -4708,6 +4708,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['ruta'],
   data: function data() {
@@ -44458,7 +44464,7 @@ var render = function() {
                                 return _c("tr", { key: detalle.id }, [
                                   _c("td", {
                                     domProps: {
-                                      textContent: _vm._s(detalle.idProducto)
+                                      textContent: _vm._s(detalle.producto)
                                     }
                                   }),
                                   _vm._v(" "),
@@ -57757,8 +57763,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Hackathon\Hackathon\CarpetaProyecto\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Hackathon\Hackathon\CarpetaProyecto\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Hackathon\CarpetaProyecto\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Hackathon\CarpetaProyecto\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

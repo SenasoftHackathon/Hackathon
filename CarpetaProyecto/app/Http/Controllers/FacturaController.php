@@ -58,7 +58,7 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $factura = new Factura();
-        $factura->idUsuario = 4;
+        $factura->idUsuario = \Auth::user()->id;
         //$factura->idusuario = \Auth::user()->id;
         $factura->fechaCreacion = Carbon::now('America/Lima');
         $factura->estado = 1;
