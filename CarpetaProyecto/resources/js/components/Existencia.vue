@@ -70,33 +70,46 @@
                                             <!-- Formulario bodega -->
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Nombre proveedor (*)</label
+                                                    >Sucursal (*)</label
                                                 >
                                                 <input
                                                     type="text"
                                                     class="form-control"
                                                     placeholder=""
-                                                    v-model="nombre"
+                                                    readonly
+                                                    v-model="sucursal"
                                                 />
                                             </div>
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Dirección (*)</label
+                                                    >Productos (*)</label
                                                 >
-                                                <input
-                                                    type="text"
+                                                <select 
                                                     class="form-control"
-                                                    placeholder=""
-                                                    v-model="direccion"
-                                                />
+                                                    v-model="producto"
+                                                >
+                                                <option >seleccionar</option>
+                                                <option value="1">Martillo</option>
+                                                <option value="2">Pala</option>
+                                                </select>
+                                                    
                                             </div>
                                             <div class="form-group">
-                                                <label for="">Email (*)</label>
+                                                <label for="">Stock Bodega (*)</label>
                                                 <input
                                                     type="email"
                                                     class="form-control"
                                                     placeholder=""
-                                                    v-model="correo"
+                                                    v-model="stockBodega"
+                                                />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Stock Sucursal (*)</label>
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    placeholder=""
+                                                    v-model="stockSucursal"
                                                 />
                                             </div>
                                             <div
@@ -130,14 +143,6 @@
                                     >
                                         Registrar
                                     </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        v-if="tipoAccion == 2"
-                                        @click="actualizarProveedor()"
-                                    >
-                                        Actualizar
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -155,10 +160,7 @@
                                 v-model="criterio"
                             >
                                 <option value="id">Código</option>
-                                <option value="nombre">Nombre</option>
-                                <option value="correo"
-                                    >Correo electronico</option
-                                >
+                                <option value="producto">Producto</option>
                             </select>
                             <input
                                 type="text"
@@ -186,7 +188,7 @@
                     <table class="table table-bordered table-striped col-md-10">
                         <thead>
                             <tr>
-                                <th style="width: 40px">Opciones</th>
+                                
                                 <th style="width: 20px">id</th>
                                 <th>Sucursal</th>
                                 <th>Producto</th>
@@ -199,21 +201,7 @@
                                 v-for="existencia in arrayExistencia"
                                 :key="existencia.id"
                             >
-                                <td>
-                                    <button
-                                        type="button"
-                                        class="btn-primary btn-sm"
-                                        @click="
-                                            abrirModal(
-                                                'existencia',
-                                                'actualizar',
-                                                existencia
-                                            )
-                                        "
-                                    >
-                                        <i class="fa fa-pen"></i>
-                                    </button>
-                                </td>
+                                
                                 <td v-text="existencia.id"></td>
                                 <td v-text="existencia.nombre_sucursal"></td>
                                 <td v-text="existencia.nombre_producto"></td>
@@ -350,7 +338,7 @@ export default {
             //Actualiza la página actual
             me.pagination.current_page = page;
             //Envia la petición para visualizar la data de esa página
-            me.listarProveedor(page, buscar, criterio);
+            me.listarExistencia(page, buscar, criterio);
         },
         listarExistencia(page, buscar, criterio) {
             let me = this;
@@ -376,44 +364,22 @@ export default {
                 });
         },
         registrarProveedor() {
-            if (this.validarProveedor()) {
-                return;
-            }
+            // if (this.validarProveedor()) {
+            //     return;
+            // }
             let me = this;
             // Make a request for a user with a given ID
             axios
-                .post("/proveedor/registrar", {
-                    nombre: this.nombre,
-                    direccion: this.direccion,
-                    correo: this.correo
+                .post("/existencia/registrar", {
+                    sucursal: this.sucursal,
+                    producto: this.producto,
+                    stockBodega: this.stockBodega,
+                    stockSucursal: this.stockSucursal
                 })
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarProveedor(1, "", "id");
-                })
-                .catch(function(error) {
-                    // handle error
-                    console.log(error);
-                });
-        },
-        actualizarProveedor() {
-            if (this.validarProveedor()) {
-                return;
-            }
-            let me = this;
-            // Make a request for a user with a given ID
-            axios
-                .put("/proveedor/actualizar", {
-                    nombre: this.nombre,
-                    direccion: this.direccion,
-                    correo: this.correo,
-                    id: this.proveedor_id
-                })
-                .then(function(response) {
-                    // handle success
-                    me.cerrarModal();
-                    me.listarProveedor(1, "", "id");
+                    me.listarExistencia(1, "", "id");
                 })
                 .catch(function(error) {
                     // handle error
@@ -449,23 +415,12 @@ export default {
                     switch (accion) {
                         case "registrar": {
                             this.modal = 1;
-                            this.tituloModal = "Registrar sucursal";
+                            this.tituloModal = "Registrar existencia";
                             this.tipoAccion = 1;
-                            this.nombre = "";
-                            this.direccion = "";
-                            this.correo = "";
-                            this.celular = 0;
-                            break;
-                        }
-                        case "actualizar": {
-                            this.modal = 1;
-                            this.tituloModal = "Actualizar sucursal";
-                            this.tipoAccion = 2;
-                            this.nombre = data["nombre"];
-                            this.direccion = data["direccion"];
-                            this.proveedor_id = data["id"];
-                            this.correo = data["correo"];
-                            this.celular = data["celular"];
+                            this.sucursal = "";
+                            this.producto = "";
+                            this.stockBodega = 0;
+                            this.stockSucursal = 0;
                             break;
                         }
                     }
@@ -476,8 +431,10 @@ export default {
             this.modal = 0;
             this.tituloModal = "";
             this.tipoAccion = 0;
-            this.nombre = "";
-            this.direccion = "";
+            this.sucursal = "";
+            this.producto = "";
+            this.stockBodega = "";
+            this.stockSucursal = "";
         }
     },
     mounted() {

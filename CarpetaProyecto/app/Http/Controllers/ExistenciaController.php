@@ -21,14 +21,15 @@ class ExistenciaController extends Controller
         if ($buscar==''){
             $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
             ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('sucursales.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
+            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
             ->orderBy('existencias.id', 'desc')->paginate(3);
         }
         else{
-            // $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
-            // ->select('productos.id','productos.idcategoria','productos.codigo','productos.nombre','categorias.nombre as nombre_categoria','productos.descripcion','productos.precio','productos.stock','productos.estado')
-            // ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
-            // ->orderBy('productos.id', 'desc')->paginate(3);
+            $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
+            ->join('productos','existencias.idProducto','=','productos.id')
+            ->select('sucursales.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
+            ->where('sucursa.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('productos.id', 'desc')->paginate(3);
         }
         
 
