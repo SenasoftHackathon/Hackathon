@@ -5,128 +5,99 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Iva</h1>
-                    </div>
-                    <!-- /.col -->
+                        <h1 class="m-0">Gestión de Facturación</h1>
+                    </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">
-                                <a href="/">Home</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Iva
-                            </li>
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Gestión de Facturación</li>
                         </ol>
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
 
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <div class="col-md-4">
-                    <!-- Button trigger modal -->
-                    <button
-                        type="button"
+                <div class="row">
+                    <div class="col-md-4">
+                        <!-- Button trigger modal -->
+                        <button
+                         type="button"
                         class="btn btn-primary"
-                        @click="abrirModal('iva', 'registrar')"
-                    >
+                        @click="abrirModal('factura', 'registrar')"
+                        >
                         <i class="fa fa-plus"></i> Registrar
-                    </button>
-                    <hr />
-                </div>
-                <div class="col-md-5">
-                    <!-- Modal -->
-                    <div
-                        class="modal"
-                        tabindex="-1"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                        role="dialog"
-                        :class="{ mostrar: modal }"
-                    >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5
-                                        class="modal-title"
-                                        v-text="tituloModal"
-                                    ></h5>
-                                    <button
-                                        type="button"
-                                        class="close"
-                                        aria-label="Close"
-                                        @click="cerrarModal()"
-                                    ></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form role="form">
-                                        <div class="card-body">
-                                            <!-- Formulario bodega -->
-                                            <div class="form-group">
-                                                <label
-                                                    for="exampleInputPassword1"
-                                                    >IVA (*)</label
-                                                >
-                                                <div class="input-group">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control text-right"
-                                                        v-model="porcentaje"
-                                                        step="0.1"
-                                                    />
-                                                    <div
-                                                        class="input-group-append"
-                                                    >
-                                                        <span
-                                                            class="input-group-text"
-                                                            >%</span
-                                                        >
-                                                    </div>
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="tituloModalBodega">Registrar factura</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form">
+                                            <div class="card-body">
+                                                <!-- Formulario bodega -->
+                                                <div class="form-group">
+                                                    <label>Usuario (*)</label>
+                                                    <input type="text" value="Sandra" class="form-control" id="exampleInputPassword1" placeholder="Stock bodega" readonly>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label>Fecha (*)</label>
+                                                    <input type="date" class="form-control" id="exampleInputPassword1" placeholder="Stock bodega">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Estado (*)</label>
+                                                    <input type="text" value="En Proceso" class="form-control" id="exampleInputPassword1" placeholder="Stock bodega" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Producto (*)</label>
+                                                    <select class="form-control select2" id="producto" style="width: 100%;">
+                                                        <option selected="selected">Serrucho</option>
+                                                        <option>Martillo</option>
+                                                        <option>Pinzas</option>
+                                                        <option>Alicate</option>
+                                                        <option>Destornillador</option>
+                                                        <option>Tubo PVC</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Cantidad (*)</label>
+                                                    <input type="number"  class="form-control" id="txtCantidad" placeholder="Stock bodega" >
+                                                </div>
+                                                <button type="button" onclick="agregarProducto()" class="btn btn-secondary" data-dismiss="modal">Agregar</button>
+
+                                                <!-- Fin formulario bodega -->
                                             </div>
-                                            <div
-                                                v-show="errorIva"
-                                                class="form-group row errores"
-                                            >
-                                                <div
-                                                    class="text-center"
-                                                    v-for="error in errorMsjIva"
-                                                    :key="error"
-                                                    v-text="error"
-                                                ></div>
+                                            <div class="card-body">
+                                                <table class="table">
+                                                    <thead>
+
+                                                    </thead>
+                                                    <tbody id="tblfactura">
+
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <!-- Fin formulario bodega -->
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                        @click="cerrarModal()"
-                                    >
-                                        Cerrar
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        v-if="tipoAccion == 1"
-                                        @click="registrarIva()"
-                                    >
-                                        Registrar
-                                    </button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary">Registrar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Fin Modal -->
                     </div>
-                    <!-- Fin Modal -->
-                </div>
 
                 <div class="row justify-content-md-center">
                     <div class="card-tools col-md-10">
@@ -150,8 +121,7 @@
 
                             <div class="input-group-append">
                                 <button
-                                    type="submit"
-                                    class="btn btn-default"
+                                        type="submit"                                        class="btn btn-default"
                                     @click="listarFactura('1', buscar, criterio)"
                                 >
                                     <i class="fas fa-search"></i>
@@ -159,19 +129,23 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-striped col-md-10">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="width: 20px">Id</th>
-                                <th>IVA</th>
-                                <th>Fecha de creación</th>
+                                <th style="width: 40px">Opciones</th>
+                                <th style="width: 20px">id</th>
+                                <th>Usuario</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="iva in arrayIva" :key="iva.id">
-                                <td v-text="iva.id"></td>
-                                <td v-text="iva.porcentaje"></td>
-                                <td v-text="iva.fechaCreacion"></td>
+                            <tr v-for="factura in arrayFactura" :key="factura.id">
+                                <td></td>
+                                <td v-text="factura.id"></td>
+                                <td v-text="factura.idUsuario"></td>
+                                <td v-text="factura.fechaCreacion"></td>
+                                <td v-text="factura.estado"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -231,27 +205,30 @@
                             </li>
                         </ul>
                     </nav>
+                    </div>
                 </div>
-            </div>
-            <!-- /.row -->
-            <!-- /.container-fluid -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div>
+        <!-- /.content -->
     </div>
-    <!-- /.content -->
 </template>
 
 <script>
 export default {
     data() {
         return {
-            iva_id: 0,
-            porcentaje: 0,
-            arrayIva: [],
+            factura_id: 0,
+            idSucursal: 0,
+            idProducto: 0,
+            stockBodega: 0,
+            stockSucursal: 0,
+            arrayFactura: [],
             tituloModal: "",
             tipoAccion: 0,
             modal: 0,
-            errorIva: 0,
-            errorMsjIva: [],
+            errorFactura: 0,
+            errorMsjFactura: [],
             pagination: {
                 total: 0,
                 current_page: 0,
@@ -300,12 +277,12 @@ export default {
             //Actualiza la página actual
             me.pagination.current_page = page;
             //Envia la petición para visualizar la data de esa página
-            me.listarIva(page, buscar, criterio);
+            me.listarFactura(page, buscar, criterio);
         },
-        listarIva(page, buscar, criterio) {
+        listarFactura(page, buscar, criterio) {
             let me = this;
             var url =
-                "/iva?page=" +
+                "/factura?page=" +
                 page +
                 "&buscar=" +
                 buscar +
@@ -317,7 +294,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     var respuesta = response.data;
-                    me.arrayIva = respuesta.ivas.data;
+                    me.arrayFactura = respuesta.facturas.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function(error) {
@@ -338,7 +315,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarIva(1, "", "id");
+                    me.listarFactura(1, "", "id");
                 })
                 .catch(function(error) {
                     // handle error
@@ -379,20 +356,7 @@ export default {
         }
     },
     mounted() {
-        this.listarIva(1, "", "id");
+        this.listarFactura(1, "", "id");
     }
 };
 </script>
-<style>
-.modal-content {
-    width: 100%;
-}
-.mostrar {
-    display: list-item !important;
-    opacity: 1 !important;
-    background-color: rgba(0, 0, 0, 0.233);
-}
-.errores{
-    color: red;
-}
-</style>

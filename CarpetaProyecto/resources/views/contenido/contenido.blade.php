@@ -28,7 +28,7 @@
         <h2>Contenido #8</h2>
 </template>
 <template v-if="menu==9">
-        <h2>Contenido #9</h2>
+        <facturacion></facturacion>
 </template>
 <template v-if="menu==10">
         <iva></iva>

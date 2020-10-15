@@ -72,7 +72,7 @@
                 </p>
             </a>
         <li class="nav-item"  @click="menu = 9">
-            <a href="/facturacion" class="nav-link">
+            <a href="#" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Facturas</p>
             </a>
