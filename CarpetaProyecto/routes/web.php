@@ -42,7 +42,7 @@ Route::get('/', function () {
 });
 // Route::get('/app2', function () {
 //     return view('layouts.app2');
-// });
+// });;
 
 Route::get('/sucursal', 'SucursalController@index');
 Route::post('/sucursal/registrar', 'SucursalController@store');
