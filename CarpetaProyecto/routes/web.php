@@ -83,6 +83,8 @@ Route::get('/existencia/selectProducto', 'ExistenciaController@selectProducto');
 Route::put('/existencia/actualizar', 'ExistenciaController@update');
 //Route::post('/iva/registrar', 'IvaController@store');
 
+Route::get('/rol', 'RolController@index');
+
 Auth::routes();
 
  Route::get('/home', 'HomeController@index')->name('home');

@@ -18,7 +18,7 @@ class CreateFacturasTable extends Migration
             $table->bigInteger('idUsuario')->unsigned();
             $table->dateTime('fechaCreacion');
             $table->boolean('estado')->default(1);
-            
+
             $table->foreign('idUsuario')->references('id')->on('users');
         });
     }

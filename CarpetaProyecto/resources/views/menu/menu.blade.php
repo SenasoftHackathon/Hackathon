@@ -13,7 +13,7 @@
                 <li class="nav-item" @click="menu = 1">
                     <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Bodega</p>
+                        <p>Existencias</p>
                     </a>
                 </li>
                 <li class="nav-item" @click="menu = 2">
@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/rol" class="nav-link" @click="menu = 6">
+                    <a href="#" class="nav-link" @click="menu = 6">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Roles</p>
                     </a>
