@@ -109,7 +109,9 @@
                                 v-model="criterio"
                             >
                                 <option value="id">Código</option>
-                                <option value="porcentaje">Iva</option>
+                                <option value="name">Nombre Usuario</option>
+                                <option value="fechaCreacion">Fecha de creación</option>
+                                <option value="estado">Estado</option>
                             </select>
                             <input
                                 type="text"
@@ -220,10 +222,8 @@ export default {
     data() {
         return {
             factura_id: 0,
-            idSucursal: 0,
-            idProducto: 0,
-            stockBodega: 0,
-            stockSucursal: 0,
+            idUsuario: 0,
+            fechaCreacion: 0,
             arrayFactura: [],
             tituloModal: "",
             tipoAccion: 0,
@@ -283,7 +283,7 @@ export default {
         listarFactura(page, buscar, criterio) {
             let me = this;
             var url =
-                "/factura?page=" +
+                "/facturacion?page=" +
                 page +
                 "&buscar=" +
                 buscar +
@@ -303,15 +303,16 @@ export default {
                     console.log(error);
                 });
         },
-        registrarIva() {
-            if (this.validarIva()) {
+        registrarFactura() {
+            if (this.validarFactura()) {
                 return;
             }
             let me = this;
             // Make a request for a user with a given ID
             axios
-                .post("/iva/registrar", {
-                    porcentaje: this.porcentaje,
+                .post("/facturacion/registrar", {
+                    idUsuario: this.idUsuario,
+                    fechaCreacion: this.fechaCreacion,
                 })
                 .then(function(response) {
                     // handle success
@@ -323,26 +324,27 @@ export default {
                     console.log(error);
                 });
         },
-        validarIva() {
-            this.errorIva = 0;
-            this.errorMsjIva = [];
-            if (!this.porcentaje) {
-                this.errorMsjIva.push("El IVA no puede estar vacio.");
+        validarFactura() {
+            this.errorFactura = 0;
+            this.errorMsjFactura = [];
+            if (!this.idUsuario) {
+                this.errorMsjFactura.push("El Usuario no puede estar vacio.");
             }
-            if (this.errorMsjIva.length) {
-                this.errorIva = 1;
+            if (this.errorMsjFactura.length) {
+                this.errorFactura = 1;
             }
-            return this.errorIva;
+            return this.errorFactura;
         },
         abrirModal(modelo, accion) {
             switch (modelo) {
-                case "iva": {
+                case "factura": {
                     switch (accion) {
                         case "registrar": {
                             this.modal = 1;
                             this.tituloModal = "Registrar IVA";
                             this.tipoAccion = 1;
-                            this.porcentaje = "";
+                            this.idUsuario = "";
+                            this.fechaCreacion = "";
                             break;
                         }
                     }
@@ -353,7 +355,8 @@ export default {
             this.modal = 0;
             this.tituloModal = "";
             this.tipoAccion = 0;
-            this.porcentaje = "";
+            this.idUsuario = "";
+            this.fechaCreacion = "";
         }
     },
     mounted() {

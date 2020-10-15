@@ -145,14 +145,14 @@
                                 class="form-control float-right"
                                 v-model="buscar"
                                 placeholder="Buscar"
-                                @keyup.enter="listarFactura('1', buscar, criterio)"
+                                @keyup.enter="listarIva('1', buscar, criterio)"
                             />
 
                             <div class="input-group-append">
                                 <button
                                     type="submit"
                                     class="btn btn-default"
-                                    @click="listarFactura('1', buscar, criterio)"
+                                    @click="listarIva('1', buscar, criterio)"
                                 >
                                     <i class="fas fa-search"></i>
                                 </button>
