@@ -195,7 +195,6 @@
                                 <th>Id Sucursal</th>
                                 <th>Sucursal</th>
                                 <th>Producto</th>
-                                <th>Stock en Bodega</th>
                                 <th>Stock en Sucursal</th>
                             </tr>
                         </thead>
@@ -223,7 +222,6 @@
                                 <td v-text="existencia.idSucursal"></td>
                                 <td v-text="existencia.nombre_sucursal"></td>
                                 <td v-text="existencia.nombre_producto"></td>
-                                <td v-text="existencia.stockBodega"></td>
                                 <td v-text="existencia.stockSucursal"></td>
                             </tr>
                         </tbody>
