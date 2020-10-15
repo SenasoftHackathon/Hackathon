@@ -171,9 +171,7 @@
                             >
                                 <option value="id">Código</option>
                                 <option value="nombre">Nombre</option>
-                                <option value="correo"
-                                    >Correo electronico</option
-                                >
+                                <option value="proveedor">Proveedor</option>
                             </select>
                             <input
                                 type="text"
@@ -464,7 +462,7 @@ export default {
                 .put("/producto/actualizar", {
                     nombre: this.nombre,
                     precio: this.precio,
-                    idProveedor: this.correo,
+                    idProveedor: this.proveedor,
                     id: this.producto_id
                 })
                 .then(function(response) {

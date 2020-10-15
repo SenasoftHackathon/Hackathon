@@ -51,7 +51,6 @@ Route::put('/proveedor/desactivar', 'ProveedorController@desactivarProveedor');
 
 Route::get('/producto', 'ProductoController@index');
 Route::get('/producto/selectProveedor', 'ProductoController@selectProveedores');
-Route::get('/producto/selectIva', 'ProductoController@selectIva');
 Route::post('/producto/registrar', 'ProductoController@store');
 Route::put('/producto/actualizar', 'ProductoController@update');
 Route::put('/producto/activar', 'ProductoController@activarProducto');

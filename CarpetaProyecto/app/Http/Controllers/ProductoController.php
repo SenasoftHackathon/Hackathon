@@ -29,7 +29,7 @@ class ProductoController extends Controller
         } else {
             $productos = Producto::join('proveedores', 'productos.id', '=', 'proveedores.id')
                 ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
-                ->where($criterio, 'like', '%' . $buscar . '%')
+                ->where("productos.".$criterio, 'like', '%' . $buscar . '%')
                 ->orderBy('productos.id', 'desc')
                 ->paginate(10);
         }
