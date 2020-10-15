@@ -27,9 +27,9 @@ class ExistenciaController extends Controller
         else{
             $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
             ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('sucursales.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
-            ->where('sucursa.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('productos.id', 'desc')->paginate(3);
+            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
+            ->where('existencias.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('existencias.id', 'desc')->paginate(3);
         }
         
 
