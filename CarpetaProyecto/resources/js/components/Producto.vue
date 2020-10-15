@@ -114,6 +114,17 @@
                                                     v-model="precio"
                                                 />
                                             </div>
+                                            <div class="form-group">
+                                                <label for=""
+                                                    >Stock de bodega (*)</label
+                                                >
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    placeholder=""
+                                                    v-model="stockBodega"
+                                                />
+                                            </div>
                                             <div
                                                 v-show="errorProducto"
                                                 class="form-group row errores"
@@ -204,6 +215,7 @@
                                 <th>Nombre</th>
                                 <th>Precio</th>
                                 <th>Proveedor</th>
+                                <th>Stock bodega</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
@@ -249,13 +261,14 @@
                                 <td v-text="producto.nombre"></td>
                                 <td v-text="producto.precio"></td>
                                 <td v-text="producto.proveedor"></td>
+                                <td v-text="producto.stockBodega"></td>
                                 <td v-if="producto.estado">
                                     <span class="badge bg-success">Activo</span>
                                 </td>
                                 <td v-else>
-                                    <span class="badge bg-danger"
-                                        >Inactivo</span
-                                    >
+                                    <span class="badge bg-danger">
+                                        Inactivo
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>
@@ -351,7 +364,8 @@ export default {
             criterio: "id",
             buscar: "",
             arrayProveedor: [],
-            arrayIva: []
+            arrayIva: [],
+            stockBodega: 0
         };
     },
     computed: {
@@ -440,6 +454,7 @@ export default {
                 .post("/producto/registrar", {
                     nombre: this.nombre,
                     precio: this.precio,
+                    stockBodega: this.stockBodega,
                     idProveedor: this.proveedor
                 })
                 .then(function(response) {
@@ -462,6 +477,7 @@ export default {
                 .put("/producto/actualizar", {
                     nombre: this.nombre,
                     precio: this.precio,
+                    stockBodega: this.stockBodega,
                     idProveedor: this.proveedor,
                     id: this.producto_id
                 })
@@ -597,7 +613,7 @@ export default {
                             this.nombre = data["nombre"];
                             this.precio = data["precio"];
                             this.proveedor = data["idProveedor"];
-                            this.producto_id = data['id'];
+                            this.producto_id = data["id"];
                             break;
                         }
                     }

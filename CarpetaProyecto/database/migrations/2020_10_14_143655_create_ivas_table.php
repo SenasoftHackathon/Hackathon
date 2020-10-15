@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateIvasTable extends Migration
 {
@@ -18,6 +19,11 @@ class CreateIvasTable extends Migration
             $table->double('porcentaje');
             $table->dateTime('fechaCreacion');
         });
+        DB::table("ivas")
+        ->insert([
+            "porcentaje" => "19",
+            "fechaCreacion" => "2020-01-01 00:00:00",
+        ]);
     }
 
     /**

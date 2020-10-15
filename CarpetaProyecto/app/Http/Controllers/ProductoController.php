@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Producto;
 use App\Proveedor;
 use App\Iva;
+use App\Sucursal;
+use App\Existencia;
 
 class ProductoController extends Controller
 {
@@ -23,13 +25,13 @@ class ProductoController extends Controller
         if ($buscar == "") {
             $productos = Producto::join('proveedores', 'productos.idProveedor', '=', 'proveedores.id')
                 ->join('ivas', 'productos.idIva', '=', 'ivas.id')
-                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'productos.idProveedor', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.stockBodega',  'productos.estado', 'productos.idProveedor', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
                 ->orderBy('productos.id', 'desc')
                 ->paginate(10);
         } else {
             $productos = Producto::join('proveedores', 'productos.id', '=', 'proveedores.id')
-                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
-                ->where("productos.".$criterio, 'like', '%' . $buscar . '%')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.stockBodega',  'productos.estado', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
+                ->where("productos." . $criterio, 'like', '%' . $buscar . '%')
                 ->orderBy('productos.id', 'desc')
                 ->paginate(10);
         }
@@ -67,6 +69,7 @@ class ProductoController extends Controller
         $producto->idProveedor = $request->idProveedor;
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
+        $producto->stockBodega = $request->stockBodega;
         $producto->precio = $request->precio;
         $producto->estado = '1';
         $producto->save();
@@ -97,6 +100,7 @@ class ProductoController extends Controller
         $producto->idProveedor = $request->idProveedor;
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
+        $producto->stockBodega = $request->stockBodega;
         $producto->precio = $request->precio;
         $producto->estado = '1';
         $producto->save();
@@ -116,8 +120,9 @@ class ProductoController extends Controller
         $producto->save();
     }
 
-    public function buscarProductoFactura(Request $request){
-        if(!$request->ajax()) return redirect('/');
+    public function buscarProductoFactura(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
 
         $productos = Producto::join('existencias', 'existencias.idProducto', '=', 'productos.id')
@@ -134,21 +139,20 @@ class ProductoController extends Controller
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
-        
-        if ($buscar==''){
-            $productos = Productos::join('ivas', 'productos.idIva','=','ivas.id')
-            ->select('productos.id','productos.nombre','productos.precio','ivas.porcentaje','productos.estado')
-            //->where('productos.stock','>','0')
-            ->orderBy('productos.id', 'desc')->paginate(10);
+
+        if ($buscar == '') {
+            $productos = Producto::join('ivas', 'productos.idIva', '=', 'ivas.id')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'ivas.porcentaje', 'productos.estado')
+                //->where('productos.stock','>','0')
+                ->orderBy('productos.id', 'desc')->paginate(10);
+        } else {
+            $productos = Producto::join('ivas', 'productos.idIva', '=', 'ivas.id')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'ivas.porcentaje', 'productos.estado')
+                ->where('productos.' . $criterio, 'like', '%' . $buscar . '%')
+                //->where('productos.stock','>','0')
+                ->orderBy('productos.id', 'desc')->paginate(10);
         }
-        else{
-            $productos = Productos::join('ivas', 'productos.idIva','=','ivas.id')
-            ->select('productos.id','productos.nombre','productos.precio','ivas.porcentaje','productos.estado')
-            ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
-            //->where('productos.stock','>','0')
-            ->orderBy('productos.id', 'desc')->paginate(10);
-        }
-        
+
 
         return ['productos' => $productos];
     }
