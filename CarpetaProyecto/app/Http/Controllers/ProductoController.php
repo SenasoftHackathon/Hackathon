@@ -21,15 +21,17 @@ class ProductoController extends Controller
         $buscar = $request->buscar;
         $criterio = $request->criterio;
         if ($buscar == "") {
-            $productos = Producto::join('proveedores', 'productos.id' , '=', 'proveedores.id')
-            ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as nombre_p', 'ivas.procentaje')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        }else{
-            $productos = Producto::join('proveedores', 'productos.id' , '=', 'proveedores.id')
-            ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as nombre_p', 'ivas.procentaje')
-            ->where($criterio, 'like', '%'.$buscar.'%')->orderBy('id', 'desc')
-            ->paginate(10);
+            $productos = Producto::join('proveedores', 'productos.idProveedor', '=', 'proveedores.id')
+                ->join('ivas', 'productos.idIva', '=', 'ivas.id')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'productos.idProveedor', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
+                ->orderBy('productos.id', 'desc')
+                ->paginate(10);
+        } else {
+            $productos = Producto::join('proveedores', 'productos.id', '=', 'proveedores.id')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
+                ->where($criterio, 'like', '%' . $buscar . '%')
+                ->orderBy('productos.id', 'desc')
+                ->paginate(10);
         }
         return [
             'pagination' => [
@@ -44,10 +46,11 @@ class ProductoController extends Controller
         ];
     }
 
-    public function selectProveedores(){
+    public function selectProveedores()
+    {
         $proveedores = Proveedor::where('estado', '=', '1')
-        ->select('id', 'nombre')->orderBy('nombre','asc')->get();
-        return ['proveedores' => $proveedores];
+            ->select('id', 'nombre as proveedor')->orderBy('nombre', 'asc')->get();
+        return $proveedores;
     }
 
     /**
@@ -59,12 +62,13 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         //
+        $iva = Iva::select('id')->get()->last();
         $producto = new Producto();
         $producto->idProveedor = $request->idProveedor;
-        $producto->idIva = $request->idIva;
+        $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
-        $producto->estado = $request->estado;
+        $producto->estado = '1';
         $producto->save();
     }
 
@@ -78,12 +82,13 @@ class ProductoController extends Controller
     public function update(Request $request)
     {
         //
-        $iva = DB::table('ivas')->select('procentaje')->order_by('id', 'desc')->first();
+        $iva = Iva::select('id')->get()->last();
         $producto = Producto::findOrFail($request->id);
         $producto->idProveedor = $request->idProveedor;
-        $producto->idIva = $iva;
+        $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
+        $producto->estado = '1';
         $producto->save();
     }
 

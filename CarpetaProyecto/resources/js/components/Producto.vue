@@ -77,7 +77,21 @@
                                                     placeholder=""
                                                     v-model="proveedor"
                                                 >
-                                                <option value="0">Seleccione</option>
+                                                    <option value="0"
+                                                        >Seleccione
+                                                    </option>
+                                                    <option
+                                                        v-for="selectProveedor in arrayProveedor"
+                                                        :key="
+                                                            selectProveedor.id
+                                                        "
+                                                        :value="
+                                                            selectProveedor.id
+                                                        "
+                                                        v-text="
+                                                            selectProveedor.proveedor
+                                                        "
+                                                    ></option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -92,9 +106,7 @@
                                                 />
                                             </div>
                                             <div class="form-group">
-                                                <label for=""
-                                                    >Precio (*)</label
-                                                >
+                                                <label for="">Precio (*)</label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
@@ -103,12 +115,12 @@
                                                 />
                                             </div>
                                             <div
-                                                v-show="errorProveedor"
+                                                v-show="errorProducto"
                                                 class="form-group row errores"
                                             >
                                                 <label
                                                     class="text-center"
-                                                    v-for="error in errorMsjProveedor"
+                                                    v-for="error in errorMsjProducto"
                                                     :key="error"
                                                     v-text="error"
                                                 ></label>
@@ -129,7 +141,7 @@
                                         type="button"
                                         class="btn btn-primary"
                                         v-if="tipoAccion == 1"
-                                        @click="registrarProveedor()"
+                                        @click="registrarProducto()"
                                     >
                                         Registrar
                                     </button>
@@ -137,7 +149,7 @@
                                         type="button"
                                         class="btn btn-primary"
                                         v-if="tipoAccion == 2"
-                                        @click="actualizarProveedor()"
+                                        @click="actualizarProducto()"
                                     >
                                         Actualizar
                                     </button>
@@ -169,7 +181,7 @@
                                 v-model="buscar"
                                 placeholder="Buscar"
                                 @keyup.enter="
-                                    listarProveedor('1', buscar, criterio)
+                                    listarProducto('1', buscar, criterio)
                                 "
                             />
 
@@ -178,7 +190,7 @@
                                     type="submit"
                                     class="btn btn-default"
                                     @click="
-                                        listarProveedor('1', buscar, criterio)
+                                        listarProducto('1', buscar, criterio)
                                     "
                                 >
                                     <i class="fas fa-search"></i>
@@ -192,15 +204,15 @@
                                 <th style="width: 100px">Opciones</th>
                                 <th style="width: 20px">id</th>
                                 <th>Nombre</th>
-                                <th>Dirección</th>
-                                <th>Correo electronico</th>
+                                <th>Precio</th>
+                                <th>Proveedor</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
-                                v-for="proveedor in arrayProveedor"
-                                :key="proveedor.id"
+                                v-for="producto in arrayProducto"
+                                :key="producto.id"
                             >
                                 <td>
                                     <button
@@ -208,9 +220,9 @@
                                         class="btn-primary btn-sm"
                                         @click="
                                             abrirModal(
-                                                'proveedor',
+                                                'producto',
                                                 'actualizar',
-                                                proveedor
+                                                producto
                                             )
                                         "
                                     >
@@ -218,12 +230,10 @@
                                     </button>
                                     <button
                                         title="Desactivar proveedor"
-                                        v-if="proveedor.estado"
+                                        v-if="producto.estado"
                                         type="button"
                                         class="btn-danger btn-sm"
-                                        @click="
-                                            desactivarProveedor(proveedor.id)
-                                        "
+                                        @click="desactivarProducto(producto.id)"
                                     >
                                         <i class="fa fa-times-circle"></i>
                                     </button>
@@ -232,16 +242,16 @@
                                         title="Activar proveedor"
                                         type="button"
                                         class="btn-success btn-sm"
-                                        @click="activarProveedor(proveedor.id)"
+                                        @click="activarProducto(producto.id)"
                                     >
                                         <i class="fa fa-check-circle"></i>
                                     </button>
                                 </td>
-                                <td v-text="proveedor.id"></td>
-                                <td v-text="proveedor.nombre"></td>
-                                <td v-text="proveedor.direccion"></td>
-                                <td v-text="proveedor.correo"></td>
-                                <td v-if="proveedor.estado">
+                                <td v-text="producto.id"></td>
+                                <td v-text="producto.nombre"></td>
+                                <td v-text="producto.precio"></td>
+                                <td v-text="producto.proveedor"></td>
+                                <td v-if="producto.estado">
                                     <span class="badge bg-success">Activo</span>
                                 </td>
                                 <td v-else>
@@ -321,16 +331,16 @@
 export default {
     data() {
         return {
-            proveedor_id: 0,
+            producto_id: 0,
             nombre: "",
             precio: "",
             proveedor: "",
-            arrayProveedor: [],
+            arrayProducto: [],
             tituloModal: "",
             tipoAccion: 0,
             modal: 0,
-            errorProveedor: 0,
-            errorMsjProveedor: [],
+            errorProducto: 0,
+            errorMsjProducto: [],
             pagination: {
                 total: 0,
                 current_page: 0,
@@ -341,7 +351,9 @@ export default {
             },
             offset: 3,
             criterio: "id",
-            buscar: ""
+            buscar: "",
+            arrayProveedor: [],
+            arrayIva: []
         };
     },
     computed: {
@@ -379,12 +391,12 @@ export default {
             //Actualiza la página actual
             me.pagination.current_page = page;
             //Envia la petición para visualizar la data de esa página
-            me.listarProveedor(page, buscar, criterio);
+            me.listarProducto(page, buscar, criterio);
         },
-        listarProveedor(page, buscar, criterio) {
+        listarProducto(page, buscar, criterio) {
             let me = this;
             var url =
-                "/proveedor?page=" +
+                "/producto?page=" +
                 page +
                 "&buscar=" +
                 buscar +
@@ -396,7 +408,7 @@ export default {
                 .then(function(response) {
                     // handle success
                     var respuesta = response.data;
-                    me.arrayProveedor = respuesta.proveedores.data;
+                    me.arrayProducto = respuesta.productos.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function(error) {
@@ -404,52 +416,68 @@ export default {
                     console.log(error);
                 });
         },
-        registrarProveedor() {
-            if (this.validarProveedor()) {
-                return;
-            }
+        selectProveedor() {
             let me = this;
+            var url = "/producto/selectProveedor";
             // Make a request for a user with a given ID
             axios
-                .post("/proveedor/registrar", {
-                    nombre: this.nombre,
-                    direccion: this.direccion,
-                    correo: this.correo
-                })
+                .get(url)
                 .then(function(response) {
                     // handle success
-                    me.cerrarModal();
-                    me.listarProveedor(1, "", "id");
+                    var respuesta = response.data;
+                    me.arrayProveedor = respuesta;
                 })
                 .catch(function(error) {
                     // handle error
                     console.log(error);
                 });
         },
-        actualizarProveedor() {
-            if (this.validarProveedor()) {
+        registrarProducto() {
+            if (this.validarProducto()) {
                 return;
             }
             let me = this;
             // Make a request for a user with a given ID
             axios
-                .put("/proveedor/actualizar", {
+                .post("/producto/registrar", {
                     nombre: this.nombre,
-                    direccion: this.direccion,
-                    correo: this.correo,
-                    id: this.proveedor_id
+                    precio: this.precio,
+                    idProveedor: this.proveedor
                 })
                 .then(function(response) {
                     // handle success
                     me.cerrarModal();
-                    me.listarProveedor(1, "", "id");
+                    me.listarProducto(1, "", "id");
                 })
                 .catch(function(error) {
                     // handle error
                     console.log(error);
                 });
         },
-        activarProveedor(id) {
+        actualizarProducto() {
+            if (this.validarProducto()) {
+                return;
+            }
+            let me = this;
+            // Make a request for a user with a given ID
+            axios
+                .put("/producto/actualizar", {
+                    nombre: this.nombre,
+                    precio: this.precio,
+                    idProveedor: this.correo,
+                    id: this.producto_id
+                })
+                .then(function(response) {
+                    // handle success
+                    me.cerrarModal();
+                    me.listarProducto(1, "", "id");
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });
+        },
+        activarProducto(id) {
             let me = this;
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -471,13 +499,13 @@ export default {
                 .then(result => {
                     if (result.isConfirmed) {
                         axios
-                            .put("/proveedor/activar", {
+                            .put("/producto/activar", {
                                 id: id
                             })
                             .then(function(response) {
                                 // handle success
                                 me.cerrarModal();
-                                me.listarProveedor(1, "", "id");
+                                me.listarProducto(1, "", "id");
                             })
                             .catch(function(error) {
                                 // handle error
@@ -491,7 +519,7 @@ export default {
                     }
                 });
         },
-        desactivarProveedor(id) {
+        desactivarProducto(id) {
             let me = this;
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -513,13 +541,13 @@ export default {
                 .then(result => {
                     if (result.isConfirmed) {
                         axios
-                            .put("/proveedor/desactivar", {
+                            .put("/producto/desactivar", {
                                 id: id
                             })
                             .then(function(response) {
                                 // handle success
                                 me.cerrarModal();
-                                me.listarProveedor(1, "", "id");
+                                me.listarProducto(1, "", "id");
                             })
                             .catch(function(error) {
                                 // handle error
@@ -533,50 +561,44 @@ export default {
                     }
                 });
         },
-        validarProveedor() {
-            this.errorProveedor = 0;
-            this.errorMsjProveedor = [];
+        validarProducto() {
+            this.errorProducto = 0;
+            this.errorMsjProducto = [];
             if (!this.nombre) {
-                this.errorMsjProveedor.push(
-                    "* El nombre no puede estar vacio."
-                );
+                this.errorMsjProducto.push("* El nombre no puede estar vacio.");
             }
-            if (!this.direccion) {
-                this.errorMsjProveedor.push(
-                    "* La dirección no puede estar vacia."
-                );
+            if (!this.precio) {
+                this.errorMsjProducto.push("* El precio no puede estar vacio.");
             }
-            if (!this.correo) {
-                this.errorMsjProveedor.push("* El correo no puede estar vacio");
+            if (this.proveedor == 0) {
+                this.errorMsjProducto.push("* Debe seleccionar un proveedor");
             }
-            if (this.errorMsjProveedor.length) {
-                this.errorProveedor = 1;
+            if (this.errorMsjProducto.length) {
+                this.errorProducto = 1;
             }
-            return this.errorProveedor;
+            return this.errorProducto;
         },
         abrirModal(modelo, accion, data = []) {
+            this.selectProveedor();
             switch (modelo) {
-                case "proveedor": {
+                case "producto": {
                     switch (accion) {
                         case "registrar": {
                             this.modal = 1;
-                            this.tituloModal = "Registrar sucursal";
+                            this.tituloModal = "Registrar producto";
                             this.tipoAccion = 1;
                             this.nombre = "";
-                            this.direccion = "";
-                            this.correo = "";
-                            this.celular = 0;
+                            this.precio = "";
+                            this.proveedor = "0";
                             break;
                         }
                         case "actualizar": {
                             this.modal = 1;
-                            this.tituloModal = "Actualizar sucursal";
+                            this.tituloModal = "Actualizar producto";
                             this.tipoAccion = 2;
                             this.nombre = data["nombre"];
-                            this.direccion = data["direccion"];
-                            this.proveedor_id = data["id"];
-                            this.correo = data["correo"];
-                            this.celular = data["celular"];
+                            this.precio = data["precio"];
+                            this.proveedor = data["idProveedor"];
                             break;
                         }
                     }
@@ -588,11 +610,12 @@ export default {
             this.tituloModal = "";
             this.tipoAccion = 0;
             this.nombre = "";
-            this.direccion = "";
+            this.precio = "";
+            this.proveedor = "0";
         }
     },
     mounted() {
-        this.listarProveedor(1, "", "id");
+        this.listarProducto(1, "", "id");
     }
 };
 </script>
