@@ -79,7 +79,6 @@
     <template v-if="listado==2">
         <div class="card-body">
             <div class="form-group row border">
-                
                 <div class="col-md-3">
                     <label for="">Id</label>
                         <p v-text="idFactura"></p>
@@ -90,7 +89,7 @@
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
-                                <th>Prducto</th>
+                                <th>Producto</th>
                                 <th>Precio</th>
                                 <th>Cantidad</th>
                                 <th>Subtotal</th>
@@ -98,7 +97,7 @@
                         </thead>
                         <tbody v-if="arrayDetalle.length">
                             <tr v-for="detalle in arrayDetalle" :key="detalle.id">
-                                <td v-text="detalle.producto"></td>
+                                <td v-text="detalle.idProducto"></td>
                                 <td v-text="detalle.precio"></td>
                                 <td v-text="detalle.cantidad"></td>
                                 <td>
@@ -393,11 +392,10 @@ export default {
                     }
                     else{
                         me.arrayDetalle.push({
-                            idproducto: me.idProducto,
-                            name: me.name,
+                            idFactura: me.idFactura,
+                            idProducto: me.idProducto,
                             cantidad: me.cantidad,
                             precio: me.precio,
-                            stock: me.stock
                         });
                         me.codigo="";
                         me.idProducto=0;
@@ -427,8 +425,8 @@ export default {
             // Make a request for a user with a given ID
             axios
                 .post("/facturacion/registrar", {
-                    idUsuario: this.idUsuario,
-                    fechaCreacion: this.fechaCreacion,
+                    'idUsuario': 1,
+                    'data': this.arrayDetalle
                 })
                 .then(function(response) {
                     // handle success
@@ -498,9 +496,6 @@ export default {
         validarFactura() {
             this.errorFactura = 0;
             this.errorMsjFactura = [];
-            if (!this.idUsuario) {
-                this.errorMsjFactura.push("El Usuario no puede estar vacio.");
-            }
             if (this.errorMsjFactura.length) {
                 this.errorFactura = 1;
             }

@@ -70,6 +70,16 @@ class ProductoController extends Controller
         $producto->precio = $request->precio;
         $producto->estado = '1';
         $producto->save();
+
+        $productoRegistrado = Producto::select('id')->get()->last();
+        $sucursales = Sucursal::all();
+        foreach ($sucursales as $sucursal) {
+            $existencia = new Existencia();
+            $existencia->idSucursal = $sucursal->id;
+            $existencia->idProducto = $productoRegistrado->id;
+            $existencia->stockSucursal = 0;
+            $existencia->save();
+        }
     }
 
     /**
@@ -114,6 +124,31 @@ class ProductoController extends Controller
         ->select('productos.id', 'productos.nombre', 'existencias.stockScursal','productos.precio')
         ->where('productos.nombre','=',$filtro)
         ->orderBy('productos.nombre', 'asc')->take(1)->get();
+
+        return ['productos' => $productos];
+    }
+
+    public function listarProductoFactura(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        
+        if ($buscar==''){
+            $productos = Productos::join('ivas', 'productos.idIva','=','ivas.id')
+            ->select('productos.id','productos.nombre','productos.precio','ivas.porcentaje','productos.estado')
+            //->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
+        }
+        else{
+            $productos = Productos::join('ivas', 'productos.idIva','=','ivas.id')
+            ->select('productos.id','productos.nombre','productos.precio','ivas.porcentaje','productos.estado')
+            ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
+            //->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
+        }
+        
 
         return ['productos' => $productos];
     }
