@@ -332,7 +332,7 @@ export default {
             producto_id: 0,
             nombre: "",
             precio: "",
-            proveedor: "",
+            proveedor: 0,
             arrayProducto: [],
             tituloModal: "",
             tipoAccion: 0,
