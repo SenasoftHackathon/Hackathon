@@ -58,7 +58,7 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $factura = new Factura();
-        $factura->idUsuario = 4;
+        $factura->idUsuario = \Auth::user()->id;
         //$factura->idusuario = \Auth::user()->id;
         $factura->fechaCreacion = Carbon::now('America/Lima');
         $factura->estado = 1;
@@ -82,7 +82,7 @@ class FacturaController extends Controller
  
         $id = $request->id;
         $detalles = DetalleFactura::join('productos','detalle_facturas.idProducto','=','productos.id')
-        ->select('detalle_facturas.cantidad','detalle_facturas.precio',
+        ->select('detalle_facturas.cantidad','detalle_facturas.valorUnitario',
         'productos.nombre as producto')
         ->where('detalle_facturas.idFactura','=',$id)
         ->orderBy('detalle_facturas.id', 'desc')->get();
@@ -94,8 +94,7 @@ class FacturaController extends Controller
  
         $id = $request->id;
         $factura = Factura::join('users','facturas.idUsuario','=','users.id')
-        ->select('facturas.id','facturas.fechaCreacion','facturas.total',
-        'facturas.estado','users.usuario')
+        ->select('facturas.id','facturas.idUsuario','facturas.fechaCreacion','facturas.estado','users.name as nombreUser')
         ->where('facturas.id','=',$id)
         ->orderBy('facturas.id', 'desc')->take(1)->get();
         

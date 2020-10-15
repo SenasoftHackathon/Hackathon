@@ -73,8 +73,8 @@ Route::post('/facturacion/registrar', 'FacturaController@store');
 Route::put('/facturacion/actualizar', 'FacturaController@update');
 Route::put('/facturacion/activar', 'FacturaController@activarProducto');
 Route::put('/facturacion/desactivar', 'FacturaController@desactivarProducto');
-Route::put('/facturacion/obtenerEncabezado', 'FacturaController@obtenerEncabezado');
-Route::put('/facturacion/obtenerDetalles', 'FacturaController@obtenerDetalles');
+Route::get('/facturacion/obtenerEncabezado', 'FacturaController@obtenerEncabezado');
+Route::get('/facturacion/obtenerDetalles', 'FacturaController@obtenerDetalles');
 
 Route::get('/existencia', 'ExistenciaController@index');
 Route::get('/existencia/selectSucursal', 'ExistenciaController@selectSucursal');
