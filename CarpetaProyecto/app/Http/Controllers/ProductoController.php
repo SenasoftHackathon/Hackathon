@@ -69,6 +69,7 @@ class ProductoController extends Controller
         $producto->idProveedor = $request->idProveedor;
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
+        $producto->stockBodega = $request->stockBodega;
         $producto->precio = $request->precio;
         $producto->estado = '1';
         $producto->save();
@@ -99,6 +100,7 @@ class ProductoController extends Controller
         $producto->idProveedor = $request->idProveedor;
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
+        $producto->stockBodega = $request->stockBodega;
         $producto->precio = $request->precio;
         $producto->estado = '1';
         $producto->save();

@@ -9,7 +9,7 @@ class Producto extends Model
     protected $table = "productos";
 
     protected $fillable = [
-        'idProveedor', 'idIva', 'nombre', 'precio', 'estado',
+        'idProveedor', 'idIva', 'nombre', 'precio', 'stockBodega', 'estado',
     ];
 
     public $timestamps = false;
