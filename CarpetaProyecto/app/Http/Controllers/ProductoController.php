@@ -74,7 +74,7 @@ class ProductoController extends Controller
         $producto->estado = '1';
         $producto->save();
 
-        $productoRegistrado = Producto  ::select('id')->get()->last();
+        $productoRegistrado = Producto::select('id')->get()->last();
         $sucursales = Sucursal::all();
         foreach ($sucursales as $sucursal) {
             $existencia = new Existencia();

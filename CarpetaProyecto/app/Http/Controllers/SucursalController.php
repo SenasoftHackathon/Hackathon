@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Sucursal;
+use App\Existencia;
 
 class SucursalController extends Controller
 {
@@ -49,6 +51,16 @@ class SucursalController extends Controller
         $sucursal->nombre = $request->nombre;
         $sucursal->direccion = $request->direccion;
         $sucursal->save();
+
+        $sucursalRegistrada = Sucursal::select('id')->get()->last();
+        $productos = Producto::all();
+        foreach ($productos as $producto){
+            $existencia = new Existencia();
+            $existencia->idSucursal = $sucursalRegistrada->id;
+            $existencia->idProducto = $producto->id;
+            $existencia->stockSucursal = 0;
+            $existencia->save();
+        }
     }
 
     /**
