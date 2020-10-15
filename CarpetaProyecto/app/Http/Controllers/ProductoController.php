@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Producto;
 use App\Proveedor;
 use App\Iva;
+use App\Sucursal;
+use App\Existencia;
 
 class ProductoController extends Controller
 {
@@ -68,8 +70,19 @@ class ProductoController extends Controller
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
+        $producto->stockBodega = $request->stockBodega;
         $producto->estado = '1';
         $producto->save();
+
+        $productoRegistrado = Producto::select('id')->get()->last();
+        $sucursales = Sucursal::all();
+        foreach ($sucursales as $sucursal) {
+            $existencia = new Existencia();
+            $existencia->idSucursal = $sucursal->id;
+            $existencia->idProducto = $productoRegistrado->id;
+            $existencia->stockSucursal = 0;
+            $existencia->save();
+        }
     }
 
     /**
@@ -88,6 +101,7 @@ class ProductoController extends Controller
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
+        $producto->stockBodega = $request->stockBodega;
         $producto->estado = '1';
         $producto->save();
     }

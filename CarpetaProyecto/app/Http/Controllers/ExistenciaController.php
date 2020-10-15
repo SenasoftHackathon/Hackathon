@@ -48,7 +48,7 @@ class ExistenciaController extends Controller
         ];
 
     }
-
+    /*
     public function selectSucursal(){
         $sucursal = Sucursal::select('id', 'nombre')->orderBy('id', 'desc')->get();
         return $sucursal;
@@ -58,6 +58,7 @@ class ExistenciaController extends Controller
         $producto = Producto::select('id', 'nombre')->orderBy('id', 'desc')->get();
         return $producto;
     }
+    */
 
     /**
      * Store a newly created resource in storage.
@@ -65,6 +66,7 @@ class ExistenciaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    /*
     public function store(Request $request)
     {
         //
@@ -75,6 +77,7 @@ class ExistenciaController extends Controller
         $existencia->stockSucursal = $request->stockSucursal;
         $existencia->save();
     }
+    */
 
     /**
      * Update the specified resource in storage.
@@ -86,12 +89,8 @@ class ExistenciaController extends Controller
     public function update(Request $request)
     {
         //
-        $producto = Producto::findOrFail($request->id);
-        $producto->idProveedor = $request->idProveedor;
-        $producto->idIva = $request->idIva;
-        $producto->nombre = $request->nombre;
-        $producto->precio = $request->precio;
-        $producto->estado = $request->estado;
-        $producto->save();
+        $existencia = new Existencia();
+        $existencia->stockSucursal = $request->stockSucursal;
+        $existencia->save();
     }
 }
