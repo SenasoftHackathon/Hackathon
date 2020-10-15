@@ -66,6 +66,9 @@ Route::put('/factura/actualizar', 'FacturaController@update');
 Route::put('/factura/activar', 'FacturaController@activarProducto');
 Route::put('/factura/desactivar', 'FacturaController@desactivarProducto');
 
+Route::get('/existencia', 'ExistenciaController@index');
+//Route::post('/iva/registrar', 'IvaController@store');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
