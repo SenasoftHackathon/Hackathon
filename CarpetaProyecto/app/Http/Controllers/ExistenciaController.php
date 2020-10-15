@@ -19,21 +19,20 @@ class ExistenciaController extends Controller
         //
         $buscar = $request->buscar;
         $criterio = $request->criterio;
-        
-        if ($buscar==''){
-            $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
-            ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto', 'existencias.stockSucursal')
-            ->orderBy('existencias.id', 'desc')->paginate(10);
+
+        if ($buscar == '') {
+            $existencia = Existencia::join('sucursales', 'existencias.idSucursal', '=', 'sucursales.id')
+                ->join('productos', 'existencias.idProducto', '=', 'productos.id')
+                ->select('existencias.id', 'existencias.idSucursal', 'existencias.idProducto', 'sucursales.nombre as nombre_sucursal', 'productos.nombre as nombre_producto', 'existencias.stockSucursal')
+                ->orderBy('existencias.id', 'desc')->paginate(10);
+        } else {
+            $existencia = Existencia::join('sucursales', 'existencias.idSucursal', '=', 'sucursales.id')
+                ->join('productos', 'existencias.idProducto', '=', 'productos.id')
+                ->select('existencias.id', 'existencias.idSucursal', 'existencias.idProducto', 'sucursales.nombre as nombre_sucursal', 'productos.nombre as nombre_producto', 'existencias.stockSucursal')
+                ->where($criterio, 'like', '%' . $buscar . '%')
+                ->orderBy('existencias.id', 'desc')->paginate(10);
         }
-        else{
-            $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
-            ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto', 'existencias.stockSucursal')
-            ->where($criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('existencias.id', 'desc')->paginate(10);
-        }
-        
+
 
         return [
             'pagination' => [
@@ -46,15 +45,16 @@ class ExistenciaController extends Controller
             ],
             'existencias' => $existencia
         ];
-
     }
 
-    public function selectSucursal(){
+    public function selectSucursal()
+    {
         $sucursal = Sucursal::select('id', 'nombre')->orderBy('id', 'desc')->get();
         return $sucursal;
     }
-    
-    public function selectProducto(){
+
+    public function selectProducto()
+    {
         $producto = Producto::select('id', 'nombre')->orderBy('id', 'desc')->get();
         return $producto;
     }
