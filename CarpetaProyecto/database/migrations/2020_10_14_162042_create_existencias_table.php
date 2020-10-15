@@ -18,7 +18,7 @@ class CreateExistenciasTable extends Migration
             $table->bigInteger('idSucursal')->unsigned();
             $table->bigInteger('idProducto')->unsigned();
             $table->integer('stockBodega');
-            $table->integer('stockScursal');
+            $table->integer('stockSucursal');
 
             $table->foreign('idSucursal')->references('id')->on('sucursales');
             $table->foreign('idProducto')->references('id')->on('productos');

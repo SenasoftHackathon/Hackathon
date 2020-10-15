@@ -4232,13 +4232,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       existencia_id: 0,
       idSucursal: "",
       idProducto: "",
-      stockBodega: "",
+      stockBodega: 0,
       stockSucursal: 0,
       arrayExistencia: [],
       tituloModal: "",
@@ -4256,7 +4282,9 @@ __webpack_require__.r(__webpack_exports__);
       },
       offset: 3,
       criterio: "id",
-      buscar: ""
+      buscar: "",
+      arrayProducto: [],
+      arraySucursal: []
     };
   },
   computed: {
@@ -4314,15 +4342,42 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    registrarProveedor: function registrarProveedor() {
-      // if (this.validarProveedor()) {
-      //     return;
-      // }
+    selectSucursal: function selectSucursal() {
+      var me = this;
+      var url = "/existencia/selectSucursal"; // Make a request for a user with a given ID
+
+      axios.get(url).then(function (response) {
+        // handle success
+        var respuesta = response.data;
+        me.arraySucursal = respuesta;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    selectProducto: function selectProducto() {
+      var me = this;
+      var url = "/existencia/selectProducto"; // Make a request for a user with a given ID
+
+      axios.get(url).then(function (response) {
+        // handle success
+        var respuesta = response.data;
+        me.arrayProducto = respuesta;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    registrarExistencia: function registrarExistencia() {
+      if (this.validarExistencia()) {
+        return;
+      }
+
       var me = this; // Make a request for a user with a given ID
 
       axios.post("/existencia/registrar", {
-        sucursal: this.sucursal,
-        producto: this.producto,
+        idSucursal: this.idSucursal,
+        idProducto: this.idProducto,
         stockBodega: this.stockBodega,
         stockSucursal: this.stockSucursal
       }).then(function (response) {
@@ -4334,30 +4389,36 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    validarProveedor: function validarProveedor() {
-      this.errorProveedor = 0;
-      this.errorMsjProveedor = [];
+    validarExistencia: function validarExistencia() {
+      this.errorExistencia = 0;
+      this.errorMsjExistencia = [];
 
-      if (!this.nombre) {
-        this.errorMsjProveedor.push("* El nombre no puede estar vacio.");
+      if (this.idSucursal == "0") {
+        this.errorMsjExistencia.push("* La sucursal no puede estar vacia.");
       }
 
-      if (!this.direccion) {
-        this.errorMsjProveedor.push("* La dirección no puede estar vacia.");
+      if (this.idProducto == '0') {
+        this.errorMsjExistencia.push("* El producto no puede estar vacio.");
       }
 
-      if (!this.correo) {
-        this.errorMsjProveedor.push("* El correo no puede estar vacio");
+      if (!this.stockBodega) {
+        this.errorMsjExistencia.push("* El stock bodega no puede estar vacio");
       }
 
-      if (this.errorMsjProveedor.length) {
-        this.errorProveedor = 1;
+      if (!this.stockSucursal) {
+        this.errorMsjExistencia.push("* El stock sucursal no puede estar vacio");
       }
 
-      return this.errorProveedor;
+      if (this.errorMsjExistencia.length) {
+        this.errorExistencia = 1;
+      }
+
+      return this.errorExistencia;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+      this.selectSucursal();
+      this.selectProducto();
 
       switch (modelo) {
         case "existencia":
@@ -4368,8 +4429,8 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = "Registrar existencia";
                   this.tipoAccion = 1;
-                  this.sucursal = "";
-                  this.producto = "";
+                  this.idSucursal = "0";
+                  this.idProducto = "0";
                   this.stockBodega = 0;
                   this.stockSucursal = 0;
                   break;
@@ -4382,8 +4443,8 @@ __webpack_require__.r(__webpack_exports__);
       this.modal = 0;
       this.tituloModal = "";
       this.tipoAccion = 0;
-      this.sucursal = "";
-      this.producto = "";
+      this.idSucursal = "";
+      this.idProducto = "";
       this.stockBodega = "";
       this.stockSucursal = "";
     }
@@ -43453,38 +43514,6 @@ var render = function() {
                             _vm._v("Sucursal (*)")
                           ]),
                           _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.sucursal,
-                                expression: "sucursal"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "",
-                              readonly: ""
-                            },
-                            domProps: { value: _vm.sucursal },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.sucursal = $event.target.value
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "" } }, [
-                            _vm._v("Productos (*)")
-                          ]),
-                          _vm._v(" "),
                           _c(
                             "select",
                             {
@@ -43492,11 +43521,12 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.producto,
-                                  expression: "producto"
+                                  value: _vm.idSucursal,
+                                  expression: "idSucursal"
                                 }
                               ],
                               staticClass: "form-control",
+                              attrs: { placeholder: "" },
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -43508,23 +43538,90 @@ var render = function() {
                                         "_value" in o ? o._value : o.value
                                       return val
                                     })
-                                  _vm.producto = $event.target.multiple
+                                  _vm.idSucursal = $event.target.multiple
                                     ? $$selectedVal
                                     : $$selectedVal[0]
                                 }
                               }
                             },
                             [
-                              _c("option", [_vm._v("seleccionar")]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Martillo")
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v(
+                                  "Seleccione\n                                                "
+                                )
                               ]),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("Pala")
-                              ])
-                            ]
+                              _vm._l(_vm.arraySucursal, function(
+                                selectSucursal
+                              ) {
+                                return _c("option", {
+                                  key: selectSucursal.id,
+                                  domProps: {
+                                    value: selectSucursal.id,
+                                    textContent: _vm._s(selectSucursal.nombre)
+                                  }
+                                })
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Producto (*)")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.idProducto,
+                                  expression: "idProducto"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { placeholder: "" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.idProducto = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v(
+                                  "Seleccione\n                                                "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.arrayProducto, function(
+                                selectProducto
+                              ) {
+                                return _c("option", {
+                                  key: selectProducto.id,
+                                  domProps: {
+                                    value: selectProducto.id,
+                                    textContent: _vm._s(selectProducto.nombre)
+                                  }
+                                })
+                              })
+                            ],
+                            2
                           )
                         ]),
                         _vm._v(" "),
@@ -43591,13 +43688,13 @@ var render = function() {
                               {
                                 name: "show",
                                 rawName: "v-show",
-                                value: _vm.errorProveedor,
-                                expression: "errorProveedor"
+                                value: _vm.errorExistencia,
+                                expression: "errorExistencia"
                               }
                             ],
                             staticClass: "form-group row errores"
                           },
-                          _vm._l(_vm.errorMsjProveedor, function(error) {
+                          _vm._l(_vm.errorMsjExistencia, function(error) {
                             return _c("label", {
                               key: error,
                               staticClass: "text-center",
@@ -43695,7 +43792,7 @@ var render = function() {
                       _vm._v("Código")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "producto" } }, [
+                    _c("option", { attrs: { value: "nombre" } }, [
                       _vm._v("Producto")
                     ])
                   ]
@@ -43786,7 +43883,9 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(existencia.stockScursal) }
+                      domProps: {
+                        textContent: _vm._s(existencia.stockSucursal)
+                      }
                     })
                   ])
                 }),

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Existencia;
+use App\Sucursal;
+use App\Producto;
 
 class ExistenciaController extends Controller
 {
@@ -21,13 +23,13 @@ class ExistenciaController extends Controller
         if ($buscar==''){
             $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
             ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
+            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockSucursal')
             ->orderBy('existencias.id', 'desc')->paginate(3);
         }
         else{
             $existencia = Existencia::join('sucursales','existencias.idSucursal','=','sucursales.id')
             ->join('productos','existencias.idProducto','=','productos.id')
-            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockScursal')
+            ->select('existencias.id','existencias.idSucursal','existencias.idProducto','sucursales.nombre as nombre_sucursal','productos.nombre as nombre_producto','existencias.stockBodega','existencias.stockSucursal')
             ->where('existencias.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('existencias.id', 'desc')->paginate(3);
         }
@@ -47,6 +49,16 @@ class ExistenciaController extends Controller
 
     }
 
+    public function selectSucursal(){
+        $sucursal = Sucursal::select('id', 'nombre')->orderBy('id', 'desc')->get();
+        return $sucursal;
+    }
+    
+    public function selectProducto(){
+        $producto = Producto::select('id', 'nombre')->orderBy('id', 'desc')->get();
+        return $producto;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -56,13 +68,12 @@ class ExistenciaController extends Controller
     public function store(Request $request)
     {
         //
-        $producto = new Producto();
-        $producto->idProveedor = $request->idProveedor;
-        $producto->idIva = $request->idIva;
-        $producto->nombre = $request->nombre;
-        $producto->precio = $request->precio;
-        $producto->estado = $request->estado;
-        $producto->save();
+        $existencia = new Existencia();
+        $existencia->idSucursal = $request->idSucursal;
+        $existencia->idProducto = $request->idProducto;
+        $existencia->stockBodega = $request->stockBodega;
+        $existencia->stockSucursal = $request->stockSucursal;
+        $existencia->save();
     }
 
     /**
@@ -81,20 +92,6 @@ class ExistenciaController extends Controller
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
         $producto->estado = $request->estado;
-        $producto->save();
-    }
-
-    public function desactivar(Request $request)
-    {
-        $producto = Producto::findOrFail($request->id);
-        $producto->estado = '0';
-        $producto->save();
-    }
-
-    public function activar(Request $request)
-    {
-        $producto = Producto::findOrFail($request->id);
-        $producto->estado = '1';
         $producto->save();
     }
 }

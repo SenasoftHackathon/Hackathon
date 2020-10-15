@@ -72,27 +72,53 @@
                                                 <label for=""
                                                     >Sucursal (*)</label
                                                 >
-                                                <input
-                                                    type="text"
+                                                <select
                                                     class="form-control"
                                                     placeholder=""
-                                                    readonly
-                                                    v-model="sucursal"
-                                                />
+                                                    v-model="idSucursal"
+                                                >
+                                                    <option value="0"
+                                                        >Seleccione
+                                                    </option>
+                                                    <option
+                                                        v-for="selectSucursal in arraySucursal"
+                                                        :key="
+                                                            selectSucursal.id
+                                                        "
+                                                        :value="
+                                                            selectSucursal.id
+                                                        "
+                                                        v-text="
+                                                            selectSucursal.nombre
+                                                        "
+                                                    ></option>
+                                                </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for=""
-                                                    >Productos (*)</label
+                                                    >Producto (*)</label
                                                 >
-                                                <select 
+                                                <select
                                                     class="form-control"
-                                                    v-model="producto"
+                                                    placeholder=""
+                                                    v-model="idProducto"
                                                 >
-                                                <option >seleccionar</option>
-                                                <option value="1">Martillo</option>
-                                                <option value="2">Pala</option>
+                                                    <option value="0"
+                                                        >Seleccione
+                                                    </option>
+                                                    <option
+                                                        v-for="selectProducto in arrayProducto"
+                                                        :key="
+                                                            selectProducto.id
+                                                        "
+                                                        :value="
+                                                            selectProducto.id
+                                                        "
+                                                        v-text="
+                                                            selectProducto.nombre
+                                                        "
+                                                    ></option>
                                                 </select>
-                                                    
                                             </div>
                                             <div class="form-group">
                                                 <label for="">Stock Bodega (*)</label>
@@ -113,12 +139,12 @@
                                                 />
                                             </div>
                                             <div
-                                                v-show="errorProveedor"
+                                                v-show="errorExistencia"
                                                 class="form-group row errores"
                                             >
                                                 <label
                                                     class="text-center"
-                                                    v-for="error in errorMsjProveedor"
+                                                    v-for="error in errorMsjExistencia"
                                                     :key="error"
                                                     v-text="error"
                                                 ></label>
@@ -160,7 +186,7 @@
                                 v-model="criterio"
                             >
                                 <option value="id">Código</option>
-                                <option value="producto">Producto</option>
+                                <option value="nombre">Producto</option>
                             </select>
                             <input
                                 type="text"
@@ -206,7 +232,7 @@
                                 <td v-text="existencia.nombre_sucursal"></td>
                                 <td v-text="existencia.nombre_producto"></td>
                                 <td v-text="existencia.stockBodega"></td>
-                                <td v-text="existencia.stockScursal"></td>
+                                <td v-text="existencia.stockSucursal"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -282,7 +308,7 @@ export default {
             existencia_id: 0,
             idSucursal: "",
             idProducto: "",
-            stockBodega: "",
+            stockBodega: 0,
             stockSucursal: 0,
             arrayExistencia: [],
             tituloModal: "",
@@ -300,7 +326,9 @@ export default {
             },
             offset: 3,
             criterio: "id",
-            buscar: ""
+            buscar: "",
+            arrayProducto: [],
+            arraySucursal: []
         };
     },
     computed: {
@@ -363,16 +391,50 @@ export default {
                     console.log(error);
                 });
         },
-        registrarProveedor() {
-            // if (this.validarProveedor()) {
-            //     return;
-            // }
+        selectSucursal() {
+            let me = this;
+            var url =
+                "/existencia/selectSucursal";
+            // Make a request for a user with a given ID
+            axios
+                .get(url)
+                .then(function(response) {
+                    // handle success
+                    var respuesta = response.data;
+                    me.arraySucursal = respuesta;
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });
+        },
+        selectProducto() {
+            let me = this;
+            var url =
+                "/existencia/selectProducto";
+            // Make a request for a user with a given ID
+            axios
+                .get(url)
+                .then(function(response) {
+                    // handle success
+                    var respuesta = response.data;
+                    me.arrayProducto = respuesta;
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });
+        },
+        registrarExistencia() {
+            if (this.validarExistencia()) {
+                return;
+            }
             let me = this;
             // Make a request for a user with a given ID
             axios
                 .post("/existencia/registrar", {
-                    sucursal: this.sucursal,
-                    producto: this.producto,
+                    idSucursal: this.idSucursal,
+                    idProducto: this.idProducto,
                     stockBodega: this.stockBodega,
                     stockSucursal: this.stockSucursal
                 })
@@ -386,30 +448,37 @@ export default {
                     console.log(error);
                 });
         },
-        validarProveedor() {
-            this.errorProveedor = 0;
-            this.errorMsjProveedor = [];
-            if (!this.nombre) {
-                this.errorMsjProveedor.push(
-                    "* El nombre no puede estar vacio."
+        validarExistencia() {
+            this.errorExistencia = 0;
+            this.errorMsjExistencia = [];
+            if (this.idSucursal == "0") {
+                this.errorMsjExistencia.push(
+                    "* La sucursal no puede estar vacia."
                     );
             }
-            if (!this.direccion) {
-                this.errorMsjProveedor.push(
-                    "* La dirección no puede estar vacia."
+            if (this.idProducto == '0') {
+                this.errorMsjExistencia.push(
+                    "* El producto no puede estar vacio."
                 );
             }
-            if (!this.correo) {
-                this.errorMsjProveedor.push(
-                    "* El correo no puede estar vacio"
+            if (!this.stockBodega) {
+                this.errorMsjExistencia.push(
+                    "* El stock bodega no puede estar vacio"
                     );
             }
-            if (this.errorMsjProveedor.length) {
-                this.errorProveedor = 1;
+            if (!this.stockSucursal) {
+                this.errorMsjExistencia.push(
+                    "* El stock sucursal no puede estar vacio"
+                    );
             }
-            return this.errorProveedor;
+            if (this.errorMsjExistencia.length) {
+                this.errorExistencia = 1;
+            }
+            return this.errorExistencia;
         },
         abrirModal(modelo, accion, data = []) {
+            this.selectSucursal();
+            this.selectProducto();
             switch (modelo) {
                 case "existencia": {
                     switch (accion) {
@@ -417,8 +486,8 @@ export default {
                             this.modal = 1;
                             this.tituloModal = "Registrar existencia";
                             this.tipoAccion = 1;
-                            this.sucursal = "";
-                            this.producto = "";
+                            this.idSucursal = "0";
+                            this.idProducto = "0";
                             this.stockBodega = 0;
                             this.stockSucursal = 0;
                             break;
@@ -431,8 +500,8 @@ export default {
             this.modal = 0;
             this.tituloModal = "";
             this.tipoAccion = 0;
-            this.sucursal = "";
-            this.producto = "";
+            this.idSucursal = "";
+            this.idProducto = "";
             this.stockBodega = "";
             this.stockSucursal = "";
         }
