@@ -4948,6 +4948,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['ruta'],
   data: function data() {
@@ -5082,6 +5084,7 @@ __webpack_require__.r(__webpack_exports__);
             me.arrayDetalle.push({
               idFactura: me.idFactura,
               idProducto: me.idProducto,
+              nombreProducto: me.nombreProducto,
               cantidad: me.cantidad,
               precio: me.precio
             });
@@ -45040,11 +45043,32 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(" "),
-                                  _c("td", {
-                                    domProps: {
-                                      textContent: _vm._s(detalle.precio)
-                                    }
-                                  }),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.precio,
+                                          expression: "detalle.precio"
+                                        }
+                                      ],
+                                      attrs: { readonly: "", type: "number" },
+                                      domProps: { value: detalle.precio },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            detalle,
+                                            "precio",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
                                   _vm._v(" "),
                                   _c("td", {
                                     domProps: {
@@ -45339,7 +45363,9 @@ var render = function() {
                                       _vm._v(" "),
                                       _c("td", {
                                         domProps: {
-                                          textContent: _vm._s(detalle.producto)
+                                          textContent: _vm._s(
+                                            detalle.nombreProducto
+                                          )
                                         }
                                       }),
                                       _vm._v(" "),
@@ -45354,7 +45380,10 @@ var render = function() {
                                             }
                                           ],
                                           staticClass: "form-control",
-                                          attrs: { type: "number" },
+                                          attrs: {
+                                            type: "number",
+                                            readonly: ""
+                                          },
                                           domProps: { value: detalle.precio },
                                           on: {
                                             input: function($event) {

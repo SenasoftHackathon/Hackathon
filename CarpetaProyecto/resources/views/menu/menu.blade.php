@@ -2,7 +2,7 @@
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-        @if(Auth::user()->idRol == 1 )
+        @if(Auth::user()->idRol == 3 )
         <li class="nav-item ">
             <a href="#" class="nav-link">
                 <p>
@@ -16,7 +16,7 @@
                 <li class="nav-item" @click="menu = 1">
                     <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Existencias</p>
+                        <p>Bodega</p>
                     </a>
                 </li>
                 <li class="nav-item" @click="menu = 2">
@@ -41,7 +41,7 @@
             
         </li>
         @endif
-        @if(Auth::user()->idRol == 2 )
+        @if(Auth::user()->idRol == 1 )
         <li class="nav-item ">
             <a href="#" class="nav-link">
                 <p>
@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" @click="menu = 6">
+                    <a href="/rol" class="nav-link" @click="menu = 6">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Roles</p>
                     </a>
@@ -73,6 +73,7 @@
             
         </li>
         @endif
+        @if(Auth::user()->idRol == 2 )
         <li class="nav-item " @click="menu = 8">
             <a href="" class="nav-link">
                 <p>
@@ -103,5 +104,6 @@
                 </li>
             </ul>
         </li>
+        @endif
 </nav>
 <!-- /.sidebar-menu -->

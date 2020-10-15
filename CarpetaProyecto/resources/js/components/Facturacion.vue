@@ -103,7 +103,9 @@
                         <tbody v-if="arrayDetalle.length">
                             <tr v-for="detalle in arrayDetalle" :key="detalle.id">
                                 <td v-text="detalle.producto"></td>
-                                <td v-text="detalle.precio"></td>
+                                <td>
+                                    <input readonly v-model="detalle.precio" type="number">
+                                </td>
                                 <td v-text="detalle.cantidad"></td>
                                 <td>
                                     {{detalle.precio*detalle.cantidad}}
@@ -206,10 +208,10 @@
                                     <i class="icon-check"></i>
                                 </button>
                             </td>
-                            <td v-text="detalle.producto">
+                            <td v-text="detalle.nombreProducto">
                             </td>
                             <td>
-                                <input v-model="detalle.precio" type="number" class="form-control">
+                                <input v-model="detalle.precio" type="number" class="form-control" readonly>
                             </td>
                             <td>
                                 <span style="color:red;" v-show="detalle.cantidad>detalle.stock">Stock: {{detalle.stock}}</span>
@@ -401,6 +403,7 @@ export default {
                         me.arrayDetalle.push({
                             idFactura: me.idFactura,
                             idProducto: me.idProducto,
+                            nombreProducto: me.nombreProducto,
                             cantidad: me.cantidad,
                             precio: me.precio,
                         });
