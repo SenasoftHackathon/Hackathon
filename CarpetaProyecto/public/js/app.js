@@ -4717,7 +4717,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['ruta'],
   data: function data() {
@@ -4849,11 +4848,10 @@ __webpack_require__.r(__webpack_exports__);
             });
           } else {
             me.arrayDetalle.push({
-              idproducto: me.idProducto,
-              name: me.name,
+              idFactura: me.idFactura,
+              idProducto: me.idProducto,
               cantidad: me.cantidad,
-              precio: me.precio,
-              stock: me.stock
+              precio: me.precio
             });
             me.codigo = "";
             me.idProducto = 0;
@@ -4884,8 +4882,8 @@ __webpack_require__.r(__webpack_exports__);
       var me = this; // Make a request for a user with a given ID
 
       axios.post("/facturacion/registrar", {
-        idUsuario: this.idUsuario,
-        fechaCreacion: this.fechaCreacion
+        'idUsuario': 1,
+        'data': this.arrayDetalle
       }).then(function (response) {
         // handle success
         me.listado = 1;
@@ -4946,10 +4944,6 @@ __webpack_require__.r(__webpack_exports__);
     validarFactura: function validarFactura() {
       this.errorFactura = 0;
       this.errorMsjFactura = [];
-
-      if (!this.idUsuario) {
-        this.errorMsjFactura.push("El Usuario no puede estar vacio.");
-      }
 
       if (this.errorMsjFactura.length) {
         this.errorFactura = 1;
@@ -44458,7 +44452,7 @@ var render = function() {
                                 return _c("tr", { key: detalle.id }, [
                                   _c("td", {
                                     domProps: {
-                                      textContent: _vm._s(detalle.producto)
+                                      textContent: _vm._s(detalle.idProducto)
                                     }
                                   }),
                                   _vm._v(" "),
@@ -44912,7 +44906,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Prducto")]),
+        _c("th", [_vm._v("Producto")]),
         _vm._v(" "),
         _c("th", [_vm._v("Precio")]),
         _vm._v(" "),
