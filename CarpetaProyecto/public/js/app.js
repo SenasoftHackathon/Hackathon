@@ -2620,19 +2620,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      proveedor_id: 0,
+      producto_id: 0,
       nombre: "",
       precio: "",
       proveedor: "",
-      arrayProveedor: [],
+      arrayProducto: [],
       tituloModal: "",
       tipoAccion: 0,
       modal: 0,
-      errorProveedor: 0,
-      errorMsjProveedor: [],
+      errorProducto: 0,
+      errorMsjProducto: [],
       pagination: {
         total: 0,
         current_page: 0,
@@ -2643,7 +2653,9 @@ __webpack_require__.r(__webpack_exports__);
       },
       offset: 3,
       criterio: "id",
-      buscar: ""
+      buscar: "",
+      arrayProveedor: [],
+      arrayIva: []
     };
   },
   computed: {
@@ -2685,64 +2697,77 @@ __webpack_require__.r(__webpack_exports__);
 
       me.pagination.current_page = page; //Envia la petición para visualizar la data de esa página
 
-      me.listarProveedor(page, buscar, criterio);
+      me.listarProducto(page, buscar, criterio);
     },
-    listarProveedor: function listarProveedor(page, buscar, criterio) {
+    listarProducto: function listarProducto(page, buscar, criterio) {
       var me = this;
-      var url = "/proveedor?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio; // Make a request for a user with a given ID
+      var url = "/producto?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio; // Make a request for a user with a given ID
 
       axios.get(url).then(function (response) {
         // handle success
         var respuesta = response.data;
-        me.arrayProveedor = respuesta.proveedores.data;
+        me.arrayProducto = respuesta.productos.data;
         me.pagination = respuesta.pagination;
       })["catch"](function (error) {
         // handle error
         console.log(error);
       });
     },
-    registrarProveedor: function registrarProveedor() {
-      if (this.validarProveedor()) {
-        return;
-      }
+    selectProveedor: function selectProveedor() {
+      var me = this;
+      var url = "/producto/selectProveedor"; // Make a request for a user with a given ID
 
-      var me = this; // Make a request for a user with a given ID
-
-      axios.post("/proveedor/registrar", {
-        nombre: this.nombre,
-        direccion: this.direccion,
-        correo: this.correo
-      }).then(function (response) {
+      axios.get(url).then(function (response) {
         // handle success
-        me.cerrarModal();
-        me.listarProveedor(1, "", "id");
+        var respuesta = response.data;
+        me.arrayProveedor = respuesta;
       })["catch"](function (error) {
         // handle error
         console.log(error);
       });
     },
-    actualizarProveedor: function actualizarProveedor() {
-      if (this.validarProveedor()) {
+    registrarProducto: function registrarProducto() {
+      if (this.validarProducto()) {
         return;
       }
 
       var me = this; // Make a request for a user with a given ID
 
-      axios.put("/proveedor/actualizar", {
+      axios.post("/producto/registrar", {
         nombre: this.nombre,
-        direccion: this.direccion,
-        correo: this.correo,
-        id: this.proveedor_id
+        precio: this.precio,
+        idProveedor: this.proveedor
       }).then(function (response) {
         // handle success
         me.cerrarModal();
-        me.listarProveedor(1, "", "id");
+        me.listarProducto(1, "", "id");
       })["catch"](function (error) {
         // handle error
         console.log(error);
       });
     },
-    activarProveedor: function activarProveedor(id) {
+    actualizarProducto: function actualizarProducto() {
+      if (this.validarProducto()) {
+        return;
+      }
+
+      var me = this; // Make a request for a user with a given ID
+
+      axios.put("/producto/actualizar", {
+        nombre: this.nombre,
+        precio: this.precio,
+        idProveedor: this.correo,
+        id: this.producto_id
+      }).then(function (response) {
+        // handle success
+        me.cerrarModal();
+        me.listarProducto(1, "", "id");
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    activarProducto: function activarProducto(id) {
       var me = this;
       var swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -2760,12 +2785,12 @@ __webpack_require__.r(__webpack_exports__);
         reverseButtons: true
       }).then(function (result) {
         if (result.isConfirmed) {
-          axios.put("/proveedor/activar", {
+          axios.put("/producto/activar", {
             id: id
           }).then(function (response) {
             // handle success
             me.cerrarModal();
-            me.listarProveedor(1, "", "id");
+            me.listarProducto(1, "", "id");
           })["catch"](function (error) {
             // handle error
             console.log(error);
@@ -2776,7 +2801,7 @@ __webpack_require__.r(__webpack_exports__);
         result.dismiss === Swal.DismissReason.cancel) {}
       });
     },
-    desactivarProveedor: function desactivarProveedor(id) {
+    desactivarProducto: function desactivarProducto(id) {
       var me = this;
       var swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -2794,12 +2819,12 @@ __webpack_require__.r(__webpack_exports__);
         reverseButtons: true
       }).then(function (result) {
         if (result.isConfirmed) {
-          axios.put("/proveedor/desactivar", {
+          axios.put("/producto/desactivar", {
             id: id
           }).then(function (response) {
             // handle success
             me.cerrarModal();
-            me.listarProveedor(1, "", "id");
+            me.listarProducto(1, "", "id");
           })["catch"](function (error) {
             // handle error
             console.log(error);
@@ -2810,57 +2835,55 @@ __webpack_require__.r(__webpack_exports__);
         result.dismiss === Swal.DismissReason.cancel) {}
       });
     },
-    validarProveedor: function validarProveedor() {
-      this.errorProveedor = 0;
-      this.errorMsjProveedor = [];
+    validarProducto: function validarProducto() {
+      this.errorProducto = 0;
+      this.errorMsjProducto = [];
 
       if (!this.nombre) {
-        this.errorMsjProveedor.push("* El nombre no puede estar vacio.");
+        this.errorMsjProducto.push("* El nombre no puede estar vacio.");
       }
 
-      if (!this.direccion) {
-        this.errorMsjProveedor.push("* La dirección no puede estar vacia.");
+      if (!this.precio) {
+        this.errorMsjProducto.push("* El precio no puede estar vacio.");
       }
 
-      if (!this.correo) {
-        this.errorMsjProveedor.push("* El correo no puede estar vacio");
+      if (this.proveedor == 0) {
+        this.errorMsjProducto.push("* Debe seleccionar un proveedor");
       }
 
-      if (this.errorMsjProveedor.length) {
-        this.errorProveedor = 1;
+      if (this.errorMsjProducto.length) {
+        this.errorProducto = 1;
       }
 
-      return this.errorProveedor;
+      return this.errorProducto;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+      this.selectProveedor();
 
       switch (modelo) {
-        case "proveedor":
+        case "producto":
           {
             switch (accion) {
               case "registrar":
                 {
                   this.modal = 1;
-                  this.tituloModal = "Registrar sucursal";
+                  this.tituloModal = "Registrar producto";
                   this.tipoAccion = 1;
                   this.nombre = "";
-                  this.direccion = "";
-                  this.correo = "";
-                  this.celular = 0;
+                  this.precio = "";
+                  this.proveedor = "0";
                   break;
                 }
 
               case "actualizar":
                 {
                   this.modal = 1;
-                  this.tituloModal = "Actualizar sucursal";
+                  this.tituloModal = "Actualizar producto";
                   this.tipoAccion = 2;
                   this.nombre = data["nombre"];
-                  this.direccion = data["direccion"];
-                  this.proveedor_id = data["id"];
-                  this.correo = data["correo"];
-                  this.celular = data["celular"];
+                  this.precio = data["precio"];
+                  this.proveedor = data["idProveedor"];
                   break;
                 }
             }
@@ -2872,11 +2895,12 @@ __webpack_require__.r(__webpack_exports__);
       this.tituloModal = "";
       this.tipoAccion = 0;
       this.nombre = "";
-      this.direccion = "";
+      this.precio = "";
+      this.proveedor = "0";
     }
   },
   mounted: function mounted() {
-    this.listarProveedor(1, "", "id");
+    this.listarProducto(1, "", "id");
   }
 });
 
@@ -42324,8 +42348,30 @@ var render = function() {
                                 }
                                 _vm.nombre = $event.target.value
                               }
-                            }
-                          })
+                            },
+                            [
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v(
+                                  "Seleccione\n                                                "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.arrayProveedor, function(
+                                selectProveedor
+                              ) {
+                                return _c("option", {
+                                  key: selectProveedor.id,
+                                  domProps: {
+                                    value: selectProveedor.id,
+                                    textContent: _vm._s(
+                                      selectProveedor.proveedor
+                                    )
+                                  }
+                                })
+                              })
+                            ],
+                            2
+                          )
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
@@ -42391,13 +42437,13 @@ var render = function() {
                               {
                                 name: "show",
                                 rawName: "v-show",
-                                value: _vm.errorProveedor,
-                                expression: "errorProveedor"
+                                value: _vm.errorProducto,
+                                expression: "errorProducto"
                               }
                             ],
                             staticClass: "form-group row errores"
                           },
-                          _vm._l(_vm.errorMsjProveedor, function(error) {
+                          _vm._l(_vm.errorMsjProducto, function(error) {
                             return _c("label", {
                               key: error,
                               staticClass: "text-center",
@@ -42437,7 +42483,7 @@ var render = function() {
                             attrs: { type: "button" },
                             on: {
                               click: function($event) {
-                                return _vm.registrarProveedor()
+                                return _vm.registrarProducto()
                               }
                             }
                           },
@@ -42457,7 +42503,7 @@ var render = function() {
                             attrs: { type: "button" },
                             on: {
                               click: function($event) {
-                                return _vm.actualizarProveedor()
+                                return _vm.actualizarProducto()
                               }
                             }
                           },
@@ -42545,7 +42591,7 @@ var render = function() {
                       ) {
                         return null
                       }
-                      return _vm.listarProveedor("1", _vm.buscar, _vm.criterio)
+                      return _vm.listarProducto("1", _vm.buscar, _vm.criterio)
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -42564,7 +42610,7 @@ var render = function() {
                       attrs: { type: "submit" },
                       on: {
                         click: function($event) {
-                          return _vm.listarProveedor(
+                          return _vm.listarProducto(
                             "1",
                             _vm.buscar,
                             _vm.criterio
@@ -42587,8 +42633,8 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arrayProveedor, function(proveedor) {
-                  return _c("tr", { key: proveedor.id }, [
+                _vm._l(_vm.arrayProducto, function(producto) {
+                  return _c("tr", { key: producto.id }, [
                     _c("td", [
                       _c(
                         "button",
@@ -42598,9 +42644,9 @@ var render = function() {
                           on: {
                             click: function($event) {
                               return _vm.abrirModal(
-                                "proveedor",
+                                "producto",
                                 "actualizar",
-                                proveedor
+                                producto
                               )
                             }
                           }
@@ -42608,7 +42654,7 @@ var render = function() {
                         [_c("i", { staticClass: "fa fa-pen" })]
                       ),
                       _vm._v(" "),
-                      proveedor.estado
+                      producto.estado
                         ? _c(
                             "button",
                             {
@@ -42619,7 +42665,7 @@ var render = function() {
                               },
                               on: {
                                 click: function($event) {
-                                  return _vm.desactivarProveedor(proveedor.id)
+                                  return _vm.desactivarProducto(producto.id)
                                 }
                               }
                             },
@@ -42635,7 +42681,7 @@ var render = function() {
                               },
                               on: {
                                 click: function($event) {
-                                  return _vm.activarProveedor(proveedor.id)
+                                  return _vm.activarProducto(producto.id)
                                 }
                               }
                             },
@@ -42644,22 +42690,22 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(proveedor.id) }
+                      domProps: { textContent: _vm._s(producto.id) }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(proveedor.nombre) }
+                      domProps: { textContent: _vm._s(producto.nombre) }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(proveedor.direccion) }
+                      domProps: { textContent: _vm._s(producto.precio) }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(proveedor.correo) }
+                      domProps: { textContent: _vm._s(producto.proveedor) }
                     }),
                     _vm._v(" "),
-                    proveedor.estado
+                    producto.estado
                       ? _c("td", [
                           _c("span", { staticClass: "badge bg-success" }, [
                             _vm._v("Activo")
@@ -42805,9 +42851,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Nombre")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Dirección")]),
+        _c("th", [_vm._v("Precio")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Correo electronico")]),
+        _c("th", [_vm._v("Proveedor")]),
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])
@@ -57159,8 +57205,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\RetoSenasoft\Proyecto\Hackathon\carpetaproyecto\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\RetoSenasoft\Proyecto\Hackathon\carpetaproyecto\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ProyectosLaravel\Hackathon\Hackathon\CarpetaProyecto\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ProyectosLaravel\Hackathon\Hackathon\CarpetaProyecto\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

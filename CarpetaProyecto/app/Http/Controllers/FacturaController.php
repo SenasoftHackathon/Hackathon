@@ -11,7 +11,10 @@ class FacturaController extends Controller
         $buscar = $request->buscar;
         $criterio = $request->criterio;
         if ($buscar == "") {
-            $facturas = Factura::orderBy('id','desc')->paginate(5);
+            $facturas = Factura::join('users','facturas.idUsuario','=','users.id')
+            ->select('facturas.id','facturas.idUsuario','users.name','facturas.fechaCreacion')
+            ->where('facturas.'.$criterio,'like','%'.$buscar.'%')
+            ->orderBy('facturas.id','desc')->paginate(5);
         }else{
             $facturas = Factura::where($criterio, 'like', '%'.$buscar.'%')->orderBy('id', 'desc')->paginate(10);
         }
