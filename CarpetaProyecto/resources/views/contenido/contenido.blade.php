@@ -3,9 +3,11 @@
 <template v-if="menu==0">
         <h1>Este es el contenido principal de la página</h1>
 </template>
+
 <template v-if="menu==1">
         <existencia></existencia>
 </template>
+
 <template v-if="menu==2">
         <sucursal></sucursal>
 </template>

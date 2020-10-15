@@ -2,6 +2,7 @@
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+        @if(Auth::user()->idRol == 1 )
         <li class="nav-item ">
             <a href="#" class="nav-link">
                 <p>
@@ -9,7 +10,9 @@
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
+            
             <ul class="nav nav-treeview">
+            
                 <li class="nav-item" @click="menu = 1">
                     <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -35,7 +38,10 @@
                     </a>
                 </li>
             </ul>
+            
         </li>
+        @endif
+        @if(Auth::user()->idRol == 2 )
         <li class="nav-item ">
             <a href="#" class="nav-link">
                 <p>
@@ -43,6 +49,7 @@
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
+            
             <ul class="nav nav-treeview">
                 <li class="nav-item" @click="menu = 5">
                     <a href="/usuario" class="nav-link">
@@ -63,7 +70,9 @@
                     </a>
                 </li>
             </ul>
+            
         </li>
+        @endif
         <li class="nav-item " @click="menu = 8">
             <a href="" class="nav-link">
                 <p>
