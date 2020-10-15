@@ -9,7 +9,7 @@ class Existencia extends Model
     protected $table = "existencias";
 
     protected $fillable = [
-        'idSucursal', 'idProducto', 'stockBodega', 'stockSucursal',
+        'idSucursal', 'idProducto', 'stockSucursal',
     ];
 
     public $timestamps = false;

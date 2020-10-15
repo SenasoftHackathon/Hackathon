@@ -2628,6 +2628,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2653,7 +2664,8 @@ __webpack_require__.r(__webpack_exports__);
       criterio: "id",
       buscar: "",
       arrayProveedor: [],
-      arrayIva: []
+      arrayIva: [],
+      stockBodega: 0
     };
   },
   computed: {
@@ -2734,6 +2746,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/producto/registrar", {
         nombre: this.nombre,
         precio: this.precio,
+        stockBodega: this.stockBodega,
         idProveedor: this.proveedor
       }).then(function (response) {
         // handle success
@@ -2754,6 +2767,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.put("/producto/actualizar", {
         nombre: this.nombre,
         precio: this.precio,
+        stockBodega: this.stockBodega,
         idProveedor: this.proveedor,
         id: this.producto_id
       }).then(function (response) {
@@ -4254,17 +4268,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       existencia_id: 0,
       idSucursal: "",
       idProducto: "",
-      stockBodega: 0,
       stockSucursal: 0,
       arrayExistencia: [],
       tituloModal: "",
@@ -4281,7 +4290,7 @@ __webpack_require__.r(__webpack_exports__);
         to: 0
       },
       offset: 3,
-      criterio: "id",
+      criterio: "existencias.id",
       buscar: "",
       arrayProducto: [],
       arraySucursal: []
@@ -4368,18 +4377,16 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    registrarExistencia: function registrarExistencia() {
+    actualizarExistencia: function actualizarExistencia() {
       if (this.validarExistencia()) {
         return;
       }
 
       var me = this; // Make a request for a user with a given ID
 
-      axios.post("/existencia/registrar", {
-        idSucursal: this.idSucursal,
-        idProducto: this.idProducto,
-        stockBodega: this.stockBodega,
-        stockSucursal: this.stockSucursal
+      axios.put("/existencia/actualizar", {
+        stockSucursal: this.stockSucursal,
+        id: this.existencia_id
       }).then(function (response) {
         // handle success
         me.cerrarModal();
@@ -4397,12 +4404,8 @@ __webpack_require__.r(__webpack_exports__);
         this.errorMsjExistencia.push("* La sucursal no puede estar vacia.");
       }
 
-      if (this.idProducto == '0') {
+      if (this.idProducto == "0") {
         this.errorMsjExistencia.push("* El producto no puede estar vacio.");
-      }
-
-      if (!this.stockBodega) {
-        this.errorMsjExistencia.push("* El stock bodega no puede estar vacio");
       }
 
       if (!this.stockSucursal) {
@@ -4424,15 +4427,15 @@ __webpack_require__.r(__webpack_exports__);
         case "existencia":
           {
             switch (accion) {
-              case "registrar":
+              case "actualizar":
                 {
                   this.modal = 1;
                   this.tituloModal = "Registrar existencia";
                   this.tipoAccion = 1;
-                  this.idSucursal = "0";
-                  this.idProducto = "0";
-                  this.stockBodega = 0;
-                  this.stockSucursal = 0;
+                  this.idSucursal = data['idSucursal'];
+                  this.idProducto = data['idProducto'];
+                  this.stockSucursal = data['stockSucursal'];
+                  this.existencia_id = data['id'];
                   break;
                 }
             }
@@ -4445,12 +4448,11 @@ __webpack_require__.r(__webpack_exports__);
       this.tipoAccion = 0;
       this.idSucursal = "";
       this.idProducto = "";
-      this.stockBodega = "";
       this.stockSucursal = "";
     }
   },
   mounted: function mounted() {
-    this.listarExistencia(1, "", "id");
+    this.listarExistencia(1, "", "existencias.id");
   }
 });
 
@@ -4718,8 +4720,161 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['ruta'],
+  props: ["ruta"],
   data: function data() {
     return {
       idFactura: 0,
@@ -4730,7 +4885,7 @@ __webpack_require__.r(__webpack_exports__);
       arrayFactura: [],
       arrayProducto: [],
       arrayDetalle: [],
-      nombreProducto: '',
+      nombreProducto: "",
       precio: 0,
       cantidad: 0,
       stock: 0,
@@ -4812,18 +4967,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     buscarProducto: function buscarProducto() {
       var me = this;
-      var url = '/producto/buscarProductoFactura?filtro=' + me.nombreProducto;
+      var url = "/producto/buscarProductoFactura?filtro=" + me.nombreProducto;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayProducto = respuesta.productos;
 
         if (me.arrayProducto.length > 0) {
-          me.nombreProducto = me.arrayProducto[0]['nombre'];
-          me.idProducto = me.arrayProducto[0]['id'];
-          me.precio = me.arrayProducto[0]['precio'];
-          me.stock = me.arrayProducto[0]['stockTienda'];
+          me.nombreProducto = me.arrayProducto[0]["nombre"];
+          me.idProducto = me.arrayProducto[0]["id"];
+          me.precio = me.arrayProducto[0]["precio"];
+          me.stock = me.arrayProducto[0]["stockTienda"];
         } else {
-          me.nombreProducto = 'No existe producto';
+          me.nombreProducto = "No existe producto";
           me.idProducto = 0;
         }
       })["catch"](function (error) {
@@ -4836,16 +4991,16 @@ __webpack_require__.r(__webpack_exports__);
       if (me.idProducto == 0 || me.cantidad == 0 || me.precio == 0) {} else {
         if (me.encuentra(me.idProducto)) {
           swal({
-            type: 'error',
-            title: 'Error...',
-            text: 'Ese Producto ya se encuentra agregado!'
+            type: "error",
+            title: "Error...",
+            text: "Ese Producto ya se encuentra agregado!"
           });
         } else {
           if (me.cantidad > me.stock) {
             swal({
-              type: 'error',
-              title: 'Error...',
-              text: 'NO hay stock disponible!'
+              type: "error",
+              title: "Error...",
+              text: "NO hay stock disponible!"
             });
           } else {
             me.arrayDetalle.push({
@@ -4893,11 +5048,11 @@ __webpack_require__.r(__webpack_exports__);
         me.idUsuario = 0;
         me.total = 0.0;
         me.idProducto = 0;
-        me.name = '';
+        me.name = "";
         me.cantidad = 0;
         me.precio = 0;
         me.stock = 0;
-        me.codigo = '';
+        me.codigo = "";
         me.arrayDetalle = [];
       })["catch"](function (error) {
         // handle error
@@ -4909,18 +5064,18 @@ __webpack_require__.r(__webpack_exports__);
       me.listado = 2; //Obtener los datos del ingreso
 
       var arrayFacturaT = [];
-      var url = '/facturacion/obtenerEncabezado?id=' + id;
+      var url = "/facturacion/obtenerEncabezado?id=" + id;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         arrayFacturaT = respuesta.factura;
-        me.idFactura = arrayFacturaT[0]['id'];
-        me.usuario = arrayFacturaT[0]['usuario'];
-        me.total = arrayFacturaT[0]['total'];
+        me.idFactura = arrayFacturaT[0]["id"];
+        me.usuario = arrayFacturaT[0]["usuario"];
+        me.total = arrayFacturaT[0]["total"];
       })["catch"](function (error) {
         console.log(error);
-      }); //Obtener los datos de los detalles 
+      }); //Obtener los datos de los detalles
 
-      var url = '/facturacion/obtenerDetalles?id=' + id;
+      var url = "/facturacion/obtenerDetalles?id=" + id;
       axios.get(urld).then(function (response) {
         console.log(response);
         var respuesta = response.data;
@@ -4936,10 +5091,10 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       me.listado = 0;
       me.idProducto = 0;
-      me.name = '';
+      me.name = "";
       me.cantidad = 0;
       me.precio = 0;
-      me.iva = 0.20;
+      me.iva = 0.2;
       me.total = 0.0;
       me.arrayDetalle = [];
     },
@@ -42064,6 +42219,34 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Stock de bodega (*)")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.stockBodega,
+                                expression: "stockBodega"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "" },
+                            domProps: { value: _vm.stockBodega },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.stockBodega = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
                         _c(
                           "div",
                           {
@@ -42339,6 +42522,10 @@ var render = function() {
                       domProps: { textContent: _vm._s(producto.proveedor) }
                     }),
                     _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(producto.stockBodega) }
+                    }),
+                    _vm._v(" "),
                     producto.estado
                       ? _c("td", [
                           _c("span", { staticClass: "badge bg-success" }, [
@@ -42488,6 +42675,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Precio")]),
         _vm._v(" "),
         _c("th", [_vm._v("Proveedor")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Stock bodega")]),
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])
@@ -43628,27 +43817,6 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "content" }, [
       _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "col-md-4" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.abrirModal("existencia", "registrar")
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "fa fa-plus" }),
-              _vm._v(" Registrar\n                ")
-            ]
-          ),
-          _vm._v(" "),
-          _c("hr")
-        ]),
-        _vm._v(" "),
         _c("div", { staticClass: "col-md-5" }, [
           _c(
             "div",
@@ -43687,7 +43855,7 @@ var render = function() {
                       _c("div", { staticClass: "card-body" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", { attrs: { for: "" } }, [
-                            _vm._v("Sucursal (*)")
+                            _vm._v("Sucursal")
                           ]),
                           _vm._v(" "),
                           _c(
@@ -43702,7 +43870,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              attrs: { placeholder: "" },
+                              attrs: { placeholder: "", disabled: "" },
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -43745,7 +43913,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", { attrs: { for: "" } }, [
-                            _vm._v("Producto (*)")
+                            _vm._v("Producto")
                           ]),
                           _vm._v(" "),
                           _c(
@@ -43760,7 +43928,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              attrs: { placeholder: "" },
+                              attrs: { placeholder: "", disabled: "" },
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -43799,34 +43967,6 @@ var render = function() {
                             ],
                             2
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "" } }, [
-                            _vm._v("Stock Bodega (*)")
-                          ]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.stockBodega,
-                                expression: "stockBodega"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "email", placeholder: "" },
-                            domProps: { value: _vm.stockBodega },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.stockBodega = $event.target.value
-                              }
-                            }
-                          })
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
@@ -43910,13 +44050,13 @@ var render = function() {
                             attrs: { type: "button" },
                             on: {
                               click: function($event) {
-                                return _vm.registrarExistencia()
+                                return _vm.actualizarExistencia()
                               }
                             }
                           },
                           [
                             _vm._v(
-                              "\n                                    Registrar\n                                "
+                              "\n                                    Actualizar stock\n                                "
                             )
                           ]
                         )
@@ -43964,12 +44104,22 @@ var render = function() {
                     }
                   },
                   [
-                    _c("option", { attrs: { value: "id" } }, [
+                    _c("option", { attrs: { value: "existencias.id" } }, [
                       _vm._v("Código")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "nombre" } }, [
+                    _c(
+                      "option",
+                      { attrs: { value: "existencias.idSucursal" } },
+                      [_vm._v("Id Sucursal")]
+                    ),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "productos.nombre" } }, [
                       _vm._v("Producto")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "sucursales.nombre" } }, [
+                      _vm._v("Sucursal")
                     ])
                   ]
                 ),
@@ -44038,8 +44188,32 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayExistencia, function(existencia) {
                   return _c("tr", { key: existencia.id }, [
+                    _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn-primary btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.abrirModal(
+                                "existencia",
+                                "actualizar",
+                                existencia
+                              )
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-pen" })]
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(existencia.id) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(existencia.idSucursal) }
                     }),
                     _vm._v(" "),
                     _c("td", {
@@ -44052,10 +44226,6 @@ var render = function() {
                       domProps: {
                         textContent: _vm._s(existencia.nombre_producto)
                       }
-                    }),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: { textContent: _vm._s(existencia.stockBodega) }
                     }),
                     _vm._v(" "),
                     _c("td", {
@@ -44192,13 +44362,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
+        _c("th", { staticStyle: { width: "120px" } }, [_vm._v("Editar stock")]),
+        _vm._v(" "),
         _c("th", { staticStyle: { width: "20px" } }, [_vm._v("id")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Id Sucursal")]),
         _vm._v(" "),
         _c("th", [_vm._v("Sucursal")]),
         _vm._v(" "),
         _c("th", [_vm._v("Producto")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Stock en Bodega")]),
         _vm._v(" "),
         _c("th", [_vm._v("Stock en Sucursal")])
       ])
@@ -44235,7 +44407,7 @@ var render = function() {
       [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Facturas\n    "),
+          _vm._v(" Facturas\n            "),
           _c(
             "button",
             {
@@ -44249,7 +44421,7 @@ var render = function() {
             },
             [
               _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nueva Factura\n    ")
+              _vm._v(" Nueva Factura\n            ")
             ]
           )
         ]),
@@ -44303,11 +44475,13 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                    Detallar Factura\n                    "
+                                    "\n                                    Detallar Factura\n                                "
                                   )
                                 ]
                               ),
-                              _vm._v("  \n                    "),
+                              _vm._v(
+                                "\n                                 \n                                "
+                              ),
                               factura.estado == "Facturado"
                                 ? [
                                     _c(
@@ -44325,7 +44499,7 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                            Desactivar\n                        "
+                                          "\n                                        Desactivar\n                                    "
                                         )
                                       ]
                                     )
@@ -44476,11 +44650,11 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("td", [
                                     _vm._v(
-                                      "\n                                " +
+                                      "\n                                        " +
                                         _vm._s(
                                           detalle.precio * detalle.cantidad
                                         ) +
-                                        "\n                            "
+                                        "\n                                    "
                                     )
                                   ])
                                 ])
@@ -44506,7 +44680,11 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Cerrar")]
+                      [
+                        _vm._v(
+                          "\n                            Cerrar\n                        "
+                        )
+                      ]
                     )
                   ])
                 ])
@@ -44552,7 +44730,7 @@ var render = function() {
                 _c("div", { staticClass: "col-md-4" }, [
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", [
-                      _vm._v("Producto "),
+                      _vm._v("Producto\n                            "),
                       _c(
                         "span",
                         {
@@ -44561,7 +44739,7 @@ var render = function() {
                               name: "show",
                               rawName: "v-show",
                               value: _vm.idProducto == 0,
-                              expression: "idProducto==0"
+                              expression: "idProducto == 0"
                             }
                           ],
                           staticStyle: { color: "red" }
@@ -44639,7 +44817,7 @@ var render = function() {
                 _c("div", { staticClass: "col-md-4" }, [
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", [
-                      _vm._v("Cantidad "),
+                      _vm._v("Cantidad\n                            "),
                       _c(
                         "span",
                         {
@@ -44648,7 +44826,7 @@ var render = function() {
                               name: "show",
                               rawName: "v-show",
                               value: _vm.cantidad == 0,
-                              expression: "cantidad==0"
+                              expression: "cantidad == 0"
                             }
                           ],
                           staticStyle: { color: "red" }
@@ -44693,7 +44871,11 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Agregar")]
+                      [
+                        _vm._v(
+                          "\n                            Agregar\n                        "
+                        )
+                      ]
                     )
                   ])
                 ]),
@@ -44711,7 +44893,11 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Registrar Venta")]
+                      [
+                        _vm._v(
+                          "\n                            Registrar Venta\n                        "
+                        )
+                      ]
                     )
                   ])
                 ]),
@@ -44796,14 +44982,15 @@ var render = function() {
                                             value:
                                               detalle.cantidad > detalle.stock,
                                             expression:
-                                              "detalle.cantidad>detalle.stock"
+                                              "\n                                                detalle.cantidad >\n                                                    detalle.stock\n                                            "
                                           }
                                         ],
                                         staticStyle: { color: "red" }
                                       },
                                       [
                                         _vm._v(
-                                          "Stock: " + _vm._s(detalle.stock)
+                                          "Stock:\n                                            " +
+                                            _vm._s(detalle.stock)
                                         )
                                       ]
                                     ),
@@ -44837,11 +45024,11 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("td", [
                                     _vm._v(
-                                      "\n                            " +
+                                      "\n                                        " +
                                         _vm._s(
                                           detalle.precio * detalle.cantidad
                                         ) +
-                                        "\n                        "
+                                        "\n                                    "
                                     )
                                   ])
                                 ])
@@ -44880,7 +45067,9 @@ var staticRenderFns = [
               ]),
               _vm._v(" "),
               _c("li", { staticClass: "breadcrumb-item active" }, [
-                _vm._v("Gestión de Facturación")
+                _vm._v(
+                  "\n                            Gestión de Facturación\n                        "
+                )
               ])
             ])
           ])
@@ -44929,7 +45118,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("td", { attrs: { colspan: "5" } }, [
         _vm._v(
-          "\n                                NO hay productos agregados\n                            "
+          "\n                                        NO hay productos agregados\n                                    "
         )
       ])
     ])
@@ -44959,7 +45148,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("td", { attrs: { colspan: "6" } }, [
         _vm._v(
-          "\n                            No hay productos agregados\n                        "
+          "\n                                        No hay productos agregados\n                                    "
         )
       ])
     ])

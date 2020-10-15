@@ -37,6 +37,11 @@ Route::get('/permiso', function () {
 Route::get('/', function () {
     return view('contenido.contenido');
 });
+/*
+Route::get('/', function () {
+    return view('welcome2');
+});
+*/
 
 Route::get('/sucursal', 'SucursalController@index');
 Route::post('/sucursal/registrar', 'SucursalController@store');
@@ -73,7 +78,7 @@ Route::put('/facturacion/obtenerDetalles', 'FacturaController@obtenerDetalles');
 Route::get('/existencia', 'ExistenciaController@index');
 Route::get('/existencia/selectSucursal', 'ExistenciaController@selectSucursal');
 Route::get('/existencia/selectProducto', 'ExistenciaController@selectProducto');
-Route::post('/existencia/registrar', 'ExistenciaController@store');
+// Route::post('/existencia/registrar', 'ExistenciaController@store');
 Route::put('/existencia/actualizar', 'ExistenciaController@update');
 //Route::post('/iva/registrar', 'IvaController@store');
 

@@ -19,6 +19,7 @@ class CreateProductosTable extends Migration
             $table->bigInteger('idIva')->unsigned();
             $table->string('nombre', 45);
             $table->double('precio', 11, 2);
+            $table->integer('stockBodega');
             $table->boolean('estado')->default(1);
 
             $table->foreign('idProveedor')->references('id')->on('proveedores');

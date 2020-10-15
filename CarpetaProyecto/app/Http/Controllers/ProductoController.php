@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Producto;
 use App\Proveedor;
 use App\Iva;
+use App\Sucursal;
+use App\Existencia;
 
 class ProductoController extends Controller
 {
@@ -23,12 +25,12 @@ class ProductoController extends Controller
         if ($buscar == "") {
             $productos = Producto::join('proveedores', 'productos.idProveedor', '=', 'proveedores.id')
                 ->join('ivas', 'productos.idIva', '=', 'ivas.id')
-                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'productos.idProveedor', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.stockBodega',  'productos.estado', 'productos.idProveedor', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
                 ->orderBy('productos.id', 'desc')
                 ->paginate(10);
         } else {
             $productos = Producto::join('proveedores', 'productos.id', '=', 'proveedores.id')
-                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.estado', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
+                ->select('productos.id', 'productos.nombre', 'productos.precio', 'productos.stockBodega',  'productos.estado', 'proveedores.nombre as proveedor', 'ivas.porcentaje')
                 ->where("productos.".$criterio, 'like', '%' . $buscar . '%')
                 ->orderBy('productos.id', 'desc')
                 ->paginate(10);
@@ -68,8 +70,19 @@ class ProductoController extends Controller
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
+        $producto->stockBodega = $request->stockBodega;
         $producto->estado = '1';
         $producto->save();
+
+        $productoRegistrado = Producto::select('id')->get()->last();
+        $sucursales = Sucursal::all();
+        foreach ($sucursales as $sucursal) {
+            $existencia = new Existencia();
+            $existencia->idSucursal = $sucursal->id;
+            $existencia->idProducto = $productoRegistrado->id;
+            $existencia->stockSucursal = 0;
+            $existencia->save();
+        }
     }
 
     /**
@@ -88,6 +101,7 @@ class ProductoController extends Controller
         $producto->idIva = $iva->id;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
+        $producto->stockBodega = $request->stockBodega;
         $producto->estado = '1';
         $producto->save();
     }
