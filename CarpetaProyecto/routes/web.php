@@ -59,12 +59,12 @@ Route::put('/producto/desactivar', 'ProductoController@desactivarProducto');
 Route::get('/iva', 'IvaController@index');
 Route::post('/iva/registrar', 'IvaController@store');
 
-Route::get('/factura', 'FacturaController@index');
-Route::get('/factura/selectProducto', 'FacturaController@selectProductos');
-Route::post('/factura/registrar', 'FacturaController@store');
-Route::put('/factura/actualizar', 'FacturaController@update');
-Route::put('/factura/activar', 'FacturaController@activarProducto');
-Route::put('/factura/desactivar', 'FacturaController@desactivarProducto');
+Route::get('/facturacion', 'FacturaController@index');
+Route::get('/facturacion/selectProducto', 'FacturaController@selectProductos');
+Route::post('/facturacion/registrar', 'FacturaController@store');
+Route::put('/facturacion/actualizar', 'FacturaController@update');
+Route::put('/facturacion/activar', 'FacturaController@activarProducto');
+Route::put('/facturacion/desactivar', 'FacturaController@desactivarProducto');
 
 Auth::routes();
 
