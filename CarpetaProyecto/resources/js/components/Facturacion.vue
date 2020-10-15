@@ -29,6 +29,7 @@
     </div>
      <!-- Listado-->
      <template v-if="listado==1">
+        <div class="card-body">
         <div class="table-responsive">
         <table class="table table-bordered table-striped table-sm">
             <thead>
@@ -50,7 +51,7 @@
                         <button type="button" @click="verFactura(factura.id)" class="btn btn-success btn-sm">
                         Detallar Factura
                         </button> &nbsp;
-                        <template v-if="factura.estado=='Facturado'">
+                        <template v-if="factura.estado==1">
                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarFactura(factura.id)">
                                 Desactivar
                             </button>
@@ -72,6 +73,7 @@
                 </li>
             </ul>
         </nav>
+        </div>
     </div>
      </template>
  
@@ -79,9 +81,12 @@
     <template v-if="listado==2">
         <div class="card-body">
             <div class="form-group row border">
+                
                 <div class="col-md-3">
-                    <label for="">Id</label>
-                        <p v-text="idFactura"></p>
+                    <div class="form-group">
+                        <label for="">IdUsuario</label>
+                            <p v-text="nombreUser"></p>
+                    </div>
                 </div>
             </div>
             <div class="form-group row border">
@@ -97,7 +102,7 @@
                         </thead>
                         <tbody v-if="arrayDetalle.length">
                             <tr v-for="detalle in arrayDetalle" :key="detalle.id">
-                                <td v-text="detalle.idProducto"></td>
+                                <td v-text="detalle.producto"></td>
                                 <td v-text="detalle.precio"></td>
                                 <td v-text="detalle.cantidad"></td>
                                 <td>
@@ -150,7 +155,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
  
     <div class="form-group row border">
         <div class="col-md-4">
@@ -163,7 +168,7 @@
             </div>
         </div>
  
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="form-group">
                 <label>Cantidad <span style="color:red;" v-show="cantidad==0">(*Ingrese)</span></label>
                 <input type="number" value="0" class="form-control" v-model="cantidad">                  
@@ -181,7 +186,7 @@
                     <button type="button" class="btn btn-primary" @click="registrarFactura()">Registrar Venta</button>
             </div>
         </div>
-        
+        <div class="card-body">
         <div class="form-group row border">
             <div class="table-responsive col-md-12">
                 <table class="table table-bordered table-striped table-sm">
@@ -198,7 +203,7 @@
                         <tr v-for="(detalle,index) in arrayDetalle" :key="detalle.id">
                             <td>
                                 <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
-                                    <i class="icon-close"></i>
+                                    <i class="icon-check"></i>
                                 </button>
                             </td>
                             <td v-text="detalle.producto">
@@ -239,7 +244,8 @@
                 </table>
             </div>
         </div>
-        
+        </div>
+    </div>
        
     </div>
     </template>
@@ -264,6 +270,7 @@ export default {
             arrayProducto: [],
             arrayDetalle: [],
             nombreProducto: '',
+            nombreUser: '',
             precio: 0,
             cantidad: 0,
             stock: 0,
@@ -459,15 +466,14 @@ export default {
                 var respuesta= response.data;
                 arrayFacturaT = respuesta.factura;
 
-                me.idFactura = arrayFacturaT[0]['id'];
-                me.usuario = arrayFacturaT[0]['usuario'];
-                me.total=arrayFacturaT[0]['total'];
+                me.nombreUser = arrayFacturaT[0]['nombreUser'];
+                me.fechaCreacion=arrayFacturaT[0]['fechaCreacion'];
             })
             .catch(function (error) {
                 console.log(error);
             });
             //Obtener los datos de los detalles 
-            var url= '/facturacion/obtenerDetalles?id=' + id;
+            var urld= '/facturacion/obtenerDetalles?id=' + id;
             
             axios.get(urld).then(function (response) {
                 console.log(response);
