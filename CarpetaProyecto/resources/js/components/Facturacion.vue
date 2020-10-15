@@ -20,198 +20,232 @@
 
         <!-- Main content -->
         <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-4">
-                        <!-- Button trigger modal -->
-                        <button
-                         type="button"
-                        class="btn btn-primary"
-                        @click="abrirModal('factura', 'registrar')"
-                        >
-                        <i class="fa fa-plus"></i> Registrar
-                        </button>
-                    </div>
-                    <div class="col-md-5">
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="tituloModalBodega">Registrar factura</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form role="form">
-                                            <div class="card-body">
-                                                <!-- Formulario bodega -->
-                                                <div class="form-group">
-                                                    <label>Usuario (*)</label>
-                                                    <input type="text" value="Sandra" class="form-control" id="exampleInputPassword1" placeholder="Stock bodega" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Fecha (*)</label>
-                                                    <input type="date" class="form-control" id="exampleInputPassword1" placeholder="Stock bodega">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Estado (*)</label>
-                                                    <input type="text" value="En Proceso" class="form-control" id="exampleInputPassword1" placeholder="Stock bodega" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Producto (*)</label>
-                                                    <select class="form-control select2" id="producto" style="width: 100%;">
-                                                        <option selected="selected">Serrucho</option>
-                                                        <option>Martillo</option>
-                                                        <option>Pinzas</option>
-                                                        <option>Alicate</option>
-                                                        <option>Destornillador</option>
-                                                        <option>Tubo PVC</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Cantidad (*)</label>
-                                                    <input type="number"  class="form-control" id="txtCantidad" placeholder="Stock bodega" >
-                                                </div>
-                                                <button type="button" onclick="agregarProducto()" class="btn btn-secondary" data-dismiss="modal">Agregar</button>
-
-                                                <!-- Fin formulario bodega -->
-                                            </div>
-                                            <div class="card-body">
-                                                <table class="table">
-                                                    <thead>
-
-                                                    </thead>
-                                                    <tbody id="tblfactura">
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-primary">Registrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Fin Modal -->
-                    </div>
-
-                <div class="row justify-content-md-center">
-                    <div class="card-tools col-md-10">
-                        <div class="input-group" style="width: 500px;">
-                            <select
-                                name=""
-                                id=""
-                                class="form-control"
-                                v-model="criterio"
-                            >
-                                <option value="id">Código</option>
-                                <option value="name">Nombre Usuario</option>
-                                <option value="fechaCreacion">Fecha de creación</option>
-                                <option value="estado">Estado</option>
-                            </select>
-                            <input
-                                type="text"
-                                class="form-control float-right"
-                                v-model="buscar"
-                                placeholder="Buscar"
-                                @keyup.enter="listarFactura('1', buscar, criterio)"
-                            />
-
-                            <div class="input-group-append">
-                                <button
-                                        type="submit"                                        
-                                        class="btn btn-default"
-                                    @click="listarFactura('1', buscar, criterio)"
-                                >
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-bordered">
+            <!--ESTILO FACTURACION-->
+            <div class="card-header">
+        <i class="fa fa-align-justify"></i> Facturas
+        <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
+        <i class="icon-plus"></i>&nbsp;Nueva Factura
+        </button>
+    </div>
+     <!-- Listado-->
+     <template v-if="listado==1">
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Fecha Hora</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="factura in arrayFactura" :key="factura.id">
+                    <td v-text="factura.name"></td>
+                    <td v-text="factura.fechaCreacion"></td>
+                    <td v-text="factura.total"></td>
+                    <td v-text="factura.estado"></td>
+                    <td>
+                        <button type="button" @click="verFactura(factura.id)" class="btn btn-success btn-sm">
+                        Detallar Factura
+                        </button> &nbsp;
+                        <template v-if="factura.estado=='Facturado'">
+                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarFactura(factura.id)">
+                                Desactivar
+                            </button>
+                        </template>
+                    </td>
+                </tr>                                
+            </tbody>
+        </table>
+          <nav>
+            <ul class="pagination">
+                <li class="page-item" v-if="pagination.current_page > 1">
+                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                </li>
+                <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                    <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                </li>
+                <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+     </template>
+ 
+        <!-- Ver ingreso -->
+    <template v-if="listado==2">
+        <div class="card-body">
+            <div class="form-group row border">
+                
+                <div class="col-md-3">
+                    <label for="">Id</label>
+                        <p v-text="idFactura"></p>
+                </div>
+            </div>
+            <div class="form-group row border">
+                <div class="table-responsive col-md-12">
+                    <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
-                                <th style="width: 40px">Opciones</th>
-                                <th style="width: 20px">id</th>
-                                <th>Usuario</th>
-                                <th>Fecha</th>
-                                <th>Estado</th>
+                                <th>Prducto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr v-for="factura in arrayFactura" :key="factura.id">
-                                <td></td>
-                                <td v-text="factura.id"></td>
-                                <td v-text="factura.idUsuario"></td>
-                                <td v-text="factura.fechaCreacion"></td>
-                                <td v-text="factura.estado"></td>
+                        <tbody v-if="arrayDetalle.length">
+                            <tr v-for="detalle in arrayDetalle" :key="detalle.id">
+                                <td v-text="detalle.producto"></td>
+                                <td v-text="detalle.precio"></td>
+                                <td v-text="detalle.cantidad"></td>
+                                <td>
+                                    {{detalle.precio*detalle.cantidad}}
+                                </td>
                             </tr>
+                                        <!--<tr style="background-color: #CEECF5;">
+                                            <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
+                                            <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
+                                        </tr>
+                                        <tr style="background-color: #CEECF5;">
+                                            <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
+                                            <td>$ {{totalImpuesto=((total*impuesto)).toFixed(2)}}</td>
+                                        </tr>
+                                        <tr style="background-color: #CEECF5;">
+                                            <td colspan="4" align="right"><strong>Total Neto:</strong></td>
+                                            <td>$ {{total}}</td>
+                                        </tr>
+                                        -->
                         </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="5">
+                                    NO hay productos agregados
+                                </td>
+                            </tr>
+                        </tbody>                                    
                     </table>
-                    <nav class="col-md-10">
-                        <ul class="pagination">
-                            <li
-                                class="page-item"
-                                v-if="pagination.current_page > 1"
-                            >
-                                <a
-                                    class="page-link"
-                                    href="#"
-                                    @click.prevent="
-                                        cambiarPagina(
-                                            pagination.current_page - 1,
-                                            buscar,
-                                            criterio
-                                        )
-                                    "
-                                    >Ant</a
-                                >
-                            </li>
-                            <li
-                                class="page-item"
-                                v-for="page in pagesNumber"
-                                :key="page"
-                                :class="[page == isActived ? 'active' : '']"
-                            >
-                                <a
-                                    class="page-link"
-                                    href="#"
-                                    @click.prevent="
-                                        cambiarPagina(page, buscar, criterio)
-                                    "
-                                    v-text="page"
-                                ></a>
-                            </li>
-                            <li
-                                class="page-item"
-                                v-if="
-                                    pagination.current_page <
-                                        pagination.last_page
-                                "
-                            >
-                                <a
-                                    class="page-link"
-                                    href="#"
-                                    @click.prevent="
-                                        cambiarPagina(
-                                            pagination.current_page + 1,
-                                            buscar,
-                                            criterio
-                                        )
-                                    "
-                                    >Sig</a
-                                >
-                            </li>
-                        </ul>
-                    </nav>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- fin ver ingreso -->
+ 
+    <template v-else-if="listado==0">
+    <div class="card-body">
+        <div class="form-group row border"> 
+            <div class="col-md-12">
+                <div v-show="errorFactura" class="form-group row div-error">
+                    <div class="text-center text-error">
+                        <div v-for="error in errorMsjFactura" :key="error" v-text="error">
+ 
+                        </div>
                     </div>
                 </div>
-                <!-- /.row -->
-            </div><!-- /.container-fluid -->
+            </div>
+        </div>
+    </div>
+ 
+    <div class="form-group row border">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Producto <span style="color:red;" v-show="idProducto==0">(*Seleccione)</span></label>
+                <div class="form-inline">
+                    <input type="text" class="form-control" v-model="nombreProducto" @keyup.enter="buscarProducto()" placeholder="Ingrese producto">
+                    <input type="text" readonly class="form-control" v-model="idProducto">
+                </div>                                    
+            </div>
+        </div>
+ 
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cantidad <span style="color:red;" v-show="cantidad==0">(*Ingrese)</span></label>
+                <input type="number" value="0" class="form-control" v-model="cantidad">                  
+            </div> 
+        </div>
+ 
+          <div class="col-md-2">
+            <div class="form-group">
+                <button @click="agregarDetalle()" class="btn btn-success form-control btnagregar">Agregar</button>
+            </div>
+         </div>
+ 
+        <div class="form-group row">
+            <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" @click="registrarFactura()">Registrar Venta</button>
+            </div>
+        </div>
+        
+        <div class="form-group row border">
+            <div class="table-responsive col-md-12">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Opciones</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody v-if="arrayDetalle.length">
+                        <tr v-for="(detalle,index) in arrayDetalle" :key="detalle.id">
+                            <td>
+                                <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
+                                    <i class="icon-close"></i>
+                                </button>
+                            </td>
+                            <td v-text="detalle.producto">
+                            </td>
+                            <td>
+                                <input v-model="detalle.precio" type="number" class="form-control">
+                            </td>
+                            <td>
+                                <span style="color:red;" v-show="detalle.cantidad>detalle.stock">Stock: {{detalle.stock}}</span>
+                                <input v-model="detalle.cantidad" type="number" class="form-control">
+                            </td>
+                            <td>
+                                {{detalle.precio*detalle.cantidad}}
+                            </td>
+                        </tr>
+                        <!--
+                        <tr style="background-color: #CEECF5;">
+                            <td colspan="5" align="right"><strong>Total Parcial:</strong></td>
+                            <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
+                        </tr>
+                        <tr style="background-color: #CEECF5;">
+                            <td colspan="5" align="right"><strong>Total Impuesto:</strong></td>
+                            <td>$ {{totalImpuesto=((total*impuesto)/(1+impuesto)).toFixed(2)}}</td>
+                        </tr>
+                        <tr style="background-color: #CEECF5;">
+                            <td colspan="5" align="right"><strong>Total Neto:</strong></td>
+                            <td>$ {{total=calcularTotal}}</td>
+                        </tr>
+                        -->
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="6">
+                                No hay productos agregados
+                            </td>
+                        </tr>
+                    </tbody>                                    
+                </table>
+            </div>
+        </div>
+        
+       
+    </div>
+    </template>
+
+            <!--FIN ESTILO FACTURACION-->
         </div>
         <!-- /.content -->
     </div>
@@ -219,15 +253,27 @@
 
 <script>
 export default {
+    props : ['ruta'],
     data() {
         return {
-            factura_id: 0,
+            idFactura: 0,
             idUsuario: 0,
+            idProducto: 0,
+            codigo: 0,
             fechaCreacion: 0,
             arrayFactura: [],
-            tituloModal: "",
-            tipoAccion: 0,
-            modal: 0,
+            arrayProducto: [],
+            arrayDetalle: [],
+            nombreProducto: '',
+            precio: 0,
+            cantidad: 0,
+            stock: 0,
+            stockSucursal: 0,
+            total: 0,
+            listado: 1,
+            //tituloModal: "",
+            //tipoAccion: 0,
+            //modal: 0,
             errorFactura: 0,
             errorMsjFactura: [],
             pagination: {
@@ -270,8 +316,7 @@ export default {
             }
             return pagesArray;
         }
-    },
-    methods: {
+    },methods: {
         cambiarPagina(page, buscar, criterio) {
             //Método para cambiar de página en la paginación
             let me = this;
@@ -303,6 +348,77 @@ export default {
                     console.log(error);
                 });
         },
+        buscarProducto(){
+            let me=this;
+            var url= '/producto/buscarProductoFactura?filtro=' + me.nombreProducto;
+ 
+            axios.get(url).then(function (response) {
+                var respuesta= response.data;
+                me.arrayProducto = respuesta.productos;
+
+                if (me.arrayProducto.length>0){
+                    me.nombreProducto=me.arrayProducto[0]['nombre'];
+                    me.idProducto=me.arrayProducto[0]['id'];
+                    me.precio=me.arrayProducto[0]['precio'];
+                    me.stock=me.arrayProducto[0]['stockTienda'];
+                }
+                else{
+                    me.nombreProducto='No existe producto';
+                    me.idProducto=0;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        agregarDetalle(){
+            let me=this;
+            if(me.idProducto==0 || me.cantidad==0 || me.precio==0){
+            }
+            else{
+            if(me.encuentra(me.idProducto)){
+                    swal({
+                        type: 'error',
+                        title: 'Error...',
+                        text: 'Ese Producto ya se encuentra agregado!',
+                        })
+                }
+                else{
+                    if(me.cantidad>me.stock){
+                        swal({
+                        type: 'error',
+                        title: 'Error...',
+                        text: 'NO hay stock disponible!',
+                        })
+                    }
+                    else{
+                        me.arrayDetalle.push({
+                            idproducto: me.idProducto,
+                            name: me.name,
+                            cantidad: me.cantidad,
+                            precio: me.precio,
+                            stock: me.stock
+                        });
+                        me.codigo="";
+                        me.idProducto=0;
+                        me.name="";
+                        me.cantidad=0;
+                        me.precio=0;
+                        me.stock=0
+                    }
+                }
+                
+            }
+        },
+        encuentra(id){
+            var sw=0;
+            for(var i=0;i<this.arrayDetalle.length;i++){
+                if(this.arrayDetalle[i].idProducto==id){
+                    sw=true;
+                }
+            }
+            return sw;
+        },
         registrarFactura() {
             if (this.validarFactura()) {
                 return;
@@ -316,14 +432,69 @@ export default {
                 })
                 .then(function(response) {
                     // handle success
-                    me.cerrarModal();
+                    me.listado=1;
                     me.listarFactura(1, "", "id");
+                    me.idUsuario=0;
+                    me.total=0.0;
+                    me.idProducto=0;
+                    me.name='';
+                    me.cantidad=0;
+                    me.precio=0;
+                    me.stock=0;
+                    me.codigo='';
+                    me.arrayDetalle=[];                    
                 })
                 .catch(function(error) {
                     // handle error
                     console.log(error);
                 });
         },
+        verFactura(id){
+            let me=this;
+            me.listado=2;
+            
+            //Obtener los datos del ingreso
+            var arrayFacturaT=[];
+            var url= '/facturacion/obtenerEncabezado?id=' + id;
+            
+            axios.get(url).then(function (response) {
+                var respuesta= response.data;
+                arrayFacturaT = respuesta.factura;
+
+                me.idFactura = arrayFacturaT[0]['id'];
+                me.usuario = arrayFacturaT[0]['usuario'];
+                me.total=arrayFacturaT[0]['total'];
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            //Obtener los datos de los detalles 
+            var url= '/facturacion/obtenerDetalles?id=' + id;
+            
+            axios.get(urld).then(function (response) {
+                console.log(response);
+                var respuesta= response.data;
+                me.arrayDetalle = respuesta.detalles;
+            })
+            .catch(function (error) {
+                console.log(error);
+            }); 
+        },
+        ocultarDetalle(){
+            this.listado=1;
+        },
+        mostrarDetalle(){
+            let me=this;
+            me.listado=0;
+            me.idProducto=0;
+            me.name='';
+            me.cantidad=0;
+            me.precio=0;
+            me.iva=0.20;
+            me.total=0.0;
+            me.arrayDetalle=[];
+        },
+
         validarFactura() {
             this.errorFactura = 0;
             this.errorMsjFactura = [];
@@ -335,6 +506,24 @@ export default {
             }
             return this.errorFactura;
         },
+        validarVenta(){
+            let me=this;
+            me.errorFactura=0;
+            me.errorMsjFactura =[];
+            var art;                
+            me.arrayDetalle.map(function(x){
+                if (x.cantidad>x.stock){
+                    art=x.idProducto + " con stock insuficiente";
+                    me.errorMsjFactura.push(art);
+                }
+            });
+
+            if (me.arrayDetalle.length<=0) me.errorMsjFactura.push("Ingrese detalles");
+
+            if (me.errorMsjFactura.length) me.errorFactura = 1;
+            return me.errorFactura;
+        },
+        /*
         abrirModal(modelo, accion) {
             switch (modelo) {
                 case "factura": {
@@ -358,6 +547,8 @@ export default {
             this.idUsuario = "";
             this.fechaCreacion = "";
         }
+        */
+
     },
     mounted() {
         this.listarFactura(1, "", "id");

@@ -105,4 +105,16 @@ class ProductoController extends Controller
         $producto->estado = '1';
         $producto->save();
     }
+
+    public function buscarProductoFactura(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $filtro = $request->filtro;
+
+        $productos = Producto::join('existencias', 'existencias.idProducto', '=', 'productos.id')
+        ->select('productos.id', 'productos.nombre', 'existencias.stockSucursal','productos.precio')
+        ->where('productos.nombre','=',$filtro)
+        ->orderBy('productos.nombre', 'asc')->take(1)->get();
+
+        return ['productos' => $productos];
+    }
 }
