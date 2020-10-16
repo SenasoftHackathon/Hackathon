@@ -103,12 +103,10 @@
                         <tbody v-if="arrayDetalle.length">
                             <tr v-for="detalle in arrayDetalle" :key="detalle.id">
                                 <td v-text="detalle.producto"></td>
-                                <td>
-                                    <input readonly v-model="detalle.precio" type="number">
-                                </td>
+                                <td v-text="detalle.valorUnitario"></td>
                                 <td v-text="detalle.cantidad"></td>
                                 <td>
-                                    {{detalle.precio*detalle.cantidad}}
+                                    {{detalle.subTotal}}
                                 </td>
                             </tr>
                                         <!--<tr style="background-color: #CEECF5;">
@@ -218,7 +216,7 @@
                                 <input v-model="detalle.cantidad" type="number" class="form-control">
                             </td>
                             <td>
-                                {{detalle.precio*detalle.cantidad}}
+                                {{detalle.subTotal=detalle.precio*detalle.cantidad}}
                             </td>
                         </tr>
                         <!--
@@ -246,9 +244,9 @@
                 </table>
             </div>
         </div>
+            <input v-for="detalle in sumTotal" :key="detalle.id" readonly v-model="detalle.total">
         </div>
     </div>
-       
     </div>
     </template>
 
@@ -274,10 +272,12 @@ export default {
             nombreProducto: '',
             nombreUser: '',
             precio: 0,
+            valorUnitario: 0,
             cantidad: 0,
             stock: 0,
             stockSucursal: 0,
             total: 0,
+            subTotal: 0,
             listado: 1,
             //tituloModal: "",
             //tipoAccion: 0,
@@ -323,6 +323,15 @@ export default {
                 from++;
             }
             return pagesArray;
+        },
+        sumTotal() {
+            const newArray = this.arrayDetalle.map(a => ({...a})) // crea una copia de movimientos
+            let total=0
+            newArray.forEach(p => {
+            total += p.cantidad*p.precio
+            p.total = total // agrego esta propiedad para guardar el acumulado
+        })
+        return newArray
         }
     },methods: {
         cambiarPagina(page, buscar, criterio) {
@@ -406,13 +415,15 @@ export default {
                             nombreProducto: me.nombreProducto,
                             cantidad: me.cantidad,
                             precio: me.precio,
+                            subTotal: me.subTotal,
                         });
                         me.codigo="";
                         me.idProducto=0;
                         me.name="";
                         me.cantidad=0;
                         me.precio=0;
-                        me.stock=0
+                        me.stock=0;
+                        me.subTotal=0;
                     }
                 }
                 
@@ -435,7 +446,8 @@ export default {
             // Make a request for a user with a given ID
             axios
                 .post("/facturacion/registrar", {
-                    'idUsuario': 1,
+                    'idUsuario':1,
+                    'total': this.total,
                     'data': this.arrayDetalle
                 })
                 .then(function(response) {
@@ -471,6 +483,7 @@ export default {
 
                 me.nombreUser = arrayFacturaT[0]['nombreUser'];
                 me.fechaCreacion=arrayFacturaT[0]['fechaCreacion'];
+                me.total=arrayFacturaT[0]['total'];
             })
             .catch(function (error) {
                 console.log(error);
@@ -509,23 +522,6 @@ export default {
                 this.errorFactura = 1;
             }
             return this.errorFactura;
-        },
-        validarVenta(){
-            let me=this;
-            me.errorFactura=0;
-            me.errorMsjFactura =[];
-            var art;                
-            me.arrayDetalle.map(function(x){
-                if (x.cantidad>x.stock){
-                    art=x.idProducto + " con stock insuficiente";
-                    me.errorMsjFactura.push(art);
-                }
-            });
-
-            if (me.arrayDetalle.length<=0) me.errorMsjFactura.push("Ingrese detalles");
-
-            if (me.errorMsjFactura.length) me.errorFactura = 1;
-            return me.errorFactura;
         },
         /*
         abrirModal(modelo, accion) {

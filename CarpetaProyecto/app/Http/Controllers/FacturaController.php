@@ -21,12 +21,12 @@ class FacturaController extends Controller
 
             if ($buscar == "") {
                 $facturas = Factura::join('users','facturas.idUsuario','=','users.id')
-                ->select('facturas.id','facturas.idUsuario','facturas.estado','users.name','facturas.fechaCreacion')
+                ->select('facturas.id','facturas.idUsuario','facturas.estado','facturas.total','users.name','facturas.fechaCreacion')
                 ->where('facturas.'.$criterio,'=',$buscar)
                 ->orderBy('facturas.id','desc')->paginate(5);
             }else{
                 $facturas = Factura::join('users','facturas.idUsuario','=','users.id')
-                ->select('facturas.id','facturas.idUsuario','facturas.estado','users.name','facturas.fechaCreacion')
+                ->select('facturas.id','facturas.idUsuario','facturas.estado','facturas.total','users.name','facturas.fechaCreacion')
                 ->where('facturas.'.$criterio,'=',$buscar)
                 ->orderBy('id', 'desc')->paginate(10);
             }
@@ -34,7 +34,7 @@ class FacturaController extends Controller
         {
             if ($buscar == "") {
                 $facturas = Factura::join('users','facturas.idUsuario','=','users.id')
-                ->select('facturas.id','facturas.idUsuario','facturas.estado','users.name','facturas.fechaCreacion')
+                ->select('facturas.id','facturas.idUsuario','facturas.estado','facturas.total','users.name','facturas.fechaCreacion')
                 ->where('facturas.'.$criterio,'like','%'.$buscar.'%')
                 ->orderBy('facturas.id','desc')->paginate(5);
             }else{
@@ -62,6 +62,7 @@ class FacturaController extends Controller
         //$factura->idusuario = \Auth::user()->id;
         $factura->fechaCreacion = Carbon::now('America/Lima');
         $factura->estado = 1;
+        $factura->total= $request->total;
         $factura->save();
         $detalles = $request->data;//Array de detalles
         //Recorro los elementos del array
@@ -72,7 +73,8 @@ class FacturaController extends Controller
             $detalle->idFactura = $factura->id;
             $detalle->idProducto = $det['idProducto'];
             $detalle->cantidad = $det['cantidad'];
-            $detalle->valorUnitario = $det['precio'];      
+            $detalle->valorUnitario = $det['precio'];
+            $detalle->subTotal = $det['subTotal'];
             $detalle->save();
         }  
         return response()->json($factura->id);
@@ -82,7 +84,7 @@ class FacturaController extends Controller
  
         $id = $request->id;
         $detalles = DetalleFactura::join('productos','detalle_facturas.idProducto','=','productos.id')
-        ->select('detalle_facturas.cantidad','detalle_facturas.valorUnitario',
+        ->select('detalle_facturas.cantidad','detalle_facturas.valorUnitario','detalle_facturas.subTotal',
         'productos.nombre as producto')
         ->where('detalle_facturas.idFactura','=',$id)
         ->orderBy('detalle_facturas.id', 'desc')->get();
@@ -94,7 +96,7 @@ class FacturaController extends Controller
  
         $id = $request->id;
         $factura = Factura::join('users','facturas.idUsuario','=','users.id')
-        ->select('facturas.id','facturas.idUsuario','facturas.fechaCreacion','facturas.estado','users.name as nombreUser')
+        ->select('facturas.id','facturas.idUsuario','facturas.fechaCreacion','facturas.estado','facturas.total','users.name as nombreUser')
         ->where('facturas.id','=',$id)
         ->orderBy('facturas.id', 'desc')->take(1)->get();
         
